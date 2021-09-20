@@ -135,8 +135,8 @@
   <label for="issueing-mechanism">Issueing Method</label>
   <!-- supposed to be tabs, but I'll leave the choice of UI kit to you -->
   <select>
-    <option value="ltd-curve">Limited Curve</option>
-    <option value="fixed-price">Fixed Price</option>
+    <option value="ltd">Limited Curve</option>
+    <option value="fix">Fixed Price</option>
   </select>
   <LimitedCurveCreator />
 </div>

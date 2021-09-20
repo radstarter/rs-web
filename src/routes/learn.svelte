@@ -4,7 +4,7 @@
 
 <h1>Investment funding on Radix</h1>
 <p>
-  NAME is a community curated launchpad for daos, startups and platforms built
+  RadPad is a community curated launchpad for daos, startups and platforms built
   on radix. We are a sovereign collective of investors, developers and
   entrepreneurs.
 </p>
@@ -14,17 +14,20 @@
   The platform is governed by a dao (Decentralised Autonomous Organisation)
   this means that every project that raises with us is approved by community
   voting. Stakeholders get to decide where capital flows, which projects to 
-  invest in and the percentage we take.
+  invest in and the percentage we take. If a project wants to raise with us,
+  they have to create a public proposal with all the details and submit it
+  to the voting platform. Then the collective can vote for or against.
 </p>
 <p>
   All profit from raises is divided between stakeholders in the dao. The dao has the option to
   buy tokens from projects we launch with capital from the vault. So we are 
   not only a launchpad but also an incubator for innovative platforms on radix.
 </p>
+
 <h3>How do I become a stakeholder?</h3>
 <p>
   All you need to do is buy tokens, and you can participate in voting and earn 
-  dividends. Tokens can be bought on the open market, or on the bonding
+  dividends. Tokens can be bought on the open market, or on the limited
   curve.
 </p>
 
@@ -34,7 +37,7 @@
   a gumball machine that sells tokens, but every token that is bought increases
   the price of the next token. This is to reward early investors and believers
   in the project. When more people believe in the project, it becomes more
-  expensive. Bonding curves are usually unlimited, but our limited bonding
+  expensive. Bonding curves are usually unlimited, but our limited 
   curves have a fixed supply of tokens.
 </p>
 <h3>When will governance be completely implemented?</h3>
