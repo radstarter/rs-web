@@ -1,9 +1,12 @@
 <script>
   import LimitedCurveCreator from '../components/limited-curve-creator.svelte'
-  import { afterUpdate } from 'svelte';
+  import { afterUpdate, onMount } from 'svelte';
   import MarkdownIt from 'markdown-it';
+  import { Editor } from 'bytemd'
+  import 'bytemd/dist/index.min.css'
+
   const md = new MarkdownIt();
-  
+
   //Globals
   let organizationName = "";
   let organizationType = "";
@@ -13,7 +16,8 @@
   let telegram = "";
   let discord = "";
   let twitter = "";
-
+  let issueingType = "ltd";
+  let price = 0;
   let deepdiveTemplatePrivate =
 `### 1. PROJECT OVERVIEW
 
@@ -96,7 +100,11 @@
                  logo = e.target.result
             };
   }
-</script>
+
+  function handleMdChange(e) {
+    deepdive = e.detail.value;
+  }
+ </script>
 <div id="input-container">
   <h2>Create a proposal for submitting your project</h2>
 
@@ -130,15 +138,20 @@
   <input type="url" bind:value={twitter}>
 
   <label for="deepdive">Deep dive (markdown)</label>
-  <textarea id="deepdive" rows="30" cols="60" bind:value={deepdive} ></textarea>
+  <Editor id="deepdive" value={deepdive} on:change={handleMdChange} previewDebounce=10 />
 
   <label for="issueing-mechanism">Issueing Method</label>
   <!-- supposed to be tabs, but I'll leave the choice of UI kit to you -->
-  <select>
+  <select bind:value={issueingType}>
     <option value="ltd">Limited Curve</option>
     <option value="fix">Fixed Price</option>
   </select>
-  <LimitedCurveCreator />
+  {#if issueingType == 'ltd' }
+    <LimitedCurveCreator />
+  {:else}
+    <label for="fixed-price">Sell price</label>
+    <input type="number" bind:value={price}>
+  {/if}
 </div>
 
 <div id="output-container">
