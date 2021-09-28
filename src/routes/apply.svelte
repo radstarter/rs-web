@@ -5,10 +5,19 @@
   import DeepDive from '../components/deepdive.svelte';
 
   let tab = 0;
+  function handleNext() {
+    if(tab < 3) {
+      tab++;
+    } else {
+      tab = 0;
+    }
+  }
+  function handleSubmit() {
+  }
 </script>
 <Container>
   <h1> Create a proposal to submit your project </h1>
-  <Tabs bind:active={tab}>
+  <Tabs full bind:active={tab}>
     <Tab>Basic information</Tab>
     <Tab>Deep Dive</Tab>
     <Tab>Set Price</Tab>
@@ -25,6 +34,19 @@
   {#if tab == 2}
     <LimitedCurveCreator />
   {/if}
+  <div class="btn-left">
+  {#if tab == 3}
+    <button class="btn-left" on:click={handleSubmit}>Submit</button>
+  {:else}
+    <button class="btn-left" on:click={handleNext}>Next</button>
+  {/if}
+  </div>
+  
 </Container>
 <style>
+  .btn-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>
