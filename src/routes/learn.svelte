@@ -1,7 +1,7 @@
 <script>
-
+import { Container } from 'svelte-chota'
 </script>
-
+<Container>
 <h1>Investment funding on Radix</h1>
 <p>
   RadPad is a community curated launchpad for startups, daos and platforms
@@ -68,3 +68,4 @@
   to pay out the profits. The dao-vault generates it's profits from holding 
   NAME tokens. There will be token buybacks.
 </p>
+</Container>
