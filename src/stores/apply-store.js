@@ -1,5 +1,6 @@
 import { writable, readable } from 'svelte/store';
 
+//basics-form stores
 export const organizationName = writable("");
 export const organizationType = writable("");
 export const shortDesc = writable("");
@@ -66,3 +67,10 @@ export const deepdiveTemplateDao = readable(
 
 ### 13. TOKEN RELEASE SCHEDULE`);
 
+//Limited curve stores
+export const mode = writable("exp");
+export const totalSupply = writable(1000000);
+export const range = writable(10);
+export const offset = writable(0.5);
+export const factorExp = writable(0);
+export const factorLin = writable(0);

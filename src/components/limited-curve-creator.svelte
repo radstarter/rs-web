@@ -5,15 +5,18 @@
 	import { onMount } from 'svelte';
 
 	import Axis from './Axis.svelte';
-	
+	import {
+		mode,
+		totalSupply,
+		range,
+		offset,
+		factorExp,
+		factorLin
+	} from '../stores/apply-store.js'
+
 	const height = 400;
 	const margin = 40;
-	let range = 10;
 	let width;
-
-	let mode = 'exp';
-	let totalSupply = 1000000;
-	let offset = 0.5;
 
 	let x = margin;
 	let y = height - margin;
@@ -24,35 +27,37 @@
 
 	let price;
 	let profitTilPoint;
+	let profitTilPointDisplay;
 
 	$: xScale = scaleLinear()
-		.domain([0, totalSupply])
+		.domain([0, $totalSupply])
 		.range([margin, width - margin]);
 
 	$: yScale = scaleLinear()
-		.domain([0, range])
+		.domain([0, $range])
 		.range([height - margin, margin]);
 
-	$: expMultiplier = (range - offset) / Math.pow(totalSupply, 2);
-	$: minStepExp =  (range - offset) / (Math.pow(totalSupply, 2) * 100) ;
-	$: limitExp = (range - offset) / Math.pow(totalSupply, 2);
-	$: linMultiplier = (range - offset) / totalSupply;
-	$: minStep = (range - offset) / (totalSupply * 100);
-	$: limit = (range - offset) / totalSupply;
-	
+	$: factorExpLocal = ($range - $offset) / Math.pow($totalSupply, 2);
+	$: minStepExp =  ($range - $offset) / (Math.pow($totalSupply, 2) * 100) ;
+	$: limitExp = ($range - $offset) / Math.pow($totalSupply, 2);
+	$: factorLinLocal = ($range - $offset) / $totalSupply;
+	$: minStep = ($range - $offset) / ($totalSupply * 100);
+	$: limit = ($range - $offset) / $totalSupply;
+
+
 	let pathLine = line()
 		.x(d => xScale(d.x))
 		.y(d => yScale(d.y))
 		.curve(curveBasis);
 	
-	$: step = totalSupply / width;
+	$: step = $totalSupply / width;
 
 	let funcLin = function(x) {
-		return x * linMultiplier + offset;
+		return x * factorLinLocal + $offset;
 	}
 
 	let funcExp = function(x) {
-		return Math.pow(x,2) * expMultiplier + offset;
+		return Math.pow(x,2) * factorExpLocal + $offset;
 	}
 
 	function calculatePoint(){
@@ -67,12 +72,13 @@
 		
 		price = Number(point.y.toFixed(2));
 
-		if (mode == 'exp'){
-			profitTilPoint = (point.x * (point.x + 1) * (2 * point.x + 1)) / 6 * expMultiplier + offset * point.x;
+		if ($mode == 'exp'){
+			profitTilPoint = (point.x * (point.x + 1) * (2 * point.x + 1)) / 6 * factorExpLocal + $offset * point.x;
 		}
-		if (mode == 'lin') {
-			profitTilPoint = (point.x * ( point.x + 1) / 2) * linMultiplier + offset * point.x;
+		if ($mode == 'lin') {
+			profitTilPoint = (point.x * ( point.x + 1) / 2) * factorLinLocal + $offset * point.x;
 		}
+		profitTilPointDisplay = Number(profitTilPoint).toLocaleString();
 	}
 
 	function resample()  {
@@ -80,9 +86,9 @@
 			data.pop()
 		}
 
-		for (let i = 0; i < totalSupply; i += step) {
+		for (let i = 0; i < $totalSupply; i += step) {
 			let z;
-				if (mode == 'lin'){
+				if ($mode == 'lin'){
 					z = funcLin(i);
 				} else {
 					z = funcExp(i);
@@ -104,6 +110,12 @@
 		calculatePoint();
 	}
 
+	function setStore() {
+		$factorExp = factorExpLocal;
+		$factorLin = factorLinLocal;
+	}
+	
+	//Count for not updating before width is set
 	let count = 0;
 	$: {
 		//Redraw pathLine and tooltip when width updates
@@ -116,36 +128,48 @@
 	}
 	
 	onMount(async () => {
+		factorExpLocal = $factorExp;
+		factorLinLocal = $factorLin;
 		const sleep = ms => new Promise(f => setTimeout(f, ms));
-		await sleep(100);
+		await sleep(10);
 		resample();
 		pathLine = pathLine;
+
 	});
 
 </script>
+<p></p>
 <div class='navigation'>
-	<label for="mode">Mode</label>
+	<p>
+		<label for="mode">Mode</label>
+		<select bind:value={$mode} on:change={resample}>
+			<option value="lin">Linear</option>
+			<option value="exp">Exponential</option>
+		</select>
+	</p>
+	<p>
+		<label for="tokens-loaded">Total tokens for sale</label>
+		<input type="number" bind:value={$totalSupply} on:input={resample}>
+	</p>
+	
+	<p>
+		<label for="$range">Range</label>
+		<input type ="range" min=5 max=26 bind:value={$range} on:input={resample}>
+	</p>
 
-	<select bind:value={mode} on:change={resample}>
-		<option value="lin">Linear</option>
-		<option value="exp">Exponential</option>
-	</select>
-
-	<label for="tokens-loaded">Total tokens for sale</label>
-	<input type="number" bind:value={totalSupply} on:input={resample}>
-	<label for="range">Range</label>
-	<input type ="range" min=5 max=26 bind:value={range} on:input={resample}>
-	<label for="multiplier">Multiplier</label>
-	{#if mode == 'lin'}
-		<input type=range step={minStep} max={limit} bind:value={linMultiplier} on:input={resample}>
-		{linMultiplier}
-	{/if}
-	{#if mode == 'exp'}
-		<input type="range" step={minStepExp} max={limitExp} bind:value={expMultiplier} on:input={resample}>
-		{expMultiplier}
-	{/if}
-	<label for="offset" >Offset</label>
-	<input type="number" step=0.1 bind:value={offset} on:change={resample}>
+	<p>
+	<label for="multiplier">Factor</label>
+		{#if $mode == 'lin'}
+			<input type=range step={minStep} max={limit} bind:value={factorLinLocal} on:input={resample} on:change={setStore}>
+		{/if}
+		{#if $mode == 'exp'}
+			<input type="range" step={minStepExp} max={limitExp} bind:value={factorExpLocal} on:input={resample} on:change={setStore}>
+		{/if}
+	</p>
+	<p>
+		<label for="offset" >offset</label>
+		<input type="number" step=0.1 bind:value={$offset} on:change={resample}>
+	</p>
 </div>
 
 <div class='limited-curve' bind:clientWidth={width} >
@@ -160,7 +184,7 @@
 </div>
 <div class="output-point">
 	Token price: {price} XRD
-	Total earnings: {profitTilPoint} XRD
+	Total earnings: {profitTilPointDisplay} XRD
 </div>
 
 <style>

@@ -1,8 +1,9 @@
 <script>
   import { Tabs, Tab, Container } from 'svelte-chota';
+  import { setContext } from 'svelte'
   import LimitedCurveCreator from '../components/limited-curve-creator.svelte'
   import BasicsForm from '../components/basics-form.svelte';
-  import DeepDive from '../components/deepdive.svelte';
+  import BytemdEditor from '../components/bytemd-editor.svelte';
 
   let tab = 0;
   function handleNext() {
@@ -17,7 +18,7 @@
 </script>
 <Container>
   <h1> Create a proposal to submit your project </h1>
-  <Tabs full bind:active={tab}>
+  <Tabs full bind:active={tab} >
     <Tab>Basic information</Tab>
     <Tab>Deep Dive</Tab>
     <Tab>Set Price</Tab>
@@ -28,12 +29,13 @@
   {/if}
 
   {#if tab == 1}
-    <DeepDive />
+    <BytemdEditor />
   {/if}
   
   {#if tab == 2}
     <LimitedCurveCreator />
   {/if}
+
   <div class="btn-left">
   {#if tab == 3}
     <button class="btn-left" on:click={handleSubmit}>Submit</button>
