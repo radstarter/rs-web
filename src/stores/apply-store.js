@@ -9,9 +9,8 @@ export const website = writable("");
 export const telegram = writable("");
 export const discord = writable("");
 export const twitter = writable("");
-export const issueingType = writable("ltd");
-export const price = writable(0);
 export const deepdive = writable("");
+export let logo = writable();
 
 export const deepdiveTemplatePrivate = readable(
 `### 1. PROJECT OVERVIEW

@@ -1,10 +1,9 @@
 <script>
   import { Tabs, Tab, Container } from 'svelte-chota';
-  import { setContext } from 'svelte'
   import LimitedCurveCreator from '../components/limited-curve-creator.svelte'
   import BasicsForm from '../components/basics-form.svelte';
   import BytemdEditor from '../components/bytemd-editor.svelte';
-
+  import Preview from '../components/preview.svelte';
   let tab = 0;
   function handleNext() {
     if(tab < 3) {
@@ -38,6 +37,7 @@
 
   <div class="btn-left">
   {#if tab == 3}
+    <Preview />
     <button class="btn-left" on:click={handleSubmit}>Submit</button>
   {:else}
     <button class="btn-left" on:click={handleNext}>Next</button>

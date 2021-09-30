@@ -10,7 +10,8 @@
     twitter,
     deepdive,
     deepdiveTemplateDao,
-    deepdiveTemplatePrivate
+    deepdiveTemplatePrivate,
+    logo
   } from '../stores/apply-store.js';
 
   //Mechanics for changing the template of the deepdive 
@@ -24,14 +25,14 @@
   }
 
   //Mechanics for displaying the logo
-  let  logo, fileinput;
+  let  fileinput;
 	
 	const onFileSelected =(e)=>{
   let image = e.target.files[0];
             let reader = new FileReader();
             reader.readAsDataURL(image);
             reader.onload = e => {
-                 logo = e.target.result
+                 $logo = e.target.result
             };
   }
 </script>
@@ -81,10 +82,21 @@
     <input type="url" bind:value={$twitter}>
   </p>
   <p>
+    {#if $logo}
+      <img class="logo" src="{$logo}" alt="d" />
+    {:else}
+      <img class="logo" src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" /> 
+    {/if}
     <button class="upload" on:click={()=>{fileinput.click();}}>Upload logo</button>
     <input style="display:none" type="file" accept=".png"
       on:change={(e)=>onFileSelected(e)} bind:this={fileinput}
     >
   </p>
-
- </div>
+</div>
+<style>
+  .logo{
+		display:flex;
+		height:200px;
+		width:200px;
+	}
+</style>
