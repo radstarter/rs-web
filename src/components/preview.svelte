@@ -1,6 +1,5 @@
 <script>
 	import Intro from './intro.svelte'; 
-	import BytemdViewer from './bytemd-viewer.svelte';
 	import {
 		organizationName,
 		organizationType,
@@ -32,4 +31,3 @@
 	bind:twitter={$twitter}
 	bind:logo={$logo}
 />
-<BytemdViewer />

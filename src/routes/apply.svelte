@@ -2,8 +2,8 @@
   import { Tabs, Tab, Container } from 'svelte-chota';
   import LimitedCurveCreator from '../components/limited-curve-creator.svelte'
   import BasicsForm from '../components/basics-form.svelte';
-  import BytemdEditor from '../components/bytemd-editor.svelte';
   import Preview from '../components/preview.svelte';
+  import QuillEditor from '../components/quill-editor.svelte';
   let tab = 0;
   function handleNext() {
     if(tab < 3) {
@@ -28,7 +28,7 @@
   {/if}
 
   {#if tab == 1}
-    <BytemdEditor />
+    <QuillEditor />
   {/if}
   
   {#if tab == 2}
