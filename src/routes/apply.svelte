@@ -4,7 +4,10 @@
   import BasicsForm from '../components/basics-form.svelte';
   import Preview from '../components/preview.svelte';
   import QuillEditor from '../components/quill-editor.svelte';
+  import { deepdive } from '../stores/apply-store.js';
   let tab = 0;
+  let text = ""
+  let outputHTML = "";
   function handleNext() {
     if(tab < 3) {
       tab++;
@@ -28,7 +31,12 @@
   {/if}
 
   {#if tab == 1}
-    <QuillEditor />
+    <QuillEditor 
+      bind:setText={$deepdive}
+      placeholder={"Write an in depth review of the project"}
+      bind:outputHTML
+    />
+    {@html outputHTML} 
   {/if}
   
   {#if tab == 2}
