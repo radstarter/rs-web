@@ -16,11 +16,14 @@
 	];
 	
   onMount(async () => {
-		const { default: Quill } = await import("quill");
+		const { default: Quill } = await import('quill');
+    const { default: BlotFormatter } = await import('quill-blot-formatter');
 
+    Quill.register('modules/blotFormatter', BlotFormatter);
     let quill = new Quill(editor, {
       modules: {
-        toolbar: toolbarOptions
+        toolbar: toolbarOptions,
+        blotFormatter: {}
       },
       theme: "snow",
       placeholder: placeholder

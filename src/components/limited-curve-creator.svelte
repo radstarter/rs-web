@@ -85,8 +85,8 @@
 		while(data.length) {
 			data.pop()
 		}
-
-		for (let i = 0; i < $totalSupply; i += step) {
+		if($offset < 0) { $offset = 0 }
+		for (let i = 0; i < $totalSupply + 1; i += step) {
 			let z;
 				if ($mode == 'lin'){
 					z = funcLin(i);

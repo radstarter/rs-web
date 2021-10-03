@@ -9,11 +9,6 @@ import { Container } from 'svelte-chota'
   their tokens and build a community. It's a place for investors to find 
   new Radix projects to join. 
 </p>
-<p>
-  We are a sovereign collective of investors, entrepreneurs and developers.
-  Our core values are equal acces to information, no hierarchies, swarm 
-  knowledge and open for everyone.
-</p>
 <h2>FAQ</h2>
 <h3>How does it work?</h3>
 <p>
