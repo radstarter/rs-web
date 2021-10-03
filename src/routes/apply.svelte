@@ -18,6 +18,7 @@
   function handleSubmit() {
   }
 </script>
+
 <Container>
   <h1> Create a proposal to submit your project </h1>
   <Tabs full bind:active={tab} >
@@ -32,11 +33,10 @@
 
   {#if tab == 1}
     <QuillEditor 
-      bind:setText={$deepdive}
+      bind:setDelta = {$deepdive}
       placeholder={"Write an in depth review of the project"}
       bind:outputHTML
     />
-    {@html outputHTML} 
   {/if}
   
   {#if tab == 2}
