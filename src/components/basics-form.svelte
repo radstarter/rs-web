@@ -53,7 +53,7 @@
   </p>
   
   <p>
-    <label for="shortdesc">Describe the organisation in one sentence</label>
+    <label for="shortdesc">Describe the project in one sentence</label>
     <input type="text" bind:value={$shortDesc}>
   </p>
 

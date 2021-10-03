@@ -154,7 +154,7 @@
 	
 	<p>
 		<label for="$range">Range</label>
-		<input type ="range" min=5 max=26 bind:value={$range} on:input={resample}>
+		<input type ="range" min=1 max=33 bind:value={$range} on:input={resample}>
 	</p>
 
 	<p>

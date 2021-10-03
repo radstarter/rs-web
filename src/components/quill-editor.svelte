@@ -28,12 +28,13 @@
       theme: "snow",
       placeholder: placeholder
     });
-
+    console.log(setDelta);
     quill.setContents(setDelta);
 
     const container = editor.getElementsByClassName("ql-editor")[0];
 
     quill.on("text-change", function(delta, oldDelta, source) {
+      console.log("triggered");
       outputHTML = container.innerHTML;
       setDelta = quill.getContents();
     });
