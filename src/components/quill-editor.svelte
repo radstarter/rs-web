@@ -1,4 +1,6 @@
 <script>
+
+	export const prerender = true;
 	import { onMount } from 'svelte';
 
   export let setDelta = "";
@@ -10,34 +12,42 @@
 	export let toolbarOptions = [
 		[{ header: 2 },  "blockquote", "link", "image", "video"],
 		["bold", "italic", "underline", "strike"],
-		[{ list: "ordered" }, { list: "ordered" }],
+		[{ list: "ordered" }, { list: "bullet" }],
 		[{ align: [] }],
-		["clean"]
+    ["clean"],
 	];
 	
   onMount(async () => {
-		const { default: Quill } = await import('quill');
-    const { default: BlotFormatter } = await import('quill-blot-formatter');
+    try {
+    const { default: Quill } = await import('quill');
+    const { default: ImageCompress }  = await  import('quill-image-compress');
 
-    Quill.register('modules/blotFormatter', BlotFormatter);
+    Quill.register('modules/imageCompress', ImageCompress);
     let quill = new Quill(editor, {
       modules: {
         toolbar: toolbarOptions,
-        blotFormatter: {}
+        imageCompress: {
+          quality: 0.9,
+          maxWidth: 1024,
+          maxHeight: 768,
+          debug: false,
+          imageType: 'image/jpeg'
+        }
       },
       theme: "snow",
       placeholder: placeholder
     });
-    console.log(setDelta);
+
     quill.setContents(setDelta);
 
     const container = editor.getElementsByClassName("ql-editor")[0];
 
     quill.on("text-change", function(delta, oldDelta, source) {
-      console.log("triggered");
       outputHTML = container.innerHTML;
       setDelta = quill.getContents();
-    });
+    }); } catch (e) {
+      console.log(e);
+    }
   });
 
 </script>

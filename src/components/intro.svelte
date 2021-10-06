@@ -16,7 +16,9 @@
   {:else}
     <img class="logo" src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" /> 
 	{/if}
+	<div class="short-desc">
 	{shortDesc}
+	</div>
 	{tokenAddress}
 
 </div>

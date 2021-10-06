@@ -3,15 +3,15 @@
 </script>
 
 <svelte:head>
-  <title>RadPad - The Radix Launchpad</title>
+  <title>radstarter.io - The Radix Launchpad</title>
 </svelte:head>
 <Container>
   <div class="intro-main">
     <h1>The Radix Launchpad</h1>
     <p>
-      RadPad is leveraging swarm knowledge, to bring
+      Radstarter is leveraging swarm knowledge to bring
       you the best investment opportunities on Radix.
-      We do raises and incubate new projects with the collective.
+      We do raises and incubate projects with the collective.
     </p>
   </div>
   <label>Get notified about the release</label>
