@@ -4,13 +4,20 @@ import { writable, readable } from 'svelte/store';
 export const organizationName = writable("");
 export const organizationType = writable("");
 export const shortDesc = writable("");
-export const tokenAddress = writable("");
 export const website = writable("");
 export const telegram = writable("");
 export const discord = writable("");
 export const twitter = writable("");
 export let deepdive = writable([{insert:""}]);
 export let logo = writable();
+
+//Token metric stores
+export const tokenAddress = writable("");
+export const tokenName = writable("");
+export const tokenTotalSupply = writable(0);
+export const tokenIcon = writable("");
+export const tokenTicker = writable("");
+export const tokenFixedSupply = writable(false);
 
 export const deepdiveTemplatePrivate = readable([
 	{ insert: '1. PROJECT OVERVIEW' },
