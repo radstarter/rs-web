@@ -16,7 +16,11 @@
     tokenTicker,
     tokenIcon,
     tokenTotalSupply,
-    tokenFixedSupply
+    tokenFixedSupply,
+    tokenTotalRaised,
+    whitepaper,
+    medium,
+    cover
   } from '../stores/apply-store.js';
   import { Modal, Card } from 'svelte-chota';
 
@@ -31,7 +35,7 @@
   }
 
   //Mechanics for displaying the logo
-  let  fileinput;
+  let  fileinput, fileinputCover;
 	
 	const onFileSelected =(e)=>{
   let image = e.target.files[0];
@@ -41,7 +45,16 @@
                  $logo = e.target.result
             };
   }
-  //Get token metadata
+
+ 	const onCoverSelected =(e)=>{
+  let image = e.target.files[0];
+            let reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = e => {
+                 $cover = e.target.result
+            };
+  }
+ //Get token metadata
   let modalOpen = false;
   async function fetchTokenData() {
     const url = "https://mainnet.radixdlt.com/archive";
@@ -83,12 +96,12 @@
 <div id="input-container">
   <p></p>
   <p>
-    <label for="orgname">Organisation name</label>
+    <label for="orgname">Organisation name*</label>
     <input type="text" bind:value={$organizationName}>
   </p>
 
   <p>
-    <label for="organization">Organisation Type</label>
+    <label for="organization">Organisation Type*</label>
     <select id="organization" bind:value={$organizationType} on:change={handleOrgChange}>
       <option value="DAO">DAO</option>
       <option value="Private Company">Private Company</option>
@@ -96,13 +109,13 @@
   </p>
   
   <p>
-    <label for="shortdesc">Describe the project in one sentence</label>
+    <label for="shortdesc">Describe the project in one sentence*</label>
     <input type="text" bind:value={$shortDesc}>
   </p>
 
   
   <p>
-    <label for="tokenaddress">Token Address</label>
+    <label for="tokenaddress">Token Address*</label>
     <input type="url" bind:value={$tokenAddress}>
     <button on:click={fetchTokenData}>Get Token Info</button>
     <Card>
@@ -115,14 +128,16 @@
       <h5>Ticker: {$tokenTicker} </h5>
       <h5>Fixed supply: {$tokenFixedSupply} </h5>
     </Card>
-
   </p>
-
   <p>
-    <label for="website">Website</label>
+    <label for="total-raised">Previous rounds total raised*</label>
+    <input type="number" bind:value={$tokenTotalRaised}>
+  </p>
+  <p>
+    <label for="website">Website*</label>
     <input type="url" bind:value={$website}>
   </p>
-
+  
   <p>
     <label for="telegram">Telegram</label>
     <input type="url" bind:value={$telegram}>
@@ -132,10 +147,22 @@
     <input type="url" bind:value={$discord}>
   </p>
 
+ <p>
+    <label for="medium">Medium</label>
+    <input type="url" bind:value={$medium}>
+  </p>
+
+
   <p>
     <label for="twitter">Twitter</label>
     <input type="url" bind:value={$twitter}>
   </p>
+
+  <p>
+    <label for="whitepaper">Whitepaper</label>
+    <input type="url" bind:value={$whitepaper}>
+  </p>
+
   <p>
     {#if $logo}
       <img class="logo" src="{$logo}" alt="d" />
@@ -143,13 +170,26 @@
       <img class="logo" src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" /> 
     {/if}
     <button class="upload" on:click={()=>{fileinput.click();}}>Upload logo</button>
-    <input style="display:none" type="file" accept=".png"
+    <input style="display:none" type="file" accept=".jpg"
       on:change={(e)=>onFileSelected(e)} bind:this={fileinput}
     >
   </p>
+  <Card class="preview-card">
+    {#if $cover}
+      <img class="cover" src={$cover} alt="preview-cover"/>
+    {/if}
+    <h3>{$organizationName}</h3>
+    <h4>${$tokenTicker}</h4>
+  </Card>  
+  <p>
+    <button class="upload-cover" on:click={()=>{fileinputCover.click();}}>Upload Cover</button>
+     <input style="display:none" type="file" accept=".jpg"
+      on:change={(e)=>onCoverSelected(e)} bind:this={fileinputCover}
+     >
+  </p>
    <Modal bind:open={modalOpen}>
     <Card>
-      Wrong token address or network error
+      Wrong token address (use rri)
     </Card>
   </Modal>
 </div>

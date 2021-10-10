@@ -8,7 +8,10 @@ export const website = writable("");
 export const telegram = writable("");
 export const discord = writable("");
 export const twitter = writable("");
+export const medium = writable("");
+export const whitepaper = writable("");
 export let deepdive = writable([{insert:""}]);
+export let cover = writable();
 export let logo = writable();
 
 //Token metric stores
@@ -18,6 +21,7 @@ export const tokenTotalSupply = writable(0);
 export const tokenIcon = writable("");
 export const tokenTicker = writable("");
 export const tokenFixedSupply = writable(false);
+export const tokenTotalRaised = writable(0);
 
 export const deepdiveTemplatePrivate = readable([
 	{ insert: '1. PROJECT OVERVIEW' },
