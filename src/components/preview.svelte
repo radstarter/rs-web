@@ -9,7 +9,10 @@
 		telegram,
 		discord,
 		twitter,
+		medium,
+		whitepaper,
 		logo,
+		cover,
 		deepdive,
 		mode,
 		totalSupply,
@@ -29,5 +32,8 @@
 	bind:telegram={$telegram}
 	bind:discord={$discord}
 	bind:twitter={$twitter}
+	bind:medium={$medium}
+	bind:whitepaper={$whitepaper}
+	bind:cover={$cover}
 	bind:logo={$logo}
 />

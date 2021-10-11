@@ -1,10 +1,14 @@
 <script>
 import { Container } from 'svelte-chota'
 </script>
+<svelte:head>
+  <title>Radstarter - Learn</title>
+</svelte:head>
+
 <Container>
 <h1>Investment funding on Radix</h1>
 <p>
-  RadPad is a community curated launchpad for startups, daos and platforms
+  Radstarter is a community curated launchpad for startups, daos and platforms
   built on radix. It's a platform where projects can raise money, launch
   their tokens and build a community. It's a place for investors to find 
   new Radix projects to join. 
@@ -13,7 +17,7 @@ import { Container } from 'svelte-chota'
 <h3>How does it work?</h3>
 <p>
   The platform is governed by a dao (Decentralised Autonomous Organisation)
-  this means that every project that raises with us is approved by community
+  this means that every project that raises with us is approved through community
   voting. Stakeholders get to decide where capital flows, which projects to 
   invest in and the percentage we take. If a project wants to raise with us,
   they have to create a public proposal with all the details and submit it

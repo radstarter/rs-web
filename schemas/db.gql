@@ -1,0 +1,31 @@
+type Proposal {
+  organizationName: String!
+  organizationType: String!
+  shortDesc: String!
+  website: String!
+  telegram: String!
+  discord: String!
+  twitter: String!
+  medium: String!
+  whitepaper: String!
+  cover: String!
+  logo: String!
+  deepdive: String!
+
+  tokenAddress: String!
+  tokenName: String!
+  tokenTotalSupply: Float!
+  tokenIcon: String!
+  tokenTicker: String!
+  tokenFixedSuplly: Boolean!
+  tokenTotalRaised: Int!
+
+  display: Boolean!
+  totalRaised: Int!
+  
+  mode: String!
+  totalForSale: Int!
+  range: Int!
+  offset: Float!
+  factor: Float!
+}

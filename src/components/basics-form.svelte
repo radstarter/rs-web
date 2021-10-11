@@ -163,25 +163,25 @@
     <input type="url" bind:value={$whitepaper}>
   </p>
 
-  <p>
+ <Card class="preview-card">
+    {#if $cover}
+      <img class="cover" src={$cover} alt="preview-cover"/>
+    {/if}
     {#if $logo}
       <img class="logo" src="{$logo}" alt="d" />
     {:else}
       <img class="logo" src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" /> 
     {/if}
-    <button class="upload" on:click={()=>{fileinput.click();}}>Upload logo</button>
-    <input style="display:none" type="file" accept=".jpg"
-      on:change={(e)=>onFileSelected(e)} bind:this={fileinput}
-    >
-  </p>
-  <Card class="preview-card">
-    {#if $cover}
-      <img class="cover" src={$cover} alt="preview-cover"/>
-    {/if}
+
     <h3>{$organizationName}</h3>
     <h4>${$tokenTicker}</h4>
   </Card>  
   <p>
+   <button class="upload" on:click={()=>{fileinput.click();}}>Upload logo</button>
+    <input style="display:none" type="file" accept=".jpg"
+      on:change={(e)=>onFileSelected(e)} bind:this={fileinput}
+    >
+
     <button class="upload-cover" on:click={()=>{fileinputCover.click();}}>Upload Cover</button>
      <input style="display:none" type="file" accept=".jpg"
       on:change={(e)=>onCoverSelected(e)} bind:this={fileinputCover}

@@ -11,10 +11,10 @@
       We leverage swarm knowledge to bring
       you the best investment opportunities on Radix.
     </h3>
-    <h4>Acces rounds for high quality projects</h4>
+    <h4>Access rounds for high quality projects selected by the DAO</h4>
   </div>
-  <div class="featured-ventures">
-    <h3>Featured Ventures</h3>
+  <div class="featured-projects">
+    <h3>Featured Projects</h3>
     <hr/>
     COMING SOON
   </div>
