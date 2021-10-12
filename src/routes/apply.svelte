@@ -4,10 +4,9 @@
   import BasicsForm from '../components/basics-form.svelte';
   import Preview from '../components/preview.svelte';
   import QuillEditor from '../components/quill-editor.svelte';
-  import { deepdive } from '../stores/apply-store.js';
+  import { deepdive, outputHTML } from '../stores/apply-store.js';
   let tab = 0;
   let text = ""
-  let outputHTML = "";
   function handleNext() {
     if(tab < 3) {
       tab++;
@@ -18,6 +17,10 @@
   function handleSubmit() {
   }
 </script>
+
+<svelte:head>
+  <title>Radstarter - Create application proposal</title>
+</svelte:head>
 
 <Container>
   <h1> Create a proposal to submit your project </h1>
@@ -35,7 +38,7 @@
     <QuillEditor 
       bind:setDelta = {$deepdive}
       placeholder={"Write an in depth review of the project"}
-      bind:outputHTML
+      bind:outputHTML={$outputHTML}
     />
   {/if}
   
@@ -43,18 +46,20 @@
     <LimitedCurveCreator />
   {/if}
 
-  <div class="btn-left">
   {#if tab == 3}
-    <Preview />
+  <Preview />
+  <div class="btn-center">
     <button class="btn-left" on:click={handleSubmit}>Submit</button>
-  {:else}
-    <button class="btn-left" on:click={handleNext}>Next</button>
-  {/if}
   </div>
+  {:else}
+  <div class="btn-center">
+    <button class="btn-left" on:click={handleNext}>Next</button>
+  </div>
+  {/if}
   
 </Container>
 <style>
-  .btn-left {
+  .btn-center {
     display: flex;
     justify-content: center;
     align-items: center;

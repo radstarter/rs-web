@@ -23,6 +23,7 @@ export const tokenTicker = writable("");
 export const tokenFixedSupply = writable(false);
 export const tokenTotalRaised = writable(0);
 
+export const outputHTML = writable("");
 export const deepdiveTemplatePrivate = readable([
 	{ insert: '1. PROJECT OVERVIEW' },
 	{ insert: '\n', attributes: {header: 2}  },

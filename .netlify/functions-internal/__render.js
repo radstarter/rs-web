@@ -5,6 +5,12 @@ var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[Object.keys(fn)[0]])(fn = 0)), res;
+};
+var __commonJS = (cb, mod) => function __require() {
+  return mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
 var __export = (target, all) => {
   __markAsModule(target);
   for (var name in all)
@@ -22,19 +28,7 @@ var __toModule = (module2) => {
   return __reExport(__markAsModule(__defProp(module2 != null ? __create(__getProtoOf(module2)) : {}, "default", module2 && module2.__esModule && "default" in module2 ? { get: () => module2.default, enumerable: true } : { value: module2, enumerable: true })), module2);
 };
 
-// .svelte-kit/netlify/entry.js
-__export(exports, {
-  handler: () => handler
-});
-
 // node_modules/@sveltejs/kit/dist/install-fetch.js
-var import_http = __toModule(require("http"));
-var import_https = __toModule(require("https"));
-var import_zlib = __toModule(require("zlib"));
-var import_stream = __toModule(require("stream"));
-var import_util = __toModule(require("util"));
-var import_crypto = __toModule(require("crypto"));
-var import_url = __toModule(require("url"));
 function dataUriToBuffer(uri) {
   if (!/^data:/i.test(uri)) {
     throw new TypeError('`uri` does not appear to be a Data URI (must begin with "data:")');
@@ -71,10 +65,6 @@ function dataUriToBuffer(uri) {
   buffer.charset = charset;
   return buffer;
 }
-var src = dataUriToBuffer;
-var dataUriToBuffer$1 = src;
-var { Readable } = import_stream.default;
-var wm = new WeakMap();
 async function* read(parts) {
   for (const part of parts) {
     if ("stream" in part) {
@@ -84,133 +74,9 @@ async function* read(parts) {
     }
   }
 }
-var Blob = class {
-  constructor(blobParts = [], options2 = {}) {
-    let size = 0;
-    const parts = blobParts.map((element) => {
-      let buffer;
-      if (element instanceof Buffer) {
-        buffer = element;
-      } else if (ArrayBuffer.isView(element)) {
-        buffer = Buffer.from(element.buffer, element.byteOffset, element.byteLength);
-      } else if (element instanceof ArrayBuffer) {
-        buffer = Buffer.from(element);
-      } else if (element instanceof Blob) {
-        buffer = element;
-      } else {
-        buffer = Buffer.from(typeof element === "string" ? element : String(element));
-      }
-      size += buffer.length || buffer.size || 0;
-      return buffer;
-    });
-    const type = options2.type === void 0 ? "" : String(options2.type).toLowerCase();
-    wm.set(this, {
-      type: /[^\u0020-\u007E]/.test(type) ? "" : type,
-      size,
-      parts
-    });
-  }
-  get size() {
-    return wm.get(this).size;
-  }
-  get type() {
-    return wm.get(this).type;
-  }
-  async text() {
-    return Buffer.from(await this.arrayBuffer()).toString();
-  }
-  async arrayBuffer() {
-    const data = new Uint8Array(this.size);
-    let offset2 = 0;
-    for await (const chunk of this.stream()) {
-      data.set(chunk, offset2);
-      offset2 += chunk.length;
-    }
-    return data.buffer;
-  }
-  stream() {
-    return Readable.from(read(wm.get(this).parts));
-  }
-  slice(start = 0, end = this.size, type = "") {
-    const { size } = this;
-    let relativeStart = start < 0 ? Math.max(size + start, 0) : Math.min(start, size);
-    let relativeEnd = end < 0 ? Math.max(size + end, 0) : Math.min(end, size);
-    const span = Math.max(relativeEnd - relativeStart, 0);
-    const parts = wm.get(this).parts.values();
-    const blobParts = [];
-    let added = 0;
-    for (const part of parts) {
-      const size2 = ArrayBuffer.isView(part) ? part.byteLength : part.size;
-      if (relativeStart && size2 <= relativeStart) {
-        relativeStart -= size2;
-        relativeEnd -= size2;
-      } else {
-        const chunk = part.slice(relativeStart, Math.min(size2, relativeEnd));
-        blobParts.push(chunk);
-        added += ArrayBuffer.isView(chunk) ? chunk.byteLength : chunk.size;
-        relativeStart = 0;
-        if (added >= span) {
-          break;
-        }
-      }
-    }
-    const blob = new Blob([], { type: String(type).toLowerCase() });
-    Object.assign(wm.get(blob), { size: span, parts: blobParts });
-    return blob;
-  }
-  get [Symbol.toStringTag]() {
-    return "Blob";
-  }
-  static [Symbol.hasInstance](object2) {
-    return object2 && typeof object2 === "object" && typeof object2.stream === "function" && object2.stream.length === 0 && typeof object2.constructor === "function" && /^(Blob|File)$/.test(object2[Symbol.toStringTag]);
-  }
-};
-Object.defineProperties(Blob.prototype, {
-  size: { enumerable: true },
-  type: { enumerable: true },
-  slice: { enumerable: true }
-});
-var fetchBlob = Blob;
-var Blob$1 = fetchBlob;
-var FetchBaseError = class extends Error {
-  constructor(message, type) {
-    super(message);
-    Error.captureStackTrace(this, this.constructor);
-    this.type = type;
-  }
-  get name() {
-    return this.constructor.name;
-  }
-  get [Symbol.toStringTag]() {
-    return this.constructor.name;
-  }
-};
-var FetchError = class extends FetchBaseError {
-  constructor(message, type, systemError) {
-    super(message, type);
-    if (systemError) {
-      this.code = this.errno = systemError.code;
-      this.erroredSysCall = systemError.syscall;
-    }
-  }
-};
-var NAME = Symbol.toStringTag;
-var isURLSearchParameters = (object2) => {
-  return typeof object2 === "object" && typeof object2.append === "function" && typeof object2.delete === "function" && typeof object2.get === "function" && typeof object2.getAll === "function" && typeof object2.has === "function" && typeof object2.set === "function" && typeof object2.sort === "function" && object2[NAME] === "URLSearchParams";
-};
-var isBlob = (object2) => {
-  return typeof object2 === "object" && typeof object2.arrayBuffer === "function" && typeof object2.type === "string" && typeof object2.stream === "function" && typeof object2.constructor === "function" && /^(Blob|File)$/.test(object2[NAME]);
-};
 function isFormData(object2) {
   return typeof object2 === "object" && typeof object2.append === "function" && typeof object2.set === "function" && typeof object2.get === "function" && typeof object2.getAll === "function" && typeof object2.delete === "function" && typeof object2.keys === "function" && typeof object2.values === "function" && typeof object2.entries === "function" && typeof object2.constructor === "function" && object2[NAME] === "FormData";
 }
-var isAbortSignal = (object2) => {
-  return typeof object2 === "object" && object2[NAME] === "AbortSignal";
-};
-var carriage = "\r\n";
-var dashes = "-".repeat(2);
-var carriageLength = Buffer.byteLength(carriage);
-var getFooter = (boundary) => `${dashes}${boundary}${dashes}${carriage.repeat(2)}`;
 function getHeader(boundary, name, field) {
   let header = "";
   header += `${dashes}${boundary}${carriage}`;
@@ -221,7 +87,6 @@ function getHeader(boundary, name, field) {
   }
   return `${header}${carriage.repeat(2)}`;
 }
-var getBoundary = () => (0, import_crypto.randomBytes)(8).toString("hex");
 async function* formDataIterator(form, boundary) {
   for (const [name, value] of form) {
     yield getHeader(boundary, name, value);
@@ -248,83 +113,6 @@ function getFormDataLength(form, boundary) {
   length += Buffer.byteLength(getFooter(boundary));
   return length;
 }
-var INTERNALS$2 = Symbol("Body internals");
-var Body = class {
-  constructor(body, {
-    size = 0
-  } = {}) {
-    let boundary = null;
-    if (body === null) {
-      body = null;
-    } else if (isURLSearchParameters(body)) {
-      body = Buffer.from(body.toString());
-    } else if (isBlob(body))
-      ;
-    else if (Buffer.isBuffer(body))
-      ;
-    else if (import_util.types.isAnyArrayBuffer(body)) {
-      body = Buffer.from(body);
-    } else if (ArrayBuffer.isView(body)) {
-      body = Buffer.from(body.buffer, body.byteOffset, body.byteLength);
-    } else if (body instanceof import_stream.default)
-      ;
-    else if (isFormData(body)) {
-      boundary = `NodeFetchFormDataBoundary${getBoundary()}`;
-      body = import_stream.default.Readable.from(formDataIterator(body, boundary));
-    } else {
-      body = Buffer.from(String(body));
-    }
-    this[INTERNALS$2] = {
-      body,
-      boundary,
-      disturbed: false,
-      error: null
-    };
-    this.size = size;
-    if (body instanceof import_stream.default) {
-      body.on("error", (err) => {
-        const error2 = err instanceof FetchBaseError ? err : new FetchError(`Invalid response body while trying to fetch ${this.url}: ${err.message}`, "system", err);
-        this[INTERNALS$2].error = error2;
-      });
-    }
-  }
-  get body() {
-    return this[INTERNALS$2].body;
-  }
-  get bodyUsed() {
-    return this[INTERNALS$2].disturbed;
-  }
-  async arrayBuffer() {
-    const { buffer, byteOffset, byteLength } = await consumeBody(this);
-    return buffer.slice(byteOffset, byteOffset + byteLength);
-  }
-  async blob() {
-    const ct = this.headers && this.headers.get("content-type") || this[INTERNALS$2].body && this[INTERNALS$2].body.type || "";
-    const buf = await this.buffer();
-    return new Blob$1([buf], {
-      type: ct
-    });
-  }
-  async json() {
-    const buffer = await consumeBody(this);
-    return JSON.parse(buffer.toString());
-  }
-  async text() {
-    const buffer = await consumeBody(this);
-    return buffer.toString();
-  }
-  buffer() {
-    return consumeBody(this);
-  }
-};
-Object.defineProperties(Body.prototype, {
-  body: { enumerable: true },
-  bodyUsed: { enumerable: true },
-  arrayBuffer: { enumerable: true },
-  blob: { enumerable: true },
-  json: { enumerable: true },
-  text: { enumerable: true }
-});
 async function consumeBody(data) {
   if (data[INTERNALS$2].disturbed) {
     throw new TypeError(`body used already for: ${data.url}`);
@@ -378,219 +166,6 @@ async function consumeBody(data) {
     throw new FetchError(`Premature close of server response while trying to fetch ${data.url}`);
   }
 }
-var clone = (instance, highWaterMark) => {
-  let p1;
-  let p2;
-  let { body } = instance;
-  if (instance.bodyUsed) {
-    throw new Error("cannot clone body after it is used");
-  }
-  if (body instanceof import_stream.default && typeof body.getBoundary !== "function") {
-    p1 = new import_stream.PassThrough({ highWaterMark });
-    p2 = new import_stream.PassThrough({ highWaterMark });
-    body.pipe(p1);
-    body.pipe(p2);
-    instance[INTERNALS$2].body = p1;
-    body = p2;
-  }
-  return body;
-};
-var extractContentType = (body, request) => {
-  if (body === null) {
-    return null;
-  }
-  if (typeof body === "string") {
-    return "text/plain;charset=UTF-8";
-  }
-  if (isURLSearchParameters(body)) {
-    return "application/x-www-form-urlencoded;charset=UTF-8";
-  }
-  if (isBlob(body)) {
-    return body.type || null;
-  }
-  if (Buffer.isBuffer(body) || import_util.types.isAnyArrayBuffer(body) || ArrayBuffer.isView(body)) {
-    return null;
-  }
-  if (body && typeof body.getBoundary === "function") {
-    return `multipart/form-data;boundary=${body.getBoundary()}`;
-  }
-  if (isFormData(body)) {
-    return `multipart/form-data; boundary=${request[INTERNALS$2].boundary}`;
-  }
-  if (body instanceof import_stream.default) {
-    return null;
-  }
-  return "text/plain;charset=UTF-8";
-};
-var getTotalBytes = (request) => {
-  const { body } = request;
-  if (body === null) {
-    return 0;
-  }
-  if (isBlob(body)) {
-    return body.size;
-  }
-  if (Buffer.isBuffer(body)) {
-    return body.length;
-  }
-  if (body && typeof body.getLengthSync === "function") {
-    return body.hasKnownLength && body.hasKnownLength() ? body.getLengthSync() : null;
-  }
-  if (isFormData(body)) {
-    return getFormDataLength(request[INTERNALS$2].boundary);
-  }
-  return null;
-};
-var writeToStream = (dest, { body }) => {
-  if (body === null) {
-    dest.end();
-  } else if (isBlob(body)) {
-    body.stream().pipe(dest);
-  } else if (Buffer.isBuffer(body)) {
-    dest.write(body);
-    dest.end();
-  } else {
-    body.pipe(dest);
-  }
-};
-var validateHeaderName = typeof import_http.default.validateHeaderName === "function" ? import_http.default.validateHeaderName : (name) => {
-  if (!/^[\^`\-\w!#$%&'*+.|~]+$/.test(name)) {
-    const err = new TypeError(`Header name must be a valid HTTP token [${name}]`);
-    Object.defineProperty(err, "code", { value: "ERR_INVALID_HTTP_TOKEN" });
-    throw err;
-  }
-};
-var validateHeaderValue = typeof import_http.default.validateHeaderValue === "function" ? import_http.default.validateHeaderValue : (name, value) => {
-  if (/[^\t\u0020-\u007E\u0080-\u00FF]/.test(value)) {
-    const err = new TypeError(`Invalid character in header content ["${name}"]`);
-    Object.defineProperty(err, "code", { value: "ERR_INVALID_CHAR" });
-    throw err;
-  }
-};
-var Headers = class extends URLSearchParams {
-  constructor(init2) {
-    let result = [];
-    if (init2 instanceof Headers) {
-      const raw = init2.raw();
-      for (const [name, values] of Object.entries(raw)) {
-        result.push(...values.map((value) => [name, value]));
-      }
-    } else if (init2 == null)
-      ;
-    else if (typeof init2 === "object" && !import_util.types.isBoxedPrimitive(init2)) {
-      const method = init2[Symbol.iterator];
-      if (method == null) {
-        result.push(...Object.entries(init2));
-      } else {
-        if (typeof method !== "function") {
-          throw new TypeError("Header pairs must be iterable");
-        }
-        result = [...init2].map((pair) => {
-          if (typeof pair !== "object" || import_util.types.isBoxedPrimitive(pair)) {
-            throw new TypeError("Each header pair must be an iterable object");
-          }
-          return [...pair];
-        }).map((pair) => {
-          if (pair.length !== 2) {
-            throw new TypeError("Each header pair must be a name/value tuple");
-          }
-          return [...pair];
-        });
-      }
-    } else {
-      throw new TypeError("Failed to construct 'Headers': The provided value is not of type '(sequence<sequence<ByteString>> or record<ByteString, ByteString>)");
-    }
-    result = result.length > 0 ? result.map(([name, value]) => {
-      validateHeaderName(name);
-      validateHeaderValue(name, String(value));
-      return [String(name).toLowerCase(), String(value)];
-    }) : void 0;
-    super(result);
-    return new Proxy(this, {
-      get(target, p, receiver) {
-        switch (p) {
-          case "append":
-          case "set":
-            return (name, value) => {
-              validateHeaderName(name);
-              validateHeaderValue(name, String(value));
-              return URLSearchParams.prototype[p].call(receiver, String(name).toLowerCase(), String(value));
-            };
-          case "delete":
-          case "has":
-          case "getAll":
-            return (name) => {
-              validateHeaderName(name);
-              return URLSearchParams.prototype[p].call(receiver, String(name).toLowerCase());
-            };
-          case "keys":
-            return () => {
-              target.sort();
-              return new Set(URLSearchParams.prototype.keys.call(target)).keys();
-            };
-          default:
-            return Reflect.get(target, p, receiver);
-        }
-      }
-    });
-  }
-  get [Symbol.toStringTag]() {
-    return this.constructor.name;
-  }
-  toString() {
-    return Object.prototype.toString.call(this);
-  }
-  get(name) {
-    const values = this.getAll(name);
-    if (values.length === 0) {
-      return null;
-    }
-    let value = values.join(", ");
-    if (/^content-encoding$/i.test(name)) {
-      value = value.toLowerCase();
-    }
-    return value;
-  }
-  forEach(callback) {
-    for (const name of this.keys()) {
-      callback(this.get(name), name);
-    }
-  }
-  *values() {
-    for (const name of this.keys()) {
-      yield this.get(name);
-    }
-  }
-  *entries() {
-    for (const name of this.keys()) {
-      yield [name, this.get(name)];
-    }
-  }
-  [Symbol.iterator]() {
-    return this.entries();
-  }
-  raw() {
-    return [...this.keys()].reduce((result, key) => {
-      result[key] = this.getAll(key);
-      return result;
-    }, {});
-  }
-  [Symbol.for("nodejs.util.inspect.custom")]() {
-    return [...this.keys()].reduce((result, key) => {
-      const values = this.getAll(key);
-      if (key === "host") {
-        result[key] = values[0];
-      } else {
-        result[key] = values.length > 1 ? values : values[0];
-      }
-      return result;
-    }, {});
-  }
-};
-Object.defineProperties(Headers.prototype, ["get", "entries", "forEach", "values"].reduce((result, property) => {
-  result[property] = { enumerable: true };
-  return result;
-}, {}));
 function fromRawHeaders(headers = []) {
   return new Headers(headers.reduce((result, value, index2, array2) => {
     if (index2 % 2 === 0) {
@@ -607,231 +182,6 @@ function fromRawHeaders(headers = []) {
     }
   }));
 }
-var redirectStatus = new Set([301, 302, 303, 307, 308]);
-var isRedirect = (code) => {
-  return redirectStatus.has(code);
-};
-var INTERNALS$1 = Symbol("Response internals");
-var Response = class extends Body {
-  constructor(body = null, options2 = {}) {
-    super(body, options2);
-    const status = options2.status || 200;
-    const headers = new Headers(options2.headers);
-    if (body !== null && !headers.has("Content-Type")) {
-      const contentType = extractContentType(body);
-      if (contentType) {
-        headers.append("Content-Type", contentType);
-      }
-    }
-    this[INTERNALS$1] = {
-      url: options2.url,
-      status,
-      statusText: options2.statusText || "",
-      headers,
-      counter: options2.counter,
-      highWaterMark: options2.highWaterMark
-    };
-  }
-  get url() {
-    return this[INTERNALS$1].url || "";
-  }
-  get status() {
-    return this[INTERNALS$1].status;
-  }
-  get ok() {
-    return this[INTERNALS$1].status >= 200 && this[INTERNALS$1].status < 300;
-  }
-  get redirected() {
-    return this[INTERNALS$1].counter > 0;
-  }
-  get statusText() {
-    return this[INTERNALS$1].statusText;
-  }
-  get headers() {
-    return this[INTERNALS$1].headers;
-  }
-  get highWaterMark() {
-    return this[INTERNALS$1].highWaterMark;
-  }
-  clone() {
-    return new Response(clone(this, this.highWaterMark), {
-      url: this.url,
-      status: this.status,
-      statusText: this.statusText,
-      headers: this.headers,
-      ok: this.ok,
-      redirected: this.redirected,
-      size: this.size
-    });
-  }
-  static redirect(url, status = 302) {
-    if (!isRedirect(status)) {
-      throw new RangeError('Failed to execute "redirect" on "response": Invalid status code');
-    }
-    return new Response(null, {
-      headers: {
-        location: new URL(url).toString()
-      },
-      status
-    });
-  }
-  get [Symbol.toStringTag]() {
-    return "Response";
-  }
-};
-Object.defineProperties(Response.prototype, {
-  url: { enumerable: true },
-  status: { enumerable: true },
-  ok: { enumerable: true },
-  redirected: { enumerable: true },
-  statusText: { enumerable: true },
-  headers: { enumerable: true },
-  clone: { enumerable: true }
-});
-var getSearch = (parsedURL) => {
-  if (parsedURL.search) {
-    return parsedURL.search;
-  }
-  const lastOffset = parsedURL.href.length - 1;
-  const hash2 = parsedURL.hash || (parsedURL.href[lastOffset] === "#" ? "#" : "");
-  return parsedURL.href[lastOffset - hash2.length] === "?" ? "?" : "";
-};
-var INTERNALS = Symbol("Request internals");
-var isRequest = (object2) => {
-  return typeof object2 === "object" && typeof object2[INTERNALS] === "object";
-};
-var Request = class extends Body {
-  constructor(input, init2 = {}) {
-    let parsedURL;
-    if (isRequest(input)) {
-      parsedURL = new URL(input.url);
-    } else {
-      parsedURL = new URL(input);
-      input = {};
-    }
-    let method = init2.method || input.method || "GET";
-    method = method.toUpperCase();
-    if ((init2.body != null || isRequest(input)) && input.body !== null && (method === "GET" || method === "HEAD")) {
-      throw new TypeError("Request with GET/HEAD method cannot have body");
-    }
-    const inputBody = init2.body ? init2.body : isRequest(input) && input.body !== null ? clone(input) : null;
-    super(inputBody, {
-      size: init2.size || input.size || 0
-    });
-    const headers = new Headers(init2.headers || input.headers || {});
-    if (inputBody !== null && !headers.has("Content-Type")) {
-      const contentType = extractContentType(inputBody, this);
-      if (contentType) {
-        headers.append("Content-Type", contentType);
-      }
-    }
-    let signal = isRequest(input) ? input.signal : null;
-    if ("signal" in init2) {
-      signal = init2.signal;
-    }
-    if (signal !== null && !isAbortSignal(signal)) {
-      throw new TypeError("Expected signal to be an instanceof AbortSignal");
-    }
-    this[INTERNALS] = {
-      method,
-      redirect: init2.redirect || input.redirect || "follow",
-      headers,
-      parsedURL,
-      signal
-    };
-    this.follow = init2.follow === void 0 ? input.follow === void 0 ? 20 : input.follow : init2.follow;
-    this.compress = init2.compress === void 0 ? input.compress === void 0 ? true : input.compress : init2.compress;
-    this.counter = init2.counter || input.counter || 0;
-    this.agent = init2.agent || input.agent;
-    this.highWaterMark = init2.highWaterMark || input.highWaterMark || 16384;
-    this.insecureHTTPParser = init2.insecureHTTPParser || input.insecureHTTPParser || false;
-  }
-  get method() {
-    return this[INTERNALS].method;
-  }
-  get url() {
-    return (0, import_url.format)(this[INTERNALS].parsedURL);
-  }
-  get headers() {
-    return this[INTERNALS].headers;
-  }
-  get redirect() {
-    return this[INTERNALS].redirect;
-  }
-  get signal() {
-    return this[INTERNALS].signal;
-  }
-  clone() {
-    return new Request(this);
-  }
-  get [Symbol.toStringTag]() {
-    return "Request";
-  }
-};
-Object.defineProperties(Request.prototype, {
-  method: { enumerable: true },
-  url: { enumerable: true },
-  headers: { enumerable: true },
-  redirect: { enumerable: true },
-  clone: { enumerable: true },
-  signal: { enumerable: true }
-});
-var getNodeRequestOptions = (request) => {
-  const { parsedURL } = request[INTERNALS];
-  const headers = new Headers(request[INTERNALS].headers);
-  if (!headers.has("Accept")) {
-    headers.set("Accept", "*/*");
-  }
-  let contentLengthValue = null;
-  if (request.body === null && /^(post|put)$/i.test(request.method)) {
-    contentLengthValue = "0";
-  }
-  if (request.body !== null) {
-    const totalBytes = getTotalBytes(request);
-    if (typeof totalBytes === "number" && !Number.isNaN(totalBytes)) {
-      contentLengthValue = String(totalBytes);
-    }
-  }
-  if (contentLengthValue) {
-    headers.set("Content-Length", contentLengthValue);
-  }
-  if (!headers.has("User-Agent")) {
-    headers.set("User-Agent", "node-fetch");
-  }
-  if (request.compress && !headers.has("Accept-Encoding")) {
-    headers.set("Accept-Encoding", "gzip,deflate,br");
-  }
-  let { agent } = request;
-  if (typeof agent === "function") {
-    agent = agent(parsedURL);
-  }
-  if (!headers.has("Connection") && !agent) {
-    headers.set("Connection", "close");
-  }
-  const search = getSearch(parsedURL);
-  const requestOptions = {
-    path: parsedURL.pathname + search,
-    pathname: parsedURL.pathname,
-    hostname: parsedURL.hostname,
-    protocol: parsedURL.protocol,
-    port: parsedURL.port,
-    hash: parsedURL.hash,
-    search: parsedURL.search,
-    query: parsedURL.query,
-    href: parsedURL.href,
-    method: request.method,
-    headers: headers[Symbol.for("nodejs.util.inspect.custom")](),
-    insecureHTTPParser: request.insecureHTTPParser,
-    agent
-  };
-  return requestOptions;
-};
-var AbortError = class extends FetchBaseError {
-  constructor(message, type = "aborted") {
-    super(message, type);
-  }
-};
-var supportedSchemas = new Set(["data:", "http:", "https:"]);
 async function fetch(url, options_) {
   return new Promise((resolve2, reject) => {
     const request = new Request(url, options_);
@@ -1008,8 +358,1480 @@ async function fetch(url, options_) {
     writeToStream(request_, request);
   });
 }
+var import_http, import_https, import_zlib, import_stream, import_util, import_crypto, import_url, src, dataUriToBuffer$1, Readable, wm, Blob, fetchBlob, Blob$1, FetchBaseError, FetchError, NAME, isURLSearchParameters, isBlob, isAbortSignal, carriage, dashes, carriageLength, getFooter, getBoundary, INTERNALS$2, Body, clone, extractContentType, getTotalBytes, writeToStream, validateHeaderName, validateHeaderValue, Headers, redirectStatus, isRedirect, INTERNALS$1, Response, getSearch, INTERNALS, isRequest, Request, getNodeRequestOptions, AbortError, supportedSchemas;
+var init_install_fetch = __esm({
+  "node_modules/@sveltejs/kit/dist/install-fetch.js"() {
+    init_shims();
+    import_http = __toModule(require("http"));
+    import_https = __toModule(require("https"));
+    import_zlib = __toModule(require("zlib"));
+    import_stream = __toModule(require("stream"));
+    import_util = __toModule(require("util"));
+    import_crypto = __toModule(require("crypto"));
+    import_url = __toModule(require("url"));
+    src = dataUriToBuffer;
+    dataUriToBuffer$1 = src;
+    ({ Readable } = import_stream.default);
+    wm = new WeakMap();
+    Blob = class {
+      constructor(blobParts = [], options2 = {}) {
+        let size = 0;
+        const parts = blobParts.map((element) => {
+          let buffer;
+          if (element instanceof Buffer) {
+            buffer = element;
+          } else if (ArrayBuffer.isView(element)) {
+            buffer = Buffer.from(element.buffer, element.byteOffset, element.byteLength);
+          } else if (element instanceof ArrayBuffer) {
+            buffer = Buffer.from(element);
+          } else if (element instanceof Blob) {
+            buffer = element;
+          } else {
+            buffer = Buffer.from(typeof element === "string" ? element : String(element));
+          }
+          size += buffer.length || buffer.size || 0;
+          return buffer;
+        });
+        const type = options2.type === void 0 ? "" : String(options2.type).toLowerCase();
+        wm.set(this, {
+          type: /[^\u0020-\u007E]/.test(type) ? "" : type,
+          size,
+          parts
+        });
+      }
+      get size() {
+        return wm.get(this).size;
+      }
+      get type() {
+        return wm.get(this).type;
+      }
+      async text() {
+        return Buffer.from(await this.arrayBuffer()).toString();
+      }
+      async arrayBuffer() {
+        const data = new Uint8Array(this.size);
+        let offset2 = 0;
+        for await (const chunk of this.stream()) {
+          data.set(chunk, offset2);
+          offset2 += chunk.length;
+        }
+        return data.buffer;
+      }
+      stream() {
+        return Readable.from(read(wm.get(this).parts));
+      }
+      slice(start = 0, end = this.size, type = "") {
+        const { size } = this;
+        let relativeStart = start < 0 ? Math.max(size + start, 0) : Math.min(start, size);
+        let relativeEnd = end < 0 ? Math.max(size + end, 0) : Math.min(end, size);
+        const span = Math.max(relativeEnd - relativeStart, 0);
+        const parts = wm.get(this).parts.values();
+        const blobParts = [];
+        let added = 0;
+        for (const part of parts) {
+          const size2 = ArrayBuffer.isView(part) ? part.byteLength : part.size;
+          if (relativeStart && size2 <= relativeStart) {
+            relativeStart -= size2;
+            relativeEnd -= size2;
+          } else {
+            const chunk = part.slice(relativeStart, Math.min(size2, relativeEnd));
+            blobParts.push(chunk);
+            added += ArrayBuffer.isView(chunk) ? chunk.byteLength : chunk.size;
+            relativeStart = 0;
+            if (added >= span) {
+              break;
+            }
+          }
+        }
+        const blob = new Blob([], { type: String(type).toLowerCase() });
+        Object.assign(wm.get(blob), { size: span, parts: blobParts });
+        return blob;
+      }
+      get [Symbol.toStringTag]() {
+        return "Blob";
+      }
+      static [Symbol.hasInstance](object2) {
+        return object2 && typeof object2 === "object" && typeof object2.stream === "function" && object2.stream.length === 0 && typeof object2.constructor === "function" && /^(Blob|File)$/.test(object2[Symbol.toStringTag]);
+      }
+    };
+    Object.defineProperties(Blob.prototype, {
+      size: { enumerable: true },
+      type: { enumerable: true },
+      slice: { enumerable: true }
+    });
+    fetchBlob = Blob;
+    Blob$1 = fetchBlob;
+    FetchBaseError = class extends Error {
+      constructor(message, type) {
+        super(message);
+        Error.captureStackTrace(this, this.constructor);
+        this.type = type;
+      }
+      get name() {
+        return this.constructor.name;
+      }
+      get [Symbol.toStringTag]() {
+        return this.constructor.name;
+      }
+    };
+    FetchError = class extends FetchBaseError {
+      constructor(message, type, systemError) {
+        super(message, type);
+        if (systemError) {
+          this.code = this.errno = systemError.code;
+          this.erroredSysCall = systemError.syscall;
+        }
+      }
+    };
+    NAME = Symbol.toStringTag;
+    isURLSearchParameters = (object2) => {
+      return typeof object2 === "object" && typeof object2.append === "function" && typeof object2.delete === "function" && typeof object2.get === "function" && typeof object2.getAll === "function" && typeof object2.has === "function" && typeof object2.set === "function" && typeof object2.sort === "function" && object2[NAME] === "URLSearchParams";
+    };
+    isBlob = (object2) => {
+      return typeof object2 === "object" && typeof object2.arrayBuffer === "function" && typeof object2.type === "string" && typeof object2.stream === "function" && typeof object2.constructor === "function" && /^(Blob|File)$/.test(object2[NAME]);
+    };
+    isAbortSignal = (object2) => {
+      return typeof object2 === "object" && object2[NAME] === "AbortSignal";
+    };
+    carriage = "\r\n";
+    dashes = "-".repeat(2);
+    carriageLength = Buffer.byteLength(carriage);
+    getFooter = (boundary) => `${dashes}${boundary}${dashes}${carriage.repeat(2)}`;
+    getBoundary = () => (0, import_crypto.randomBytes)(8).toString("hex");
+    INTERNALS$2 = Symbol("Body internals");
+    Body = class {
+      constructor(body, {
+        size = 0
+      } = {}) {
+        let boundary = null;
+        if (body === null) {
+          body = null;
+        } else if (isURLSearchParameters(body)) {
+          body = Buffer.from(body.toString());
+        } else if (isBlob(body))
+          ;
+        else if (Buffer.isBuffer(body))
+          ;
+        else if (import_util.types.isAnyArrayBuffer(body)) {
+          body = Buffer.from(body);
+        } else if (ArrayBuffer.isView(body)) {
+          body = Buffer.from(body.buffer, body.byteOffset, body.byteLength);
+        } else if (body instanceof import_stream.default)
+          ;
+        else if (isFormData(body)) {
+          boundary = `NodeFetchFormDataBoundary${getBoundary()}`;
+          body = import_stream.default.Readable.from(formDataIterator(body, boundary));
+        } else {
+          body = Buffer.from(String(body));
+        }
+        this[INTERNALS$2] = {
+          body,
+          boundary,
+          disturbed: false,
+          error: null
+        };
+        this.size = size;
+        if (body instanceof import_stream.default) {
+          body.on("error", (err) => {
+            const error2 = err instanceof FetchBaseError ? err : new FetchError(`Invalid response body while trying to fetch ${this.url}: ${err.message}`, "system", err);
+            this[INTERNALS$2].error = error2;
+          });
+        }
+      }
+      get body() {
+        return this[INTERNALS$2].body;
+      }
+      get bodyUsed() {
+        return this[INTERNALS$2].disturbed;
+      }
+      async arrayBuffer() {
+        const { buffer, byteOffset, byteLength } = await consumeBody(this);
+        return buffer.slice(byteOffset, byteOffset + byteLength);
+      }
+      async blob() {
+        const ct = this.headers && this.headers.get("content-type") || this[INTERNALS$2].body && this[INTERNALS$2].body.type || "";
+        const buf = await this.buffer();
+        return new Blob$1([buf], {
+          type: ct
+        });
+      }
+      async json() {
+        const buffer = await consumeBody(this);
+        return JSON.parse(buffer.toString());
+      }
+      async text() {
+        const buffer = await consumeBody(this);
+        return buffer.toString();
+      }
+      buffer() {
+        return consumeBody(this);
+      }
+    };
+    Object.defineProperties(Body.prototype, {
+      body: { enumerable: true },
+      bodyUsed: { enumerable: true },
+      arrayBuffer: { enumerable: true },
+      blob: { enumerable: true },
+      json: { enumerable: true },
+      text: { enumerable: true }
+    });
+    clone = (instance, highWaterMark) => {
+      let p1;
+      let p2;
+      let { body } = instance;
+      if (instance.bodyUsed) {
+        throw new Error("cannot clone body after it is used");
+      }
+      if (body instanceof import_stream.default && typeof body.getBoundary !== "function") {
+        p1 = new import_stream.PassThrough({ highWaterMark });
+        p2 = new import_stream.PassThrough({ highWaterMark });
+        body.pipe(p1);
+        body.pipe(p2);
+        instance[INTERNALS$2].body = p1;
+        body = p2;
+      }
+      return body;
+    };
+    extractContentType = (body, request) => {
+      if (body === null) {
+        return null;
+      }
+      if (typeof body === "string") {
+        return "text/plain;charset=UTF-8";
+      }
+      if (isURLSearchParameters(body)) {
+        return "application/x-www-form-urlencoded;charset=UTF-8";
+      }
+      if (isBlob(body)) {
+        return body.type || null;
+      }
+      if (Buffer.isBuffer(body) || import_util.types.isAnyArrayBuffer(body) || ArrayBuffer.isView(body)) {
+        return null;
+      }
+      if (body && typeof body.getBoundary === "function") {
+        return `multipart/form-data;boundary=${body.getBoundary()}`;
+      }
+      if (isFormData(body)) {
+        return `multipart/form-data; boundary=${request[INTERNALS$2].boundary}`;
+      }
+      if (body instanceof import_stream.default) {
+        return null;
+      }
+      return "text/plain;charset=UTF-8";
+    };
+    getTotalBytes = (request) => {
+      const { body } = request;
+      if (body === null) {
+        return 0;
+      }
+      if (isBlob(body)) {
+        return body.size;
+      }
+      if (Buffer.isBuffer(body)) {
+        return body.length;
+      }
+      if (body && typeof body.getLengthSync === "function") {
+        return body.hasKnownLength && body.hasKnownLength() ? body.getLengthSync() : null;
+      }
+      if (isFormData(body)) {
+        return getFormDataLength(request[INTERNALS$2].boundary);
+      }
+      return null;
+    };
+    writeToStream = (dest, { body }) => {
+      if (body === null) {
+        dest.end();
+      } else if (isBlob(body)) {
+        body.stream().pipe(dest);
+      } else if (Buffer.isBuffer(body)) {
+        dest.write(body);
+        dest.end();
+      } else {
+        body.pipe(dest);
+      }
+    };
+    validateHeaderName = typeof import_http.default.validateHeaderName === "function" ? import_http.default.validateHeaderName : (name) => {
+      if (!/^[\^`\-\w!#$%&'*+.|~]+$/.test(name)) {
+        const err = new TypeError(`Header name must be a valid HTTP token [${name}]`);
+        Object.defineProperty(err, "code", { value: "ERR_INVALID_HTTP_TOKEN" });
+        throw err;
+      }
+    };
+    validateHeaderValue = typeof import_http.default.validateHeaderValue === "function" ? import_http.default.validateHeaderValue : (name, value) => {
+      if (/[^\t\u0020-\u007E\u0080-\u00FF]/.test(value)) {
+        const err = new TypeError(`Invalid character in header content ["${name}"]`);
+        Object.defineProperty(err, "code", { value: "ERR_INVALID_CHAR" });
+        throw err;
+      }
+    };
+    Headers = class extends URLSearchParams {
+      constructor(init2) {
+        let result = [];
+        if (init2 instanceof Headers) {
+          const raw = init2.raw();
+          for (const [name, values] of Object.entries(raw)) {
+            result.push(...values.map((value) => [name, value]));
+          }
+        } else if (init2 == null)
+          ;
+        else if (typeof init2 === "object" && !import_util.types.isBoxedPrimitive(init2)) {
+          const method = init2[Symbol.iterator];
+          if (method == null) {
+            result.push(...Object.entries(init2));
+          } else {
+            if (typeof method !== "function") {
+              throw new TypeError("Header pairs must be iterable");
+            }
+            result = [...init2].map((pair) => {
+              if (typeof pair !== "object" || import_util.types.isBoxedPrimitive(pair)) {
+                throw new TypeError("Each header pair must be an iterable object");
+              }
+              return [...pair];
+            }).map((pair) => {
+              if (pair.length !== 2) {
+                throw new TypeError("Each header pair must be a name/value tuple");
+              }
+              return [...pair];
+            });
+          }
+        } else {
+          throw new TypeError("Failed to construct 'Headers': The provided value is not of type '(sequence<sequence<ByteString>> or record<ByteString, ByteString>)");
+        }
+        result = result.length > 0 ? result.map(([name, value]) => {
+          validateHeaderName(name);
+          validateHeaderValue(name, String(value));
+          return [String(name).toLowerCase(), String(value)];
+        }) : void 0;
+        super(result);
+        return new Proxy(this, {
+          get(target, p, receiver) {
+            switch (p) {
+              case "append":
+              case "set":
+                return (name, value) => {
+                  validateHeaderName(name);
+                  validateHeaderValue(name, String(value));
+                  return URLSearchParams.prototype[p].call(receiver, String(name).toLowerCase(), String(value));
+                };
+              case "delete":
+              case "has":
+              case "getAll":
+                return (name) => {
+                  validateHeaderName(name);
+                  return URLSearchParams.prototype[p].call(receiver, String(name).toLowerCase());
+                };
+              case "keys":
+                return () => {
+                  target.sort();
+                  return new Set(URLSearchParams.prototype.keys.call(target)).keys();
+                };
+              default:
+                return Reflect.get(target, p, receiver);
+            }
+          }
+        });
+      }
+      get [Symbol.toStringTag]() {
+        return this.constructor.name;
+      }
+      toString() {
+        return Object.prototype.toString.call(this);
+      }
+      get(name) {
+        const values = this.getAll(name);
+        if (values.length === 0) {
+          return null;
+        }
+        let value = values.join(", ");
+        if (/^content-encoding$/i.test(name)) {
+          value = value.toLowerCase();
+        }
+        return value;
+      }
+      forEach(callback) {
+        for (const name of this.keys()) {
+          callback(this.get(name), name);
+        }
+      }
+      *values() {
+        for (const name of this.keys()) {
+          yield this.get(name);
+        }
+      }
+      *entries() {
+        for (const name of this.keys()) {
+          yield [name, this.get(name)];
+        }
+      }
+      [Symbol.iterator]() {
+        return this.entries();
+      }
+      raw() {
+        return [...this.keys()].reduce((result, key) => {
+          result[key] = this.getAll(key);
+          return result;
+        }, {});
+      }
+      [Symbol.for("nodejs.util.inspect.custom")]() {
+        return [...this.keys()].reduce((result, key) => {
+          const values = this.getAll(key);
+          if (key === "host") {
+            result[key] = values[0];
+          } else {
+            result[key] = values.length > 1 ? values : values[0];
+          }
+          return result;
+        }, {});
+      }
+    };
+    Object.defineProperties(Headers.prototype, ["get", "entries", "forEach", "values"].reduce((result, property) => {
+      result[property] = { enumerable: true };
+      return result;
+    }, {}));
+    redirectStatus = new Set([301, 302, 303, 307, 308]);
+    isRedirect = (code) => {
+      return redirectStatus.has(code);
+    };
+    INTERNALS$1 = Symbol("Response internals");
+    Response = class extends Body {
+      constructor(body = null, options2 = {}) {
+        super(body, options2);
+        const status = options2.status || 200;
+        const headers = new Headers(options2.headers);
+        if (body !== null && !headers.has("Content-Type")) {
+          const contentType = extractContentType(body);
+          if (contentType) {
+            headers.append("Content-Type", contentType);
+          }
+        }
+        this[INTERNALS$1] = {
+          url: options2.url,
+          status,
+          statusText: options2.statusText || "",
+          headers,
+          counter: options2.counter,
+          highWaterMark: options2.highWaterMark
+        };
+      }
+      get url() {
+        return this[INTERNALS$1].url || "";
+      }
+      get status() {
+        return this[INTERNALS$1].status;
+      }
+      get ok() {
+        return this[INTERNALS$1].status >= 200 && this[INTERNALS$1].status < 300;
+      }
+      get redirected() {
+        return this[INTERNALS$1].counter > 0;
+      }
+      get statusText() {
+        return this[INTERNALS$1].statusText;
+      }
+      get headers() {
+        return this[INTERNALS$1].headers;
+      }
+      get highWaterMark() {
+        return this[INTERNALS$1].highWaterMark;
+      }
+      clone() {
+        return new Response(clone(this, this.highWaterMark), {
+          url: this.url,
+          status: this.status,
+          statusText: this.statusText,
+          headers: this.headers,
+          ok: this.ok,
+          redirected: this.redirected,
+          size: this.size
+        });
+      }
+      static redirect(url, status = 302) {
+        if (!isRedirect(status)) {
+          throw new RangeError('Failed to execute "redirect" on "response": Invalid status code');
+        }
+        return new Response(null, {
+          headers: {
+            location: new URL(url).toString()
+          },
+          status
+        });
+      }
+      get [Symbol.toStringTag]() {
+        return "Response";
+      }
+    };
+    Object.defineProperties(Response.prototype, {
+      url: { enumerable: true },
+      status: { enumerable: true },
+      ok: { enumerable: true },
+      redirected: { enumerable: true },
+      statusText: { enumerable: true },
+      headers: { enumerable: true },
+      clone: { enumerable: true }
+    });
+    getSearch = (parsedURL) => {
+      if (parsedURL.search) {
+        return parsedURL.search;
+      }
+      const lastOffset = parsedURL.href.length - 1;
+      const hash2 = parsedURL.hash || (parsedURL.href[lastOffset] === "#" ? "#" : "");
+      return parsedURL.href[lastOffset - hash2.length] === "?" ? "?" : "";
+    };
+    INTERNALS = Symbol("Request internals");
+    isRequest = (object2) => {
+      return typeof object2 === "object" && typeof object2[INTERNALS] === "object";
+    };
+    Request = class extends Body {
+      constructor(input, init2 = {}) {
+        let parsedURL;
+        if (isRequest(input)) {
+          parsedURL = new URL(input.url);
+        } else {
+          parsedURL = new URL(input);
+          input = {};
+        }
+        let method = init2.method || input.method || "GET";
+        method = method.toUpperCase();
+        if ((init2.body != null || isRequest(input)) && input.body !== null && (method === "GET" || method === "HEAD")) {
+          throw new TypeError("Request with GET/HEAD method cannot have body");
+        }
+        const inputBody = init2.body ? init2.body : isRequest(input) && input.body !== null ? clone(input) : null;
+        super(inputBody, {
+          size: init2.size || input.size || 0
+        });
+        const headers = new Headers(init2.headers || input.headers || {});
+        if (inputBody !== null && !headers.has("Content-Type")) {
+          const contentType = extractContentType(inputBody, this);
+          if (contentType) {
+            headers.append("Content-Type", contentType);
+          }
+        }
+        let signal = isRequest(input) ? input.signal : null;
+        if ("signal" in init2) {
+          signal = init2.signal;
+        }
+        if (signal !== null && !isAbortSignal(signal)) {
+          throw new TypeError("Expected signal to be an instanceof AbortSignal");
+        }
+        this[INTERNALS] = {
+          method,
+          redirect: init2.redirect || input.redirect || "follow",
+          headers,
+          parsedURL,
+          signal
+        };
+        this.follow = init2.follow === void 0 ? input.follow === void 0 ? 20 : input.follow : init2.follow;
+        this.compress = init2.compress === void 0 ? input.compress === void 0 ? true : input.compress : init2.compress;
+        this.counter = init2.counter || input.counter || 0;
+        this.agent = init2.agent || input.agent;
+        this.highWaterMark = init2.highWaterMark || input.highWaterMark || 16384;
+        this.insecureHTTPParser = init2.insecureHTTPParser || input.insecureHTTPParser || false;
+      }
+      get method() {
+        return this[INTERNALS].method;
+      }
+      get url() {
+        return (0, import_url.format)(this[INTERNALS].parsedURL);
+      }
+      get headers() {
+        return this[INTERNALS].headers;
+      }
+      get redirect() {
+        return this[INTERNALS].redirect;
+      }
+      get signal() {
+        return this[INTERNALS].signal;
+      }
+      clone() {
+        return new Request(this);
+      }
+      get [Symbol.toStringTag]() {
+        return "Request";
+      }
+    };
+    Object.defineProperties(Request.prototype, {
+      method: { enumerable: true },
+      url: { enumerable: true },
+      headers: { enumerable: true },
+      redirect: { enumerable: true },
+      clone: { enumerable: true },
+      signal: { enumerable: true }
+    });
+    getNodeRequestOptions = (request) => {
+      const { parsedURL } = request[INTERNALS];
+      const headers = new Headers(request[INTERNALS].headers);
+      if (!headers.has("Accept")) {
+        headers.set("Accept", "*/*");
+      }
+      let contentLengthValue = null;
+      if (request.body === null && /^(post|put)$/i.test(request.method)) {
+        contentLengthValue = "0";
+      }
+      if (request.body !== null) {
+        const totalBytes = getTotalBytes(request);
+        if (typeof totalBytes === "number" && !Number.isNaN(totalBytes)) {
+          contentLengthValue = String(totalBytes);
+        }
+      }
+      if (contentLengthValue) {
+        headers.set("Content-Length", contentLengthValue);
+      }
+      if (!headers.has("User-Agent")) {
+        headers.set("User-Agent", "node-fetch");
+      }
+      if (request.compress && !headers.has("Accept-Encoding")) {
+        headers.set("Accept-Encoding", "gzip,deflate,br");
+      }
+      let { agent } = request;
+      if (typeof agent === "function") {
+        agent = agent(parsedURL);
+      }
+      if (!headers.has("Connection") && !agent) {
+        headers.set("Connection", "close");
+      }
+      const search = getSearch(parsedURL);
+      const requestOptions = {
+        path: parsedURL.pathname + search,
+        pathname: parsedURL.pathname,
+        hostname: parsedURL.hostname,
+        protocol: parsedURL.protocol,
+        port: parsedURL.port,
+        hash: parsedURL.hash,
+        search: parsedURL.search,
+        query: parsedURL.query,
+        href: parsedURL.href,
+        method: request.method,
+        headers: headers[Symbol.for("nodejs.util.inspect.custom")](),
+        insecureHTTPParser: request.insecureHTTPParser,
+        agent
+      };
+      return requestOptions;
+    };
+    AbortError = class extends FetchBaseError {
+      constructor(message, type = "aborted") {
+        super(message, type);
+      }
+    };
+    supportedSchemas = new Set(["data:", "http:", "https:"]);
+  }
+});
+
+// node_modules/@sveltejs/adapter-netlify/files/shims.js
+var init_shims = __esm({
+  "node_modules/@sveltejs/adapter-netlify/files/shims.js"() {
+    init_install_fetch();
+  }
+});
+
+// node_modules/dompurify/dist/purify.cjs.js
+var require_purify_cjs = __commonJS({
+  "node_modules/dompurify/dist/purify.cjs.js"(exports, module2) {
+    init_shims();
+    "use strict";
+    function _toConsumableArray(arr) {
+      if (Array.isArray(arr)) {
+        for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+          arr2[i] = arr[i];
+        }
+        return arr2;
+      } else {
+        return Array.from(arr);
+      }
+    }
+    var hasOwnProperty = Object.hasOwnProperty;
+    var setPrototypeOf = Object.setPrototypeOf;
+    var isFrozen = Object.isFrozen;
+    var getPrototypeOf = Object.getPrototypeOf;
+    var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+    var freeze = Object.freeze;
+    var seal = Object.seal;
+    var create = Object.create;
+    var _ref = typeof Reflect !== "undefined" && Reflect;
+    var apply2 = _ref.apply;
+    var construct = _ref.construct;
+    if (!apply2) {
+      apply2 = function apply3(fun, thisValue, args) {
+        return fun.apply(thisValue, args);
+      };
+    }
+    if (!freeze) {
+      freeze = function freeze2(x2) {
+        return x2;
+      };
+    }
+    if (!seal) {
+      seal = function seal2(x2) {
+        return x2;
+      };
+    }
+    if (!construct) {
+      construct = function construct2(Func, args) {
+        return new (Function.prototype.bind.apply(Func, [null].concat(_toConsumableArray(args))))();
+      };
+    }
+    var arrayForEach = unapply(Array.prototype.forEach);
+    var arrayPop = unapply(Array.prototype.pop);
+    var arrayPush = unapply(Array.prototype.push);
+    var stringToLowerCase = unapply(String.prototype.toLowerCase);
+    var stringMatch = unapply(String.prototype.match);
+    var stringReplace = unapply(String.prototype.replace);
+    var stringIndexOf = unapply(String.prototype.indexOf);
+    var stringTrim = unapply(String.prototype.trim);
+    var regExpTest = unapply(RegExp.prototype.test);
+    var typeErrorCreate = unconstruct(TypeError);
+    function unapply(func) {
+      return function(thisArg) {
+        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
+        return apply2(func, thisArg, args);
+      };
+    }
+    function unconstruct(func) {
+      return function() {
+        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+        return construct(func, args);
+      };
+    }
+    function addToSet(set, array2) {
+      if (setPrototypeOf) {
+        setPrototypeOf(set, null);
+      }
+      var l = array2.length;
+      while (l--) {
+        var element = array2[l];
+        if (typeof element === "string") {
+          var lcElement = stringToLowerCase(element);
+          if (lcElement !== element) {
+            if (!isFrozen(array2)) {
+              array2[l] = lcElement;
+            }
+            element = lcElement;
+          }
+        }
+        set[element] = true;
+      }
+      return set;
+    }
+    function clone2(object2) {
+      var newObject = create(null);
+      var property = void 0;
+      for (property in object2) {
+        if (apply2(hasOwnProperty, object2, [property])) {
+          newObject[property] = object2[property];
+        }
+      }
+      return newObject;
+    }
+    function lookupGetter(object2, prop) {
+      while (object2 !== null) {
+        var desc = getOwnPropertyDescriptor(object2, prop);
+        if (desc) {
+          if (desc.get) {
+            return unapply(desc.get);
+          }
+          if (typeof desc.value === "function") {
+            return unapply(desc.value);
+          }
+        }
+        object2 = getPrototypeOf(object2);
+      }
+      function fallbackValue(element) {
+        console.warn("fallback value for", element);
+        return null;
+      }
+      return fallbackValue;
+    }
+    var html = freeze(["a", "abbr", "acronym", "address", "area", "article", "aside", "audio", "b", "bdi", "bdo", "big", "blink", "blockquote", "body", "br", "button", "canvas", "caption", "center", "cite", "code", "col", "colgroup", "content", "data", "datalist", "dd", "decorator", "del", "details", "dfn", "dialog", "dir", "div", "dl", "dt", "element", "em", "fieldset", "figcaption", "figure", "font", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hgroup", "hr", "html", "i", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "map", "mark", "marquee", "menu", "menuitem", "meter", "nav", "nobr", "ol", "optgroup", "option", "output", "p", "picture", "pre", "progress", "q", "rp", "rt", "ruby", "s", "samp", "section", "select", "shadow", "small", "source", "spacer", "span", "strike", "strong", "style", "sub", "summary", "sup", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "tr", "track", "tt", "u", "ul", "var", "video", "wbr"]);
+    var svg = freeze(["svg", "a", "altglyph", "altglyphdef", "altglyphitem", "animatecolor", "animatemotion", "animatetransform", "circle", "clippath", "defs", "desc", "ellipse", "filter", "font", "g", "glyph", "glyphref", "hkern", "image", "line", "lineargradient", "marker", "mask", "metadata", "mpath", "path", "pattern", "polygon", "polyline", "radialgradient", "rect", "stop", "style", "switch", "symbol", "text", "textpath", "title", "tref", "tspan", "view", "vkern"]);
+    var svgFilters = freeze(["feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feDistantLight", "feFlood", "feFuncA", "feFuncB", "feFuncG", "feFuncR", "feGaussianBlur", "feMerge", "feMergeNode", "feMorphology", "feOffset", "fePointLight", "feSpecularLighting", "feSpotLight", "feTile", "feTurbulence"]);
+    var svgDisallowed = freeze(["animate", "color-profile", "cursor", "discard", "fedropshadow", "feimage", "font-face", "font-face-format", "font-face-name", "font-face-src", "font-face-uri", "foreignobject", "hatch", "hatchpath", "mesh", "meshgradient", "meshpatch", "meshrow", "missing-glyph", "script", "set", "solidcolor", "unknown", "use"]);
+    var mathMl = freeze(["math", "menclose", "merror", "mfenced", "mfrac", "mglyph", "mi", "mlabeledtr", "mmultiscripts", "mn", "mo", "mover", "mpadded", "mphantom", "mroot", "mrow", "ms", "mspace", "msqrt", "mstyle", "msub", "msup", "msubsup", "mtable", "mtd", "mtext", "mtr", "munder", "munderover"]);
+    var mathMlDisallowed = freeze(["maction", "maligngroup", "malignmark", "mlongdiv", "mscarries", "mscarry", "msgroup", "mstack", "msline", "msrow", "semantics", "annotation", "annotation-xml", "mprescripts", "none"]);
+    var text = freeze(["#text"]);
+    var html$1 = freeze(["accept", "action", "align", "alt", "autocapitalize", "autocomplete", "autopictureinpicture", "autoplay", "background", "bgcolor", "border", "capture", "cellpadding", "cellspacing", "checked", "cite", "class", "clear", "color", "cols", "colspan", "controls", "controlslist", "coords", "crossorigin", "datetime", "decoding", "default", "dir", "disabled", "disablepictureinpicture", "disableremoteplayback", "download", "draggable", "enctype", "enterkeyhint", "face", "for", "headers", "height", "hidden", "high", "href", "hreflang", "id", "inputmode", "integrity", "ismap", "kind", "label", "lang", "list", "loading", "loop", "low", "max", "maxlength", "media", "method", "min", "minlength", "multiple", "muted", "name", "noshade", "novalidate", "nowrap", "open", "optimum", "pattern", "placeholder", "playsinline", "poster", "preload", "pubdate", "radiogroup", "readonly", "rel", "required", "rev", "reversed", "role", "rows", "rowspan", "spellcheck", "scope", "selected", "shape", "size", "sizes", "span", "srclang", "start", "src", "srcset", "step", "style", "summary", "tabindex", "title", "translate", "type", "usemap", "valign", "value", "width", "xmlns", "slot"]);
+    var svg$1 = freeze(["accent-height", "accumulate", "additive", "alignment-baseline", "ascent", "attributename", "attributetype", "azimuth", "basefrequency", "baseline-shift", "begin", "bias", "by", "class", "clip", "clippathunits", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "cx", "cy", "d", "dx", "dy", "diffuseconstant", "direction", "display", "divisor", "dur", "edgemode", "elevation", "end", "fill", "fill-opacity", "fill-rule", "filter", "filterunits", "flood-color", "flood-opacity", "font-family", "font-size", "font-size-adjust", "font-stretch", "font-style", "font-variant", "font-weight", "fx", "fy", "g1", "g2", "glyph-name", "glyphref", "gradientunits", "gradienttransform", "height", "href", "id", "image-rendering", "in", "in2", "k", "k1", "k2", "k3", "k4", "kerning", "keypoints", "keysplines", "keytimes", "lang", "lengthadjust", "letter-spacing", "kernelmatrix", "kernelunitlength", "lighting-color", "local", "marker-end", "marker-mid", "marker-start", "markerheight", "markerunits", "markerwidth", "maskcontentunits", "maskunits", "max", "mask", "media", "method", "mode", "min", "name", "numoctaves", "offset", "operator", "opacity", "order", "orient", "orientation", "origin", "overflow", "paint-order", "path", "pathlength", "patterncontentunits", "patterntransform", "patternunits", "points", "preservealpha", "preserveaspectratio", "primitiveunits", "r", "rx", "ry", "radius", "refx", "refy", "repeatcount", "repeatdur", "restart", "result", "rotate", "scale", "seed", "shape-rendering", "specularconstant", "specularexponent", "spreadmethod", "startoffset", "stddeviation", "stitchtiles", "stop-color", "stop-opacity", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke", "stroke-width", "style", "surfacescale", "systemlanguage", "tabindex", "targetx", "targety", "transform", "text-anchor", "text-decoration", "text-rendering", "textlength", "type", "u1", "u2", "unicode", "values", "viewbox", "visibility", "version", "vert-adv-y", "vert-origin-x", "vert-origin-y", "width", "word-spacing", "wrap", "writing-mode", "xchannelselector", "ychannelselector", "x", "x1", "x2", "xmlns", "y", "y1", "y2", "z", "zoomandpan"]);
+    var mathMl$1 = freeze(["accent", "accentunder", "align", "bevelled", "close", "columnsalign", "columnlines", "columnspan", "denomalign", "depth", "dir", "display", "displaystyle", "encoding", "fence", "frame", "height", "href", "id", "largeop", "length", "linethickness", "lspace", "lquote", "mathbackground", "mathcolor", "mathsize", "mathvariant", "maxsize", "minsize", "movablelimits", "notation", "numalign", "open", "rowalign", "rowlines", "rowspacing", "rowspan", "rspace", "rquote", "scriptlevel", "scriptminsize", "scriptsizemultiplier", "selection", "separator", "separators", "stretchy", "subscriptshift", "supscriptshift", "symmetric", "voffset", "width", "xmlns"]);
+    var xml = freeze(["xlink:href", "xml:id", "xlink:title", "xml:space", "xmlns:xlink"]);
+    var MUSTACHE_EXPR = seal(/\{\{[\s\S]*|[\s\S]*\}\}/gm);
+    var ERB_EXPR = seal(/<%[\s\S]*|[\s\S]*%>/gm);
+    var DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/);
+    var ARIA_ATTR = seal(/^aria-[\-\w]+$/);
+    var IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i);
+    var IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
+    var ATTR_WHITESPACE = seal(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g);
+    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+      return typeof obj;
+    } : function(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+    function _toConsumableArray$1(arr) {
+      if (Array.isArray(arr)) {
+        for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+          arr2[i] = arr[i];
+        }
+        return arr2;
+      } else {
+        return Array.from(arr);
+      }
+    }
+    var getGlobal = function getGlobal2() {
+      return typeof window === "undefined" ? null : window;
+    };
+    var _createTrustedTypesPolicy = function _createTrustedTypesPolicy2(trustedTypes, document) {
+      if ((typeof trustedTypes === "undefined" ? "undefined" : _typeof(trustedTypes)) !== "object" || typeof trustedTypes.createPolicy !== "function") {
+        return null;
+      }
+      var suffix = null;
+      var ATTR_NAME = "data-tt-policy-suffix";
+      if (document.currentScript && document.currentScript.hasAttribute(ATTR_NAME)) {
+        suffix = document.currentScript.getAttribute(ATTR_NAME);
+      }
+      var policyName = "dompurify" + (suffix ? "#" + suffix : "");
+      try {
+        return trustedTypes.createPolicy(policyName, {
+          createHTML: function createHTML(html$$1) {
+            return html$$1;
+          }
+        });
+      } catch (_) {
+        console.warn("TrustedTypes policy " + policyName + " could not be created.");
+        return null;
+      }
+    };
+    function createDOMPurify() {
+      var window2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : getGlobal();
+      var DOMPurify2 = function DOMPurify3(root) {
+        return createDOMPurify(root);
+      };
+      DOMPurify2.version = "2.3.3";
+      DOMPurify2.removed = [];
+      if (!window2 || !window2.document || window2.document.nodeType !== 9) {
+        DOMPurify2.isSupported = false;
+        return DOMPurify2;
+      }
+      var originalDocument = window2.document;
+      var document = window2.document;
+      var DocumentFragment = window2.DocumentFragment, HTMLTemplateElement = window2.HTMLTemplateElement, Node = window2.Node, Element = window2.Element, NodeFilter = window2.NodeFilter, _window$NamedNodeMap = window2.NamedNodeMap, NamedNodeMap = _window$NamedNodeMap === void 0 ? window2.NamedNodeMap || window2.MozNamedAttrMap : _window$NamedNodeMap, Text = window2.Text, Comment = window2.Comment, DOMParser = window2.DOMParser, trustedTypes = window2.trustedTypes;
+      var ElementPrototype = Element.prototype;
+      var cloneNode = lookupGetter(ElementPrototype, "cloneNode");
+      var getNextSibling = lookupGetter(ElementPrototype, "nextSibling");
+      var getChildNodes = lookupGetter(ElementPrototype, "childNodes");
+      var getParentNode = lookupGetter(ElementPrototype, "parentNode");
+      if (typeof HTMLTemplateElement === "function") {
+        var template2 = document.createElement("template");
+        if (template2.content && template2.content.ownerDocument) {
+          document = template2.content.ownerDocument;
+        }
+      }
+      var trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, originalDocument);
+      var emptyHTML = trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML("") : "";
+      var _document = document, implementation = _document.implementation, createNodeIterator = _document.createNodeIterator, createDocumentFragment = _document.createDocumentFragment, getElementsByTagName = _document.getElementsByTagName;
+      var importNode = originalDocument.importNode;
+      var documentMode = {};
+      try {
+        documentMode = clone2(document).documentMode ? document.documentMode : {};
+      } catch (_) {
+      }
+      var hooks = {};
+      DOMPurify2.isSupported = typeof getParentNode === "function" && implementation && typeof implementation.createHTMLDocument !== "undefined" && documentMode !== 9;
+      var MUSTACHE_EXPR$$1 = MUSTACHE_EXPR, ERB_EXPR$$1 = ERB_EXPR, DATA_ATTR$$1 = DATA_ATTR, ARIA_ATTR$$1 = ARIA_ATTR, IS_SCRIPT_OR_DATA$$1 = IS_SCRIPT_OR_DATA, ATTR_WHITESPACE$$1 = ATTR_WHITESPACE;
+      var IS_ALLOWED_URI$$1 = IS_ALLOWED_URI;
+      var ALLOWED_TAGS = null;
+      var DEFAULT_ALLOWED_TAGS = addToSet({}, [].concat(_toConsumableArray$1(html), _toConsumableArray$1(svg), _toConsumableArray$1(svgFilters), _toConsumableArray$1(mathMl), _toConsumableArray$1(text)));
+      var ALLOWED_ATTR = null;
+      var DEFAULT_ALLOWED_ATTR = addToSet({}, [].concat(_toConsumableArray$1(html$1), _toConsumableArray$1(svg$1), _toConsumableArray$1(mathMl$1), _toConsumableArray$1(xml)));
+      var FORBID_TAGS = null;
+      var FORBID_ATTR = null;
+      var ALLOW_ARIA_ATTR = true;
+      var ALLOW_DATA_ATTR = true;
+      var ALLOW_UNKNOWN_PROTOCOLS = false;
+      var SAFE_FOR_TEMPLATES = false;
+      var WHOLE_DOCUMENT = false;
+      var SET_CONFIG = false;
+      var FORCE_BODY = false;
+      var RETURN_DOM = false;
+      var RETURN_DOM_FRAGMENT = false;
+      var RETURN_DOM_IMPORT = true;
+      var RETURN_TRUSTED_TYPE = false;
+      var SANITIZE_DOM = true;
+      var KEEP_CONTENT = true;
+      var IN_PLACE = false;
+      var USE_PROFILES = {};
+      var FORBID_CONTENTS = null;
+      var DEFAULT_FORBID_CONTENTS = addToSet({}, ["annotation-xml", "audio", "colgroup", "desc", "foreignobject", "head", "iframe", "math", "mi", "mn", "mo", "ms", "mtext", "noembed", "noframes", "noscript", "plaintext", "script", "style", "svg", "template", "thead", "title", "video", "xmp"]);
+      var DATA_URI_TAGS = null;
+      var DEFAULT_DATA_URI_TAGS = addToSet({}, ["audio", "video", "img", "source", "image", "track"]);
+      var URI_SAFE_ATTRIBUTES = null;
+      var DEFAULT_URI_SAFE_ATTRIBUTES = addToSet({}, ["alt", "class", "for", "id", "label", "name", "pattern", "placeholder", "role", "summary", "title", "value", "style", "xmlns"]);
+      var MATHML_NAMESPACE = "http://www.w3.org/1998/Math/MathML";
+      var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+      var HTML_NAMESPACE = "http://www.w3.org/1999/xhtml";
+      var NAMESPACE = HTML_NAMESPACE;
+      var IS_EMPTY_INPUT = false;
+      var PARSER_MEDIA_TYPE = void 0;
+      var SUPPORTED_PARSER_MEDIA_TYPES = ["application/xhtml+xml", "text/html"];
+      var DEFAULT_PARSER_MEDIA_TYPE = "text/html";
+      var transformCaseFunc = void 0;
+      var CONFIG = null;
+      var formElement = document.createElement("form");
+      var _parseConfig = function _parseConfig2(cfg) {
+        if (CONFIG && CONFIG === cfg) {
+          return;
+        }
+        if (!cfg || (typeof cfg === "undefined" ? "undefined" : _typeof(cfg)) !== "object") {
+          cfg = {};
+        }
+        cfg = clone2(cfg);
+        ALLOWED_TAGS = "ALLOWED_TAGS" in cfg ? addToSet({}, cfg.ALLOWED_TAGS) : DEFAULT_ALLOWED_TAGS;
+        ALLOWED_ATTR = "ALLOWED_ATTR" in cfg ? addToSet({}, cfg.ALLOWED_ATTR) : DEFAULT_ALLOWED_ATTR;
+        URI_SAFE_ATTRIBUTES = "ADD_URI_SAFE_ATTR" in cfg ? addToSet(clone2(DEFAULT_URI_SAFE_ATTRIBUTES), cfg.ADD_URI_SAFE_ATTR) : DEFAULT_URI_SAFE_ATTRIBUTES;
+        DATA_URI_TAGS = "ADD_DATA_URI_TAGS" in cfg ? addToSet(clone2(DEFAULT_DATA_URI_TAGS), cfg.ADD_DATA_URI_TAGS) : DEFAULT_DATA_URI_TAGS;
+        FORBID_CONTENTS = "FORBID_CONTENTS" in cfg ? addToSet({}, cfg.FORBID_CONTENTS) : DEFAULT_FORBID_CONTENTS;
+        FORBID_TAGS = "FORBID_TAGS" in cfg ? addToSet({}, cfg.FORBID_TAGS) : {};
+        FORBID_ATTR = "FORBID_ATTR" in cfg ? addToSet({}, cfg.FORBID_ATTR) : {};
+        USE_PROFILES = "USE_PROFILES" in cfg ? cfg.USE_PROFILES : false;
+        ALLOW_ARIA_ATTR = cfg.ALLOW_ARIA_ATTR !== false;
+        ALLOW_DATA_ATTR = cfg.ALLOW_DATA_ATTR !== false;
+        ALLOW_UNKNOWN_PROTOCOLS = cfg.ALLOW_UNKNOWN_PROTOCOLS || false;
+        SAFE_FOR_TEMPLATES = cfg.SAFE_FOR_TEMPLATES || false;
+        WHOLE_DOCUMENT = cfg.WHOLE_DOCUMENT || false;
+        RETURN_DOM = cfg.RETURN_DOM || false;
+        RETURN_DOM_FRAGMENT = cfg.RETURN_DOM_FRAGMENT || false;
+        RETURN_DOM_IMPORT = cfg.RETURN_DOM_IMPORT !== false;
+        RETURN_TRUSTED_TYPE = cfg.RETURN_TRUSTED_TYPE || false;
+        FORCE_BODY = cfg.FORCE_BODY || false;
+        SANITIZE_DOM = cfg.SANITIZE_DOM !== false;
+        KEEP_CONTENT = cfg.KEEP_CONTENT !== false;
+        IN_PLACE = cfg.IN_PLACE || false;
+        IS_ALLOWED_URI$$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI$$1;
+        NAMESPACE = cfg.NAMESPACE || HTML_NAMESPACE;
+        PARSER_MEDIA_TYPE = SUPPORTED_PARSER_MEDIA_TYPES.indexOf(cfg.PARSER_MEDIA_TYPE) === -1 ? PARSER_MEDIA_TYPE = DEFAULT_PARSER_MEDIA_TYPE : PARSER_MEDIA_TYPE = cfg.PARSER_MEDIA_TYPE;
+        transformCaseFunc = PARSER_MEDIA_TYPE === "application/xhtml+xml" ? function(x2) {
+          return x2;
+        } : stringToLowerCase;
+        if (SAFE_FOR_TEMPLATES) {
+          ALLOW_DATA_ATTR = false;
+        }
+        if (RETURN_DOM_FRAGMENT) {
+          RETURN_DOM = true;
+        }
+        if (USE_PROFILES) {
+          ALLOWED_TAGS = addToSet({}, [].concat(_toConsumableArray$1(text)));
+          ALLOWED_ATTR = [];
+          if (USE_PROFILES.html === true) {
+            addToSet(ALLOWED_TAGS, html);
+            addToSet(ALLOWED_ATTR, html$1);
+          }
+          if (USE_PROFILES.svg === true) {
+            addToSet(ALLOWED_TAGS, svg);
+            addToSet(ALLOWED_ATTR, svg$1);
+            addToSet(ALLOWED_ATTR, xml);
+          }
+          if (USE_PROFILES.svgFilters === true) {
+            addToSet(ALLOWED_TAGS, svgFilters);
+            addToSet(ALLOWED_ATTR, svg$1);
+            addToSet(ALLOWED_ATTR, xml);
+          }
+          if (USE_PROFILES.mathMl === true) {
+            addToSet(ALLOWED_TAGS, mathMl);
+            addToSet(ALLOWED_ATTR, mathMl$1);
+            addToSet(ALLOWED_ATTR, xml);
+          }
+        }
+        if (cfg.ADD_TAGS) {
+          if (ALLOWED_TAGS === DEFAULT_ALLOWED_TAGS) {
+            ALLOWED_TAGS = clone2(ALLOWED_TAGS);
+          }
+          addToSet(ALLOWED_TAGS, cfg.ADD_TAGS);
+        }
+        if (cfg.ADD_ATTR) {
+          if (ALLOWED_ATTR === DEFAULT_ALLOWED_ATTR) {
+            ALLOWED_ATTR = clone2(ALLOWED_ATTR);
+          }
+          addToSet(ALLOWED_ATTR, cfg.ADD_ATTR);
+        }
+        if (cfg.ADD_URI_SAFE_ATTR) {
+          addToSet(URI_SAFE_ATTRIBUTES, cfg.ADD_URI_SAFE_ATTR);
+        }
+        if (cfg.FORBID_CONTENTS) {
+          if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
+            FORBID_CONTENTS = clone2(FORBID_CONTENTS);
+          }
+          addToSet(FORBID_CONTENTS, cfg.FORBID_CONTENTS);
+        }
+        if (KEEP_CONTENT) {
+          ALLOWED_TAGS["#text"] = true;
+        }
+        if (WHOLE_DOCUMENT) {
+          addToSet(ALLOWED_TAGS, ["html", "head", "body"]);
+        }
+        if (ALLOWED_TAGS.table) {
+          addToSet(ALLOWED_TAGS, ["tbody"]);
+          delete FORBID_TAGS.tbody;
+        }
+        if (freeze) {
+          freeze(cfg);
+        }
+        CONFIG = cfg;
+      };
+      var MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, ["mi", "mo", "mn", "ms", "mtext"]);
+      var HTML_INTEGRATION_POINTS = addToSet({}, ["foreignobject", "desc", "title", "annotation-xml"]);
+      var ALL_SVG_TAGS = addToSet({}, svg);
+      addToSet(ALL_SVG_TAGS, svgFilters);
+      addToSet(ALL_SVG_TAGS, svgDisallowed);
+      var ALL_MATHML_TAGS = addToSet({}, mathMl);
+      addToSet(ALL_MATHML_TAGS, mathMlDisallowed);
+      var _checkValidNamespace = function _checkValidNamespace2(element) {
+        var parent = getParentNode(element);
+        if (!parent || !parent.tagName) {
+          parent = {
+            namespaceURI: HTML_NAMESPACE,
+            tagName: "template"
+          };
+        }
+        var tagName = stringToLowerCase(element.tagName);
+        var parentTagName = stringToLowerCase(parent.tagName);
+        if (element.namespaceURI === SVG_NAMESPACE) {
+          if (parent.namespaceURI === HTML_NAMESPACE) {
+            return tagName === "svg";
+          }
+          if (parent.namespaceURI === MATHML_NAMESPACE) {
+            return tagName === "svg" && (parentTagName === "annotation-xml" || MATHML_TEXT_INTEGRATION_POINTS[parentTagName]);
+          }
+          return Boolean(ALL_SVG_TAGS[tagName]);
+        }
+        if (element.namespaceURI === MATHML_NAMESPACE) {
+          if (parent.namespaceURI === HTML_NAMESPACE) {
+            return tagName === "math";
+          }
+          if (parent.namespaceURI === SVG_NAMESPACE) {
+            return tagName === "math" && HTML_INTEGRATION_POINTS[parentTagName];
+          }
+          return Boolean(ALL_MATHML_TAGS[tagName]);
+        }
+        if (element.namespaceURI === HTML_NAMESPACE) {
+          if (parent.namespaceURI === SVG_NAMESPACE && !HTML_INTEGRATION_POINTS[parentTagName]) {
+            return false;
+          }
+          if (parent.namespaceURI === MATHML_NAMESPACE && !MATHML_TEXT_INTEGRATION_POINTS[parentTagName]) {
+            return false;
+          }
+          var commonSvgAndHTMLElements = addToSet({}, ["title", "style", "font", "a", "script"]);
+          return !ALL_MATHML_TAGS[tagName] && (commonSvgAndHTMLElements[tagName] || !ALL_SVG_TAGS[tagName]);
+        }
+        return false;
+      };
+      var _forceRemove = function _forceRemove2(node) {
+        arrayPush(DOMPurify2.removed, { element: node });
+        try {
+          node.parentNode.removeChild(node);
+        } catch (_) {
+          try {
+            node.outerHTML = emptyHTML;
+          } catch (_2) {
+            node.remove();
+          }
+        }
+      };
+      var _removeAttribute = function _removeAttribute2(name, node) {
+        try {
+          arrayPush(DOMPurify2.removed, {
+            attribute: node.getAttributeNode(name),
+            from: node
+          });
+        } catch (_) {
+          arrayPush(DOMPurify2.removed, {
+            attribute: null,
+            from: node
+          });
+        }
+        node.removeAttribute(name);
+        if (name === "is" && !ALLOWED_ATTR[name]) {
+          if (RETURN_DOM || RETURN_DOM_FRAGMENT) {
+            try {
+              _forceRemove(node);
+            } catch (_) {
+            }
+          } else {
+            try {
+              node.setAttribute(name, "");
+            } catch (_) {
+            }
+          }
+        }
+      };
+      var _initDocument = function _initDocument2(dirty) {
+        var doc = void 0;
+        var leadingWhitespace = void 0;
+        if (FORCE_BODY) {
+          dirty = "<remove></remove>" + dirty;
+        } else {
+          var matches = stringMatch(dirty, /^[\r\n\t ]+/);
+          leadingWhitespace = matches && matches[0];
+        }
+        if (PARSER_MEDIA_TYPE === "application/xhtml+xml") {
+          dirty = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>' + dirty + "</body></html>";
+        }
+        var dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
+        if (NAMESPACE === HTML_NAMESPACE) {
+          try {
+            doc = new DOMParser().parseFromString(dirtyPayload, PARSER_MEDIA_TYPE);
+          } catch (_) {
+          }
+        }
+        if (!doc || !doc.documentElement) {
+          doc = implementation.createDocument(NAMESPACE, "template", null);
+          try {
+            doc.documentElement.innerHTML = IS_EMPTY_INPUT ? "" : dirtyPayload;
+          } catch (_) {
+          }
+        }
+        var body = doc.body || doc.documentElement;
+        if (dirty && leadingWhitespace) {
+          body.insertBefore(document.createTextNode(leadingWhitespace), body.childNodes[0] || null);
+        }
+        if (NAMESPACE === HTML_NAMESPACE) {
+          return getElementsByTagName.call(doc, WHOLE_DOCUMENT ? "html" : "body")[0];
+        }
+        return WHOLE_DOCUMENT ? doc.documentElement : body;
+      };
+      var _createIterator = function _createIterator2(root) {
+        return createNodeIterator.call(root.ownerDocument || root, root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_TEXT, null, false);
+      };
+      var _isClobbered = function _isClobbered2(elm) {
+        if (elm instanceof Text || elm instanceof Comment) {
+          return false;
+        }
+        if (typeof elm.nodeName !== "string" || typeof elm.textContent !== "string" || typeof elm.removeChild !== "function" || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== "function" || typeof elm.setAttribute !== "function" || typeof elm.namespaceURI !== "string" || typeof elm.insertBefore !== "function") {
+          return true;
+        }
+        return false;
+      };
+      var _isNode = function _isNode2(object2) {
+        return (typeof Node === "undefined" ? "undefined" : _typeof(Node)) === "object" ? object2 instanceof Node : object2 && (typeof object2 === "undefined" ? "undefined" : _typeof(object2)) === "object" && typeof object2.nodeType === "number" && typeof object2.nodeName === "string";
+      };
+      var _executeHook = function _executeHook2(entryPoint, currentNode, data) {
+        if (!hooks[entryPoint]) {
+          return;
+        }
+        arrayForEach(hooks[entryPoint], function(hook) {
+          hook.call(DOMPurify2, currentNode, data, CONFIG);
+        });
+      };
+      var _sanitizeElements = function _sanitizeElements2(currentNode) {
+        var content = void 0;
+        _executeHook("beforeSanitizeElements", currentNode, null);
+        if (_isClobbered(currentNode)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        if (stringMatch(currentNode.nodeName, /[\u0080-\uFFFF]/)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        var tagName = transformCaseFunc(currentNode.nodeName);
+        _executeHook("uponSanitizeElement", currentNode, {
+          tagName,
+          allowedTags: ALLOWED_TAGS
+        });
+        if (!_isNode(currentNode.firstElementChild) && (!_isNode(currentNode.content) || !_isNode(currentNode.content.firstElementChild)) && regExpTest(/<[/\w]/g, currentNode.innerHTML) && regExpTest(/<[/\w]/g, currentNode.textContent)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        if (tagName === "select" && regExpTest(/<template/i, currentNode.innerHTML)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
+          if (KEEP_CONTENT && !FORBID_CONTENTS[tagName]) {
+            var parentNode = getParentNode(currentNode) || currentNode.parentNode;
+            var childNodes = getChildNodes(currentNode) || currentNode.childNodes;
+            if (childNodes && parentNode) {
+              var childCount = childNodes.length;
+              for (var i = childCount - 1; i >= 0; --i) {
+                parentNode.insertBefore(cloneNode(childNodes[i], true), getNextSibling(currentNode));
+              }
+            }
+          }
+          _forceRemove(currentNode);
+          return true;
+        }
+        if (currentNode instanceof Element && !_checkValidNamespace(currentNode)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        if ((tagName === "noscript" || tagName === "noembed") && regExpTest(/<\/no(script|embed)/i, currentNode.innerHTML)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        if (SAFE_FOR_TEMPLATES && currentNode.nodeType === 3) {
+          content = currentNode.textContent;
+          content = stringReplace(content, MUSTACHE_EXPR$$1, " ");
+          content = stringReplace(content, ERB_EXPR$$1, " ");
+          if (currentNode.textContent !== content) {
+            arrayPush(DOMPurify2.removed, { element: currentNode.cloneNode() });
+            currentNode.textContent = content;
+          }
+        }
+        _executeHook("afterSanitizeElements", currentNode, null);
+        return false;
+      };
+      var _isValidAttribute = function _isValidAttribute2(lcTag, lcName, value) {
+        if (SANITIZE_DOM && (lcName === "id" || lcName === "name") && (value in document || value in formElement)) {
+          return false;
+        }
+        if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR$$1, lcName))
+          ;
+        else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR$$1, lcName))
+          ;
+        else if (!ALLOWED_ATTR[lcName] || FORBID_ATTR[lcName]) {
+          return false;
+        } else if (URI_SAFE_ATTRIBUTES[lcName])
+          ;
+        else if (regExpTest(IS_ALLOWED_URI$$1, stringReplace(value, ATTR_WHITESPACE$$1, "")))
+          ;
+        else if ((lcName === "src" || lcName === "xlink:href" || lcName === "href") && lcTag !== "script" && stringIndexOf(value, "data:") === 0 && DATA_URI_TAGS[lcTag])
+          ;
+        else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA$$1, stringReplace(value, ATTR_WHITESPACE$$1, "")))
+          ;
+        else if (!value)
+          ;
+        else {
+          return false;
+        }
+        return true;
+      };
+      var _sanitizeAttributes = function _sanitizeAttributes2(currentNode) {
+        var attr = void 0;
+        var value = void 0;
+        var lcName = void 0;
+        var l = void 0;
+        _executeHook("beforeSanitizeAttributes", currentNode, null);
+        var attributes = currentNode.attributes;
+        if (!attributes) {
+          return;
+        }
+        var hookEvent = {
+          attrName: "",
+          attrValue: "",
+          keepAttr: true,
+          allowedAttributes: ALLOWED_ATTR
+        };
+        l = attributes.length;
+        while (l--) {
+          attr = attributes[l];
+          var _attr = attr, name = _attr.name, namespaceURI = _attr.namespaceURI;
+          value = stringTrim(attr.value);
+          lcName = transformCaseFunc(name);
+          hookEvent.attrName = lcName;
+          hookEvent.attrValue = value;
+          hookEvent.keepAttr = true;
+          hookEvent.forceKeepAttr = void 0;
+          _executeHook("uponSanitizeAttribute", currentNode, hookEvent);
+          value = hookEvent.attrValue;
+          if (hookEvent.forceKeepAttr) {
+            continue;
+          }
+          _removeAttribute(name, currentNode);
+          if (!hookEvent.keepAttr) {
+            continue;
+          }
+          if (regExpTest(/\/>/i, value)) {
+            _removeAttribute(name, currentNode);
+            continue;
+          }
+          if (SAFE_FOR_TEMPLATES) {
+            value = stringReplace(value, MUSTACHE_EXPR$$1, " ");
+            value = stringReplace(value, ERB_EXPR$$1, " ");
+          }
+          var lcTag = transformCaseFunc(currentNode.nodeName);
+          if (!_isValidAttribute(lcTag, lcName, value)) {
+            continue;
+          }
+          try {
+            if (namespaceURI) {
+              currentNode.setAttributeNS(namespaceURI, name, value);
+            } else {
+              currentNode.setAttribute(name, value);
+            }
+            arrayPop(DOMPurify2.removed);
+          } catch (_) {
+          }
+        }
+        _executeHook("afterSanitizeAttributes", currentNode, null);
+      };
+      var _sanitizeShadowDOM = function _sanitizeShadowDOM2(fragment) {
+        var shadowNode = void 0;
+        var shadowIterator = _createIterator(fragment);
+        _executeHook("beforeSanitizeShadowDOM", fragment, null);
+        while (shadowNode = shadowIterator.nextNode()) {
+          _executeHook("uponSanitizeShadowNode", shadowNode, null);
+          if (_sanitizeElements(shadowNode)) {
+            continue;
+          }
+          if (shadowNode.content instanceof DocumentFragment) {
+            _sanitizeShadowDOM2(shadowNode.content);
+          }
+          _sanitizeAttributes(shadowNode);
+        }
+        _executeHook("afterSanitizeShadowDOM", fragment, null);
+      };
+      DOMPurify2.sanitize = function(dirty, cfg) {
+        var body = void 0;
+        var importedNode = void 0;
+        var currentNode = void 0;
+        var oldNode = void 0;
+        var returnNode = void 0;
+        IS_EMPTY_INPUT = !dirty;
+        if (IS_EMPTY_INPUT) {
+          dirty = "<!-->";
+        }
+        if (typeof dirty !== "string" && !_isNode(dirty)) {
+          if (typeof dirty.toString !== "function") {
+            throw typeErrorCreate("toString is not a function");
+          } else {
+            dirty = dirty.toString();
+            if (typeof dirty !== "string") {
+              throw typeErrorCreate("dirty is not a string, aborting");
+            }
+          }
+        }
+        if (!DOMPurify2.isSupported) {
+          if (_typeof(window2.toStaticHTML) === "object" || typeof window2.toStaticHTML === "function") {
+            if (typeof dirty === "string") {
+              return window2.toStaticHTML(dirty);
+            }
+            if (_isNode(dirty)) {
+              return window2.toStaticHTML(dirty.outerHTML);
+            }
+          }
+          return dirty;
+        }
+        if (!SET_CONFIG) {
+          _parseConfig(cfg);
+        }
+        DOMPurify2.removed = [];
+        if (typeof dirty === "string") {
+          IN_PLACE = false;
+        }
+        if (IN_PLACE)
+          ;
+        else if (dirty instanceof Node) {
+          body = _initDocument("<!---->");
+          importedNode = body.ownerDocument.importNode(dirty, true);
+          if (importedNode.nodeType === 1 && importedNode.nodeName === "BODY") {
+            body = importedNode;
+          } else if (importedNode.nodeName === "HTML") {
+            body = importedNode;
+          } else {
+            body.appendChild(importedNode);
+          }
+        } else {
+          if (!RETURN_DOM && !SAFE_FOR_TEMPLATES && !WHOLE_DOCUMENT && dirty.indexOf("<") === -1) {
+            return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(dirty) : dirty;
+          }
+          body = _initDocument(dirty);
+          if (!body) {
+            return RETURN_DOM ? null : emptyHTML;
+          }
+        }
+        if (body && FORCE_BODY) {
+          _forceRemove(body.firstChild);
+        }
+        var nodeIterator = _createIterator(IN_PLACE ? dirty : body);
+        while (currentNode = nodeIterator.nextNode()) {
+          if (currentNode.nodeType === 3 && currentNode === oldNode) {
+            continue;
+          }
+          if (_sanitizeElements(currentNode)) {
+            continue;
+          }
+          if (currentNode.content instanceof DocumentFragment) {
+            _sanitizeShadowDOM(currentNode.content);
+          }
+          _sanitizeAttributes(currentNode);
+          oldNode = currentNode;
+        }
+        oldNode = null;
+        if (IN_PLACE) {
+          return dirty;
+        }
+        if (RETURN_DOM) {
+          if (RETURN_DOM_FRAGMENT) {
+            returnNode = createDocumentFragment.call(body.ownerDocument);
+            while (body.firstChild) {
+              returnNode.appendChild(body.firstChild);
+            }
+          } else {
+            returnNode = body;
+          }
+          if (RETURN_DOM_IMPORT) {
+            returnNode = importNode.call(originalDocument, returnNode, true);
+          }
+          return returnNode;
+        }
+        var serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
+        if (SAFE_FOR_TEMPLATES) {
+          serializedHTML = stringReplace(serializedHTML, MUSTACHE_EXPR$$1, " ");
+          serializedHTML = stringReplace(serializedHTML, ERB_EXPR$$1, " ");
+        }
+        return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
+      };
+      DOMPurify2.setConfig = function(cfg) {
+        _parseConfig(cfg);
+        SET_CONFIG = true;
+      };
+      DOMPurify2.clearConfig = function() {
+        CONFIG = null;
+        SET_CONFIG = false;
+      };
+      DOMPurify2.isValidAttribute = function(tag, attr, value) {
+        if (!CONFIG) {
+          _parseConfig({});
+        }
+        var lcTag = transformCaseFunc(tag);
+        var lcName = transformCaseFunc(attr);
+        return _isValidAttribute(lcTag, lcName, value);
+      };
+      DOMPurify2.addHook = function(entryPoint, hookFunction) {
+        if (typeof hookFunction !== "function") {
+          return;
+        }
+        hooks[entryPoint] = hooks[entryPoint] || [];
+        arrayPush(hooks[entryPoint], hookFunction);
+      };
+      DOMPurify2.removeHook = function(entryPoint) {
+        if (hooks[entryPoint]) {
+          arrayPop(hooks[entryPoint]);
+        }
+      };
+      DOMPurify2.removeHooks = function(entryPoint) {
+        if (hooks[entryPoint]) {
+          hooks[entryPoint] = [];
+        }
+      };
+      DOMPurify2.removeAllHooks = function() {
+        hooks = {};
+      };
+      return DOMPurify2;
+    }
+    var purify = createDOMPurify();
+    module2.exports = purify;
+  }
+});
+
+// .svelte-kit/netlify/entry.js
+__export(exports, {
+  handler: () => handler
+});
+init_shims();
 
 // .svelte-kit/output/server/app.js
+init_shims();
+var import_dompurify = __toModule(require_purify_cjs());
 var __accessCheck = (obj, member, msg) => {
   if (!member.has(obj))
     throw TypeError("Cannot " + msg);
@@ -2456,7 +3278,7 @@ function add_attribute(name, value, boolean) {
 }
 function afterUpdate() {
 }
-var css$7 = {
+var css$9 = {
   code: "#svelte-announcer.svelte-1j55zn5{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}",
   map: `{"version":3,"file":"root.svelte","sources":["root.svelte"],"sourcesContent":["<!-- This file is generated by @sveltejs/kit \u2014 do not edit it! -->\\n<script>\\n\\timport { setContext, afterUpdate, onMount } from 'svelte';\\n\\n\\t// stores\\n\\texport let stores;\\n\\texport let page;\\n\\n\\texport let components;\\n\\texport let props_0 = null;\\n\\texport let props_1 = null;\\n\\texport let props_2 = null;\\n\\n\\tsetContext('__svelte__', stores);\\n\\n\\t$: stores.page.set(page);\\n\\tafterUpdate(stores.page.notify);\\n\\n\\tlet mounted = false;\\n\\tlet navigated = false;\\n\\tlet title = null;\\n\\n\\tonMount(() => {\\n\\t\\tconst unsubscribe = stores.page.subscribe(() => {\\n\\t\\t\\tif (mounted) {\\n\\t\\t\\t\\tnavigated = true;\\n\\t\\t\\t\\ttitle = document.title || 'untitled page';\\n\\t\\t\\t}\\n\\t\\t});\\n\\n\\t\\tmounted = true;\\n\\t\\treturn unsubscribe;\\n\\t});\\n<\/script>\\n\\n<svelte:component this={components[0]} {...(props_0 || {})}>\\n\\t{#if components[1]}\\n\\t\\t<svelte:component this={components[1]} {...(props_1 || {})}>\\n\\t\\t\\t{#if components[2]}\\n\\t\\t\\t\\t<svelte:component this={components[2]} {...(props_2 || {})}/>\\n\\t\\t\\t{/if}\\n\\t\\t</svelte:component>\\n\\t{/if}\\n</svelte:component>\\n\\n{#if mounted}\\n\\t<div id=\\"svelte-announcer\\" aria-live=\\"assertive\\" aria-atomic=\\"true\\">\\n\\t\\t{#if navigated}\\n\\t\\t\\t{title}\\n\\t\\t{/if}\\n\\t</div>\\n{/if}\\n\\n<style>\\n\\t#svelte-announcer {\\n\\t\\tposition: absolute;\\n\\t\\tleft: 0;\\n\\t\\ttop: 0;\\n\\t\\tclip: rect(0 0 0 0);\\n\\t\\tclip-path: inset(50%);\\n\\t\\toverflow: hidden;\\n\\t\\twhite-space: nowrap;\\n\\t\\twidth: 1px;\\n\\t\\theight: 1px;\\n\\t}\\n</style>"],"names":[],"mappings":"AAsDC,iBAAiB,eAAC,CAAC,AAClB,QAAQ,CAAE,QAAQ,CAClB,IAAI,CAAE,CAAC,CACP,GAAG,CAAE,CAAC,CACN,IAAI,CAAE,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CACnB,SAAS,CAAE,MAAM,GAAG,CAAC,CACrB,QAAQ,CAAE,MAAM,CAChB,WAAW,CAAE,MAAM,CACnB,KAAK,CAAE,GAAG,CACV,MAAM,CAAE,GAAG,AACZ,CAAC"}`
 };
@@ -2481,7 +3303,7 @@ var Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     $$bindings.props_1(props_1);
   if ($$props.props_2 === void 0 && $$bindings.props_2 && props_2 !== void 0)
     $$bindings.props_2(props_2);
-  $$result.css.add(css$7);
+  $$result.css.add(css$9);
   {
     stores.page.set(page);
   }
@@ -2519,9 +3341,9 @@ function init(settings = default_settings) {
     amp: false,
     dev: false,
     entry: {
-      file: assets + "/_app/start-0bf24fd1.js",
+      file: assets + "/_app/start-ec5f77ea.js",
       css: [assets + "/_app/assets/start-61d1577b.css", assets + "/_app/assets/vendor-2a24d4dd.css"],
-      js: [assets + "/_app/start-0bf24fd1.js", assets + "/_app/chunks/vendor-eebe8c25.js", assets + "/_app/chunks/preload-helper-ec9aa979.js"]
+      js: [assets + "/_app/start-ec5f77ea.js", assets + "/_app/chunks/vendor-933c590a.js", assets + "/_app/chunks/preload-helper-ec9aa979.js"]
     },
     fetched: void 0,
     floc: false,
@@ -2550,7 +3372,7 @@ function init(settings = default_settings) {
 }
 var empty = () => ({});
 var manifest = {
-  assets: [{ "file": "favicon.png", "size": 1571, "type": "image/png" }],
+  assets: [{ "file": "discord.svg", "size": 1374, "type": "image/svg+xml" }, { "file": "favicon.png", "size": 1571, "type": "image/png" }, { "file": "medium.svg", "size": 409, "type": "image/svg+xml" }, { "file": "telegram.svg", "size": 742, "type": "image/svg+xml" }, { "file": "twitter.svg", "size": 602, "type": "image/svg+xml" }, { "file": "website.svg", "size": 2040, "type": "image/svg+xml" }],
   layout: "src/routes/__layout.svelte",
   error: ".svelte-kit/build/components/error.svelte",
   routes: [
@@ -2600,7 +3422,7 @@ var module_lookup = {
     return learn;
   })
 };
-var metadata_lookup = { "src/routes/__layout.svelte": { "entry": "pages/__layout.svelte-e716f165.js", "css": ["assets/pages/__layout.svelte-4a5309c7.css", "assets/vendor-2a24d4dd.css"], "js": ["pages/__layout.svelte-e716f165.js", "chunks/vendor-eebe8c25.js"], "styles": [] }, ".svelte-kit/build/components/error.svelte": { "entry": "error.svelte-b02060e8.js", "css": ["assets/vendor-2a24d4dd.css"], "js": ["error.svelte-b02060e8.js", "chunks/vendor-eebe8c25.js"], "styles": [] }, "src/routes/index.svelte": { "entry": "pages/index.svelte-b6a626e1.js", "css": ["assets/vendor-2a24d4dd.css"], "js": ["pages/index.svelte-b6a626e1.js", "chunks/vendor-eebe8c25.js"], "styles": [] }, "src/routes/apply.svelte": { "entry": "pages/apply.svelte-95e38d08.js", "css": ["assets/pages/apply.svelte-405a57be.css", "assets/vendor-2a24d4dd.css"], "js": ["pages/apply.svelte-95e38d08.js", "chunks/vendor-eebe8c25.js", "chunks/preload-helper-ec9aa979.js"], "styles": [] }, "src/routes/learn.svelte": { "entry": "pages/learn.svelte-44f442be.js", "css": ["assets/vendor-2a24d4dd.css"], "js": ["pages/learn.svelte-44f442be.js", "chunks/vendor-eebe8c25.js"], "styles": [] } };
+var metadata_lookup = { "src/routes/__layout.svelte": { "entry": "pages/__layout.svelte-4a9e3df8.js", "css": ["assets/pages/__layout.svelte-4a5309c7.css", "assets/vendor-2a24d4dd.css"], "js": ["pages/__layout.svelte-4a9e3df8.js", "chunks/vendor-933c590a.js"], "styles": [] }, ".svelte-kit/build/components/error.svelte": { "entry": "error.svelte-abebbb7e.js", "css": ["assets/vendor-2a24d4dd.css"], "js": ["error.svelte-abebbb7e.js", "chunks/vendor-933c590a.js"], "styles": [] }, "src/routes/index.svelte": { "entry": "pages/index.svelte-02e522bb.js", "css": ["assets/vendor-2a24d4dd.css"], "js": ["pages/index.svelte-02e522bb.js", "chunks/vendor-933c590a.js"], "styles": [] }, "src/routes/apply.svelte": { "entry": "pages/apply.svelte-3a7f797b.js", "css": ["assets/pages/apply.svelte-405a57be.css", "assets/vendor-2a24d4dd.css"], "js": ["pages/apply.svelte-3a7f797b.js", "chunks/vendor-933c590a.js", "chunks/preload-helper-ec9aa979.js"], "styles": [] }, "src/routes/learn.svelte": { "entry": "pages/learn.svelte-b41daa08.js", "css": ["assets/vendor-2a24d4dd.css"], "js": ["pages/learn.svelte-b41daa08.js", "chunks/vendor-933c590a.js"], "styles": [] } };
 async function load_component(file) {
   const { entry, css: css2, js, styles } = metadata_lookup[file];
   return {
@@ -2635,7 +3457,7 @@ var Container = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   getEventsAction();
   return `<div${spread([escape_object($$restProps)], "container")}>${slots.default ? slots.default({}) : ``}</div>`;
 });
-var css$6 = {
+var css$8 = {
   code: "nav.svelte-a8gbht{width:100%;flex-direction:row}.nav-left{justify-content:flex-start\n	}.nav-right{justify-content:flex-end\n	}",
   map: `{"version":3,"file":"Nav.svelte","sources":["Nav.svelte"],"sourcesContent":["<script>\\n\\timport {getEventsAction} from './utils';\\n\\n\\tconst events = getEventsAction();\\n<\/script>\\n\\n<nav class:nav={1} use:events {...$$restProps}>\\n{#if $$slots.left}\\n\\t<div class=\\"nav-left\\">\\n\\t\\t<slot name=\\"left\\"></slot>\\n\\t</div>\\n{/if}\\n{#if $$slots.center}\\n\\t<div class=\\"nav-center\\">\\n\\t\\t<slot name=\\"center\\"></slot>\\n\\t</div>\\n{/if}\\n{#if $$slots.right}\\n\\t<div class=\\"nav-right\\">\\n\\t\\t<slot name=\\"right\\"></slot>\\n\\t</div>\\n{/if}\\n</nav>\\n\\n<style>\\n\\tnav{\\n\\t\\twidth:100%;\\n\\t\\tflex-direction: row;\\n\\t}\\n\\n\\t:global(.nav-left) {\\n\\t\\tjustify-content: flex-start\\n\\t}\\n\\t:global(.nav-right) {\\n\\t\\tjustify-content: flex-end\\n\\t}\\n</style>\\n"],"names":[],"mappings":"AAyBC,iBAAG,CAAC,AACH,MAAM,IAAI,CACV,cAAc,CAAE,GAAG,AACpB,CAAC,AAEO,SAAS,AAAE,CAAC,AACnB,eAAe,CAAE,UAAU;CAC5B,CAAC,AACO,UAAU,AAAE,CAAC,AACpB,eAAe,CAAE,QAAQ;CAC1B,CAAC"}`
 };
@@ -2643,11 +3465,122 @@ var Nav = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $$restProps = compute_rest_props($$props, []);
   let $$slots = compute_slots(slots);
   getEventsAction();
-  $$result.css.add(css$6);
+  $$result.css.add(css$8);
   return `<nav${spread([escape_object($$restProps)], "nav svelte-a8gbht")}>${$$slots.left ? `<div class="${"nav-left"}">${slots.left ? slots.left({}) : ``}</div>` : ``}
 ${$$slots.center ? `<div class="${"nav-center"}">${slots.center ? slots.center({}) : ``}</div>` : ``}
 ${$$slots.right ? `<div class="${"nav-right"}">${slots.right ? slots.right({}) : ``}</div>` : ``}
 </nav>`;
+});
+var Card = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $$restProps = compute_rest_props($$props, []);
+  let $$slots = compute_slots(slots);
+  getEventsAction();
+  return `<div${spread([escape_object($$restProps)], "card")}>${$$slots.header ? `<header>${slots.header ? slots.header({}) : ``}</header>` : ``}
+	${slots.default ? slots.default({}) : ``}
+${$$slots.footer ? `<footer>${slots.footer ? slots.footer({}) : ``}</footer>` : ``}</div>`;
+});
+var css$7 = {
+  code: "@keyframes svelte-1q4wean-spin{to{transform:rotate(360deg) }}@keyframes svelte-1q4wean-spin-inverse{to{transform:rotate(-360deg) }}svg.svelte-1q4wean.svelte-1q4wean{vertical-align:middle}span.svelte-1q4wean.svelte-1q4wean{display:inline-block;line-height:1}span.svelte-1q4wean img.svelte-1q4wean{padding:0px;margin:0px;vertical-align:middle}.spinCW.svelte-1q4wean.svelte-1q4wean{animation:svelte-1q4wean-spin linear 2s infinite;transform-origin:center}.spinCCW.svelte-1q4wean.svelte-1q4wean{animation:svelte-1q4wean-spin-inverse linear 2s infinite;transform-origin:center}",
+  map: `{"version":3,"file":"Icon.svelte","sources":["Icon.svelte"],"sourcesContent":["<script>\\n\\timport {getEventsAction} from './utils';\\n\\n\\tconst events = getEventsAction();\\n\\n\\texport let src = null;\\n\\texport let size = 1;\\n\\texport let color = null;\\n\\texport let flipH = null;\\n\\texport let flipV = null;\\n\\texport let rotate = 0;\\n\\texport let spin = false;\\n\\n\\tlet path = false;\\n\\tlet use = false;\\n\\tlet url = false;\\n\\n\\t//Icon source\\n\\t$: if(!!src && src.toLowerCase().trim().endsWith('.svg')) {\\n\\t\\turl = src;\\n\\t\\tpath = use = false;\\n\\t} else if(!!src && src.toLowerCase().trim().includes('.svg#')) {\\n\\t\\tuse = src;\\n\\t\\turl = path = false;\\n\\t} else if(!!src) {\\n\\t\\tpath = src;\\n\\t\\turl = use = false;\\n\\t}\\n\\n\\t// SPIN properties\\n\\t$: inverse = (typeof spin !== \\"boolean\\" && spin < 0) ? true : false;\\n\\t$: spintime = Math.abs(spin === true ? 2 : spin);\\n\\t$: spinCW = (!!spin && !inverse);\\n\\t$: spinCCW = (!!spin && inverse);\\n\\n\\t// size\\n\\tif(Number(size)) size = Number(size);\\n\\t\\n\\t// styles\\n\\tconst getStyles = () => {\\n\\t\\tconst transform = [];\\n\\t\\tconst styles = [];\\n\\t\\tif (size !== null) {\\n\\t\\t\\tconst width = (typeof size === \\"string\\") ? size : \`\${size * 1.5}rem\`;\\n\\t\\t\\tstyles.push(['width',width]);\\n\\t\\t\\tstyles.push(['height',width]);\\n\\t\\t}\\n\\t\\tstyles.push( ['fill', (color !== null) ? color: 'currentColor'] );\\n\\t\\tif (flipH) {\\n\\t\\t\\ttransform.push(\\"scaleX(-1)\\");\\n\\t\\t}\\n\\t\\tif (flipV) {\\n\\t\\t\\ttransform.push(\\"scaleY(-1)\\");\\n\\t\\t}\\n\\t\\tif (rotate != 0) {\\n\\t\\t\\ttransform.push(\`rotate(\${rotate}deg)\`);\\n\\t\\n\\t\\t}\\n\\t\\tif(transform.length > 0) {\\n\\t\\t\\tstyles.push( ['transform', transform.join(' ')] );\\n\\t\\t\\tstyles.push( ['transform-origin', 'center'] );\\n\\t\\t}\\n\\t\\treturn styles.reduce((cur,item)=>{\\n\\t\\t\\treturn \`\${cur} \${item[0]}:\${item[1]};\`;\\n\\t\\t},'');\\n\\t}\\n\\t$: style = getStyles(size,color,flipH,flipV,rotate);\\n\\t$: aniStyle = (!!spin) ? \`animation-duration: \${spintime}s\` : undefined;\\n<\/script>\\n\\n{#if url}\\n\\t<span {style} use:events {...$$restProps}>\\n\\t\\t<img src=\\"{url}\\" alt=\\"\\" width=\\"100%\\" height=\\"100%\\" class:spinCW class:spinCCW style={aniStyle} />\\n\\t</span>\\n{:else if use}\\n\\t<svg viewBox=\\"0 0 24 24\\" {style} use:events {...$$restProps}>\\n\\t\\t<use xlink:href={use} class:spinCW class:spinCCW style={aniStyle}></use>\\n\\t</svg>\\n{:else}\\n\\t<svg viewBox=\\"0 0 24 24\\" {style} use:events {...$$restProps}>\\n\\t{#if spin !== false}\\n\\t\\t<g class:spinCW class:spinCCW style={aniStyle}>\\n\\t\\t\\t<path d={path}></path>\\n\\t\\t</g>\\n\\t{:else}\\n\\t\\t<path d={path}></path>\\n\\t{/if} \\n\\t</svg>\\n{/if}\\n\\n\\n<style>\\n\\t@keyframes spin { to { transform: rotate(360deg) } }\\n\\t@keyframes spin-inverse { to { transform: rotate(-360deg) } }\\n\\n\\tsvg{\\n\\t\\tvertical-align: middle;\\n\\t}\\n\\n\\tspan{\\n\\t\\tdisplay: inline-block;\\n\\t\\tline-height:1;\\n\\t}\\n\\n\\tspan img{\\n\\t\\tpadding:0px;\\n\\t\\tmargin:0px;\\n\\t\\tvertical-align: middle;\\n\\t}\\n\\n\\t.spinCW{\\n\\t\\tanimation: spin linear 2s infinite;\\n\\t\\ttransform-origin: center;\\n\\t}\\n\\n\\t.spinCCW{\\n\\t\\tanimation: spin-inverse linear 2s infinite;\\n\\t\\ttransform-origin: center;\\n\\t}\\n</style>"],"names":[],"mappings":"AA4FC,WAAW,mBAAK,CAAC,AAAC,EAAE,AAAC,CAAC,AAAC,SAAS,CAAE,OAAO,MAAM,CAAC,CAAC,CAAC,AAAC,CAAC,AACpD,WAAW,2BAAa,CAAC,AAAC,EAAE,AAAC,CAAC,AAAC,SAAS,CAAE,OAAO,OAAO,CAAC,CAAC,CAAC,AAAC,CAAC,AAE7D,iCAAG,CAAC,AACH,cAAc,CAAE,MAAM,AACvB,CAAC,AAED,kCAAI,CAAC,AACJ,OAAO,CAAE,YAAY,CACrB,YAAY,CAAC,AACd,CAAC,AAED,mBAAI,CAAC,kBAAG,CAAC,AACR,QAAQ,GAAG,CACX,OAAO,GAAG,CACV,cAAc,CAAE,MAAM,AACvB,CAAC,AAED,qCAAO,CAAC,AACP,SAAS,CAAE,mBAAI,CAAC,MAAM,CAAC,EAAE,CAAC,QAAQ,CAClC,gBAAgB,CAAE,MAAM,AACzB,CAAC,AAED,sCAAQ,CAAC,AACR,SAAS,CAAE,2BAAY,CAAC,MAAM,CAAC,EAAE,CAAC,QAAQ,CAC1C,gBAAgB,CAAE,MAAM,AACzB,CAAC"}`
+};
+var Icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let inverse;
+  let spintime;
+  let spinCW;
+  let spinCCW;
+  let style;
+  let aniStyle;
+  let $$restProps = compute_rest_props($$props, ["src", "size", "color", "flipH", "flipV", "rotate", "spin"]);
+  getEventsAction();
+  let { src: src2 = null } = $$props;
+  let { size = 1 } = $$props;
+  let { color: color2 = null } = $$props;
+  let { flipH = null } = $$props;
+  let { flipV = null } = $$props;
+  let { rotate = 0 } = $$props;
+  let { spin = false } = $$props;
+  let path2 = false;
+  let use = false;
+  let url = false;
+  if (Number(size))
+    size = Number(size);
+  const getStyles = () => {
+    const transform = [];
+    const styles = [];
+    if (size !== null) {
+      const width = typeof size === "string" ? size : `${size * 1.5}rem`;
+      styles.push(["width", width]);
+      styles.push(["height", width]);
+    }
+    styles.push(["fill", color2 !== null ? color2 : "currentColor"]);
+    if (flipH) {
+      transform.push("scaleX(-1)");
+    }
+    if (flipV) {
+      transform.push("scaleY(-1)");
+    }
+    if (rotate != 0) {
+      transform.push(`rotate(${rotate}deg)`);
+    }
+    if (transform.length > 0) {
+      styles.push(["transform", transform.join(" ")]);
+      styles.push(["transform-origin", "center"]);
+    }
+    return styles.reduce((cur, item) => {
+      return `${cur} ${item[0]}:${item[1]};`;
+    }, "");
+  };
+  if ($$props.src === void 0 && $$bindings.src && src2 !== void 0)
+    $$bindings.src(src2);
+  if ($$props.size === void 0 && $$bindings.size && size !== void 0)
+    $$bindings.size(size);
+  if ($$props.color === void 0 && $$bindings.color && color2 !== void 0)
+    $$bindings.color(color2);
+  if ($$props.flipH === void 0 && $$bindings.flipH && flipH !== void 0)
+    $$bindings.flipH(flipH);
+  if ($$props.flipV === void 0 && $$bindings.flipV && flipV !== void 0)
+    $$bindings.flipV(flipV);
+  if ($$props.rotate === void 0 && $$bindings.rotate && rotate !== void 0)
+    $$bindings.rotate(rotate);
+  if ($$props.spin === void 0 && $$bindings.spin && spin !== void 0)
+    $$bindings.spin(spin);
+  $$result.css.add(css$7);
+  {
+    if (!!src2 && src2.toLowerCase().trim().endsWith(".svg")) {
+      url = src2;
+      path2 = use = false;
+    } else if (!!src2 && src2.toLowerCase().trim().includes(".svg#")) {
+      use = src2;
+      url = path2 = false;
+    } else if (!!src2) {
+      path2 = src2;
+      url = use = false;
+    }
+  }
+  inverse = typeof spin !== "boolean" && spin < 0 ? true : false;
+  spintime = Math.abs(spin === true ? 2 : spin);
+  spinCW = !!spin && !inverse;
+  spinCCW = !!spin && inverse;
+  style = getStyles();
+  aniStyle = !!spin ? `animation-duration: ${spintime}s` : void 0;
+  return `${url ? `<span${spread([{ style: escape_attribute_value(style) }, escape_object($$restProps)], "svelte-1q4wean")}><img${add_attribute("src", url, 0)} alt="${""}" width="${"100%"}" height="${"100%"}"${add_attribute("style", aniStyle, 0)} class="${[
+    "svelte-1q4wean",
+    (spinCW ? "spinCW" : "") + " " + (spinCCW ? "spinCCW" : "")
+  ].join(" ").trim()}"></span>` : `${use ? `<svg${spread([
+    { viewBox: "0 0 24 24" },
+    { style: escape_attribute_value(style) },
+    escape_object($$restProps)
+  ], "svelte-1q4wean")}><use${add_attribute("xlink:href", use, 0)}${add_attribute("style", aniStyle, 0)} class="${[
+    "svelte-1q4wean",
+    (spinCW ? "spinCW" : "") + " " + (spinCCW ? "spinCCW" : "")
+  ].join(" ").trim()}"></use></svg>` : `<svg${spread([
+    { viewBox: "0 0 24 24" },
+    { style: escape_attribute_value(style) },
+    escape_object($$restProps)
+  ], "svelte-1q4wean")}>${spin !== false ? `<g${add_attribute("style", aniStyle, 0)} class="${[
+    "svelte-1q4wean",
+    (spinCW ? "spinCW" : "") + " " + (spinCCW ? "spinCCW" : "")
+  ].join(" ").trim()}"><path${add_attribute("d", path2, 0)}></path></g>` : `<path${add_attribute("d", path2, 0)}></path>`}</svg>`}`}`;
 });
 var subscriber_queue = [];
 function readable(value, start) {
@@ -2715,7 +3648,7 @@ var Tabs = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_active_tab();
   return `<nav${spread([escape_object($$restProps)], "tabs " + (full ? "is-full" : ""))}>${slots.default ? slots.default({}) : ``}</nav>`;
 });
-var css$5 = {
+var css$6 = {
   code: "span.svelte-3bldsl{padding:1rem 2rem;flex:0 1 auto;color:var(--color-darkGrey);border-bottom:2px solid var(--color-lightGrey);text-align:center;cursor:pointer}span.active.svelte-3bldsl{opacity:1;border-bottom:2px solid var(--color-darkGrey);border-color:var(--color-primary)}.tabs.is-full span.svelte-3bldsl{flex:1 1 auto}",
   map: `{"version":3,"file":"Tab.svelte","sources":["Tab.svelte"],"sourcesContent":["<script>\\n  import { getEventsAction } from './utils';\\n  import { getContext } from 'svelte';\\n  \\n  export let tabid = false;\\n\\n  const events = getEventsAction();\\n\\n  const active_tab = getContext('tabs:active');\\n  const id = getContext('tabs:getid')();\\n\\n  $: active = ($active_tab === tabid || $active_tab === id);\\n<\/script>\\n\\n<span class:active use:events {...$$restProps} on:click|preventDefault={()=>active_tab.set( (tabid === false) ? id : tabid)}>\\n  <slot></slot>\\n</span>\\n\\n<style>\\n  span {\\n      padding: 1rem 2rem;\\n      flex: 0 1 auto;\\n      color: var(--color-darkGrey);\\n      border-bottom: 2px solid var(--color-lightGrey);\\n      text-align: center;\\n      cursor: pointer;\\n  }\\n\\n  span.active {\\n      opacity: 1;\\n      border-bottom: 2px solid var(--color-darkGrey);\\n      border-color: var(--color-primary);\\n  }\\n\\n\\n  :global(.tabs.is-full) span {\\n      flex: 1 1 auto;\\n  }\\n</style>"],"names":[],"mappings":"AAmBE,IAAI,cAAC,CAAC,AACF,OAAO,CAAE,IAAI,CAAC,IAAI,CAClB,IAAI,CAAE,CAAC,CAAC,CAAC,CAAC,IAAI,CACd,KAAK,CAAE,IAAI,gBAAgB,CAAC,CAC5B,aAAa,CAAE,GAAG,CAAC,KAAK,CAAC,IAAI,iBAAiB,CAAC,CAC/C,UAAU,CAAE,MAAM,CAClB,MAAM,CAAE,OAAO,AACnB,CAAC,AAED,IAAI,OAAO,cAAC,CAAC,AACT,OAAO,CAAE,CAAC,CACV,aAAa,CAAE,GAAG,CAAC,KAAK,CAAC,IAAI,gBAAgB,CAAC,CAC9C,YAAY,CAAE,IAAI,eAAe,CAAC,AACtC,CAAC,AAGO,aAAa,AAAC,CAAC,IAAI,cAAC,CAAC,AACzB,IAAI,CAAE,CAAC,CAAC,CAAC,CAAC,IAAI,AAClB,CAAC"}`
 };
@@ -2730,11 +3663,25 @@ var Tab = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   const id = getContext("tabs:getid")();
   if ($$props.tabid === void 0 && $$bindings.tabid && tabid !== void 0)
     $$bindings.tabid(tabid);
-  $$result.css.add(css$5);
+  $$result.css.add(css$6);
   active = $active_tab === tabid || $active_tab === id;
   $$unsubscribe_active_tab();
   return `<span${spread([escape_object($$restProps)], (active ? "active" : "") + " svelte-3bldsl")}>${slots.default ? slots.default({}) : ``}
 </span>`;
+});
+var css$5 = {
+  code: ".container.svelte-4lwi8h{position:fixed;top:0px;left:0px;width:100vw;height:100vh;z-index:10000}.background.svelte-4lwi8h{position:fixed;top:0px;left:0px;width:100vw;height:100vh;background-color:black;opacity:0.5}.modal.svelte-4lwi8h{position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);min-width:400px;background-color:white}",
+  map: `{"version":3,"file":"Modal.svelte","sources":["Modal.svelte"],"sourcesContent":["<script>\\n    import {getEventsAction} from './utils';\\n    import {fade} from 'svelte/transition';\\n    \\n    export let open = false;\\n\\n    const events = getEventsAction();\\n\\n<\/script>\\n\\n\\n{#if open}\\n<div class=\\"container\\" transition:fade={{ duration: 200 }}>\\n    <div class=\\"background\\" on:click={e => open=false}/>\\n    <div class:modal={1} use:events {...$$restProps}><slot></slot></div>\\n</div>\\n{/if}\\n\\n<style>\\n.container{\\n    position:fixed;\\n    top:0px;\\n    left:0px;\\n    width:100vw;\\n    height:100vh;\\n    z-index:10000;\\n}\\n\\n.background{\\n    position:fixed;\\n    top:0px;\\n    left: 0px;\\n    width:100vw;\\n    height:100vh;\\n    background-color:black;\\n    opacity: 0.5;\\n}\\n\\n.modal{\\n    position: fixed;\\n    top: 50%;\\n    left: 50%;\\n    transform: translate(-50%, -50%);\\n    min-width:400px;\\n    background-color: white;\\n}\\n</style>\\n"],"names":[],"mappings":"AAmBA,wBAAU,CAAC,AACP,SAAS,KAAK,CACd,IAAI,GAAG,CACP,KAAK,GAAG,CACR,MAAM,KAAK,CACX,OAAO,KAAK,CACZ,QAAQ,KAAK,AACjB,CAAC,AAED,yBAAW,CAAC,AACR,SAAS,KAAK,CACd,IAAI,GAAG,CACP,IAAI,CAAE,GAAG,CACT,MAAM,KAAK,CACX,OAAO,KAAK,CACZ,iBAAiB,KAAK,CACtB,OAAO,CAAE,GAAG,AAChB,CAAC,AAED,oBAAM,CAAC,AACH,QAAQ,CAAE,KAAK,CACf,GAAG,CAAE,GAAG,CACR,IAAI,CAAE,GAAG,CACT,SAAS,CAAE,UAAU,IAAI,CAAC,CAAC,IAAI,CAAC,CAChC,UAAU,KAAK,CACf,gBAAgB,CAAE,KAAK,AAC3B,CAAC"}`
+};
+var Modal = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $$restProps = compute_rest_props($$props, ["open"]);
+  let { open = false } = $$props;
+  getEventsAction();
+  if ($$props.open === void 0 && $$bindings.open && open !== void 0)
+    $$bindings.open(open);
+  $$result.css.add(css$5);
+  return `${open ? `<div class="${"container svelte-4lwi8h"}"><div class="${"background svelte-4lwi8h"}"></div>
+    <div${spread([escape_object($$restProps)], "modal svelte-4lwi8h")}>${slots.default ? slots.default({}) : ``}</div></div>` : ``}`;
 });
 var Nav_1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Nav, "Nav").$$render($$result, {}, {}, {
@@ -2781,17 +3728,16 @@ var error = /* @__PURE__ */ Object.freeze({
   load
 });
 var Routes = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${$$result.head += `${$$result.title = `<title>RadPad - The Radix Launchpad</title>`, ""}`, ""}
+  return `${$$result.head += `${$$result.title = `<title>Radstarter - The Radix Launchpad</title>`, ""}`, ""}
 ${validate_component(Container, "Container").$$render($$result, {}, {}, {
-    default: () => `<div class="${"intro-main"}"><h1>The Radix Launchpad</h1>
-    <p>RadPad is leveraging swarm knowledge, to bring
+    default: () => `<div class="${"intro-main"}"><h3>We leverage swarm knowledge to bring
       you the best investment opportunities on Radix.
-      We do raises and incubate new projects with the collective.
-    </p></div>
-  <label>Get notified about the release</label>
-  <input type="${"email"}" placeholder="${"email"}">
-  <button>Join</button>
-  <h3>Featured Ventures</h3>`
+    </h3>
+    <h4>Access rounds for high quality projects selected by the DAO</h4></div>
+  <div class="${"featured-projects"}"><h3>Featured Projects</h3>
+    <hr>
+    COMING SOON
+  </div>`
   })}`;
 });
 var index = /* @__PURE__ */ Object.freeze({
@@ -4017,13 +4963,23 @@ function curveBasis(context) {
 var organizationName = writable("");
 var organizationType = writable("");
 var shortDesc = writable("");
-var tokenAddress = writable("");
 var website = writable("");
 var telegram = writable("");
 var discord = writable("");
 var twitter = writable("");
+var medium = writable("");
+var whitepaper = writable("");
 var deepdive = writable([{ insert: "" }]);
+var cover = writable();
 var logo = writable();
+var tokenAddress = writable("");
+var tokenName = writable("");
+var tokenTotalSupply = writable(0);
+var tokenIcon = writable("");
+var tokenTicker = writable("");
+var tokenFixedSupply = writable(false);
+var tokenTotalRaised = writable(0);
+var outputHTML = writable("");
 var deepdiveTemplatePrivate = readable([
   { insert: "1. PROJECT OVERVIEW" },
   { insert: "\n", attributes: { header: 2 } },
@@ -4114,7 +5070,7 @@ var factorExp = writable(0);
 var factorLin = writable(0);
 var css$4 = {
   code: "path.svelte-1udjkcc{stroke:pink;stroke-width:2;fill:none;stroke-linecap:round}.point.svelte-1udjkcc{fill:#000}",
-  map: `{"version":3,"file":"limited-curve-creator.svelte","sources":["limited-curve-creator.svelte"],"sourcesContent":["<script>\\n\\timport { scaleLinear } from 'd3-scale';\\n\\timport { line, curveBasis } from 'd3-shape';\\n\\timport { bisector} from 'd3-array';\\n\\timport { onMount } from 'svelte';\\n\\n\\timport Axis from './Axis.svelte';\\n\\timport {\\n\\t\\tmode,\\n\\t\\ttotalSupply,\\n\\t\\trange,\\n\\t\\toffset,\\n\\t\\tfactorExp,\\n\\t\\tfactorLin\\n\\t} from '../stores/apply-store.js'\\n\\n\\tconst height = 400;\\n\\tconst margin = 40;\\n\\tlet width;\\n\\n\\tlet x = margin;\\n\\tlet y = height - margin;\\n\\tlet data = [{x: 0, y:0}];\\n\\tlet point = data[0];\\n\\tlet m = { x:0, y:0};\\n\\tvar bisect = bisector((d) => d.x).right;\\n\\n\\tlet price;\\n\\tlet profitTilPoint;\\n\\tlet profitTilPointDisplay;\\n\\n\\t$: xScale = scaleLinear()\\n\\t\\t.domain([0, $totalSupply])\\n\\t\\t.range([margin, width - margin]);\\n\\n\\t$: yScale = scaleLinear()\\n\\t\\t.domain([0, $range])\\n\\t\\t.range([height - margin, margin]);\\n\\n\\t$: factorExpLocal = ($range - $offset) / Math.pow($totalSupply, 2);\\n\\t$: minStepExp =  ($range - $offset) / (Math.pow($totalSupply, 2) * 100) ;\\n\\t$: limitExp = ($range - $offset) / Math.pow($totalSupply, 2);\\n\\t$: factorLinLocal = ($range - $offset) / $totalSupply;\\n\\t$: minStep = ($range - $offset) / ($totalSupply * 100);\\n\\t$: limit = ($range - $offset) / $totalSupply;\\n\\n\\n\\tlet pathLine = line()\\n\\t\\t.x(d => xScale(d.x))\\n\\t\\t.y(d => yScale(d.y))\\n\\t\\t.curve(curveBasis);\\n\\t\\n\\t$: step = $totalSupply / width;\\n\\n\\tlet funcLin = function(x) {\\n\\t\\treturn x * factorLinLocal + $offset;\\n\\t}\\n\\n\\tlet funcExp = function(x) {\\n\\t\\treturn Math.pow(x,2) * factorExpLocal + $offset;\\n\\t}\\n\\n\\tfunction calculatePoint(){\\n\\t\\tlet i = bisect(data, xScale.invert(m.x));\\n\\n\\t\\tif (i < data.length) {\\n\\t\\t\\tpoint = data[i];\\n\\t\\t}\\n\\t\\t\\n\\t\\tx = xScale(point.x);\\n\\t\\ty = yScale(point.y);\\n\\t\\t\\n\\t\\tprice = Number(point.y.toFixed(2));\\n\\n\\t\\tif ($mode == 'exp'){\\n\\t\\t\\tprofitTilPoint = (point.x * (point.x + 1) * (2 * point.x + 1)) / 6 * factorExpLocal + $offset * point.x;\\n\\t\\t}\\n\\t\\tif ($mode == 'lin') {\\n\\t\\t\\tprofitTilPoint = (point.x * ( point.x + 1) / 2) * factorLinLocal + $offset * point.x;\\n\\t\\t}\\n\\t\\tprofitTilPointDisplay = Number(profitTilPoint).toLocaleString();\\n\\t}\\n\\n\\tfunction resample()  {\\n\\t\\twhile(data.length) {\\n\\t\\t\\tdata.pop()\\n\\t\\t}\\n\\t\\tif($offset < 0) { $offset = 0 }\\n\\t\\tfor (let i = 0; i < $totalSupply; i += step) {\\n\\t\\t\\tlet z;\\n\\t\\t\\t\\tif ($mode == 'lin'){\\n\\t\\t\\t\\t\\tz = funcLin(i);\\n\\t\\t\\t\\t} else {\\n\\t\\t\\t\\t\\tz = funcExp(i);\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tdata.push({\\n\\t\\t\\t\\t\\tx: i,\\n\\t\\t\\t\\t\\ty: z\\n\\t\\t\\t\\t})\\n\\t\\t}\\n\\t\\t//Force trigger path update \\n\\t\\tpathLine = pathLine;\\n\\t\\tcalculatePoint();\\n\\t}\\n\\n\\tfunction handleMousemove(event) {\\n\\t\\tm.x = event.offsetX;\\n\\t\\tm.y = event.offsetY;\\n\\t\\t\\n\\t\\tcalculatePoint();\\n\\t}\\n\\n\\tfunction setStore() {\\n\\t\\t$factorExp = factorExpLocal;\\n\\t\\t$factorLin = factorLinLocal;\\n\\t}\\n\\t\\n\\t//Count for not updating before width is set\\n\\tlet count = 0;\\n\\t$: {\\n\\t\\t//Redraw pathLine and tooltip when width updates\\n\\t\\tpathLine = pathLine;\\n\\t\\tif (count > 0) {\\n\\t\\t\\tx = xScale(point.x);\\n\\t\\t\\ty = yScale(point.y);\\n\\t\\t}\\n\\t\\tcount++;\\n\\t}\\n\\t\\n\\tonMount(async () => {\\n\\t\\tfactorExpLocal = $factorExp;\\n\\t\\tfactorLinLocal = $factorLin;\\n\\t\\tconst sleep = ms => new Promise(f => setTimeout(f, ms));\\n\\t\\tawait sleep(10);\\n\\t\\tresample();\\n\\t\\tpathLine = pathLine;\\n\\n\\t});\\n\\n<\/script>\\n<p></p>\\n<div class='navigation'>\\n\\t<p>\\n\\t\\t<label for=\\"mode\\">Mode</label>\\n\\t\\t<select bind:value={$mode} on:change={resample}>\\n\\t\\t\\t<option value=\\"lin\\">Linear</option>\\n\\t\\t\\t<option value=\\"exp\\">Exponential</option>\\n\\t\\t</select>\\n\\t</p>\\n\\t<p>\\n\\t\\t<label for=\\"tokens-loaded\\">Total tokens for sale</label>\\n\\t\\t<input type=\\"number\\" bind:value={$totalSupply} on:input={resample}>\\n\\t</p>\\n\\t\\n\\t<p>\\n\\t\\t<label for=\\"$range\\">Range</label>\\n\\t\\t<input type =\\"range\\" min=1 max=33 bind:value={$range} on:input={resample}>\\n\\t</p>\\n\\n\\t<p>\\n\\t<label for=\\"multiplier\\">Factor</label>\\n\\t\\t{#if $mode == 'lin'}\\n\\t\\t\\t<input type=range step={minStep} max={limit} bind:value={factorLinLocal} on:input={resample} on:change={setStore}>\\n\\t\\t{/if}\\n\\t\\t{#if $mode == 'exp'}\\n\\t\\t\\t<input type=\\"range\\" step={minStepExp} max={limitExp} bind:value={factorExpLocal} on:input={resample} on:change={setStore}>\\n\\t\\t{/if}\\n\\t</p>\\n\\t<p>\\n\\t\\t<label for=\\"offset\\" >offset</label>\\n\\t\\t<input type=\\"number\\" step=0.1 bind:value={$offset} on:change={resample}>\\n\\t</p>\\n</div>\\n\\n<div class='limited-curve' bind:clientWidth={width} >\\n\\t{#if width}\\n\\t\\t<svg width={width} height={height} on:mousemove={handleMousemove}>\\n\\t\\t\\t<Axis {width} {height} {margin} scale={xScale} position='bottom' />\\n\\t\\t\\t<Axis {width} {height} {margin} scale={yScale} position='left' />\\n\\t\\t\\t<path d={pathLine(data)}/>\\n\\t\\t\\t<circle class=\\"point\\" cx={x} cy={y} r=\\"4\\" />\\n\\t\\t</svg>\\n\\t{/if}\\n</div>\\n<div class=\\"output-point\\">\\n\\tToken price: {price} XRD\\n\\tTotal earnings: {profitTilPointDisplay} XRD\\n</div>\\n\\n<style>\\n\\tpath {\\n\\t\\tstroke: pink;\\n\\t\\tstroke-width: 2;\\n\\t\\tfill: none;\\n\\t\\tstroke-linecap: round;\\n\\t}\\n\\t.point {\\n\\t\\tfill: #000;\\n\\t}\\n</style>\\n"],"names":[],"mappings":"AA8LC,IAAI,eAAC,CAAC,AACL,MAAM,CAAE,IAAI,CACZ,YAAY,CAAE,CAAC,CACf,IAAI,CAAE,IAAI,CACV,cAAc,CAAE,KAAK,AACtB,CAAC,AACD,MAAM,eAAC,CAAC,AACP,IAAI,CAAE,IAAI,AACX,CAAC"}`
+  map: `{"version":3,"file":"limited-curve-creator.svelte","sources":["limited-curve-creator.svelte"],"sourcesContent":["<script>\\n\\timport { scaleLinear } from 'd3-scale';\\n\\timport { line, curveBasis } from 'd3-shape';\\n\\timport { bisector} from 'd3-array';\\n\\timport { onMount } from 'svelte';\\n\\n\\timport Axis from './Axis.svelte';\\n\\timport {\\n\\t\\tmode,\\n\\t\\ttotalSupply,\\n\\t\\trange,\\n\\t\\toffset,\\n\\t\\tfactorExp,\\n\\t\\tfactorLin\\n\\t} from '../stores/apply-store.js'\\n\\n\\tconst height = 400;\\n\\tconst margin = 40;\\n\\tlet width;\\n\\n\\tlet x = margin;\\n\\tlet y = height - margin;\\n\\tlet data = [{x: 0, y:0}];\\n\\tlet point = data[0];\\n\\tlet m = { x:0, y:0};\\n\\tvar bisect = bisector((d) => d.x).right;\\n\\n\\tlet price;\\n\\tlet profitTilPoint;\\n\\tlet profitTilPointDisplay;\\n\\n\\t$: xScale = scaleLinear()\\n\\t\\t.domain([0, $totalSupply])\\n\\t\\t.range([margin, width - margin]);\\n\\n\\t$: yScale = scaleLinear()\\n\\t\\t.domain([0, $range])\\n\\t\\t.range([height - margin, margin]);\\n\\n\\t$: factorExpLocal = ($range - $offset) / Math.pow($totalSupply, 2);\\n\\t$: minStepExp =  ($range - $offset) / (Math.pow($totalSupply, 2) * 100) ;\\n\\t$: limitExp = ($range - $offset) / Math.pow($totalSupply, 2);\\n\\t$: factorLinLocal = ($range - $offset) / $totalSupply;\\n\\t$: minStep = ($range - $offset) / ($totalSupply * 100);\\n\\t$: limit = ($range - $offset) / $totalSupply;\\n\\n\\n\\tlet pathLine = line()\\n\\t\\t.x(d => xScale(d.x))\\n\\t\\t.y(d => yScale(d.y))\\n\\t\\t.curve(curveBasis);\\n\\t\\n\\t$: step = $totalSupply / width;\\n\\n\\tlet funcLin = function(x) {\\n\\t\\treturn x * factorLinLocal + $offset;\\n\\t}\\n\\n\\tlet funcExp = function(x) {\\n\\t\\treturn Math.pow(x,2) * factorExpLocal + $offset;\\n\\t}\\n\\n\\tfunction calculatePoint(){\\n\\t\\tlet i = bisect(data, xScale.invert(m.x));\\n\\n\\t\\tif (i < data.length) {\\n\\t\\t\\tpoint = data[i];\\n\\t\\t}\\n\\t\\t\\n\\t\\tx = xScale(point.x);\\n\\t\\ty = yScale(point.y);\\n\\t\\t\\n\\t\\tprice = Number(point.y.toFixed(2));\\n\\n\\t\\tif ($mode == 'exp'){\\n\\t\\t\\tprofitTilPoint = (point.x * (point.x + 1) * (2 * point.x + 1)) / 6 * factorExpLocal + $offset * point.x;\\n\\t\\t}\\n\\t\\tif ($mode == 'lin') {\\n\\t\\t\\tprofitTilPoint = (point.x * ( point.x + 1) / 2) * factorLinLocal + $offset * point.x;\\n\\t\\t}\\n\\t\\tprofitTilPointDisplay = Number(profitTilPoint).toLocaleString();\\n\\t}\\n\\n\\tfunction resample()  {\\n\\t\\twhile(data.length) {\\n\\t\\t\\tdata.pop()\\n\\t\\t}\\n\\t\\tif($offset < 0) { $offset = 0 }\\n\\t\\tfor (let i = 0; i < $totalSupply; i += step) {\\n\\t\\t\\tlet z;\\n\\t\\t\\t\\tif ($mode == 'lin'){\\n\\t\\t\\t\\t\\tz = funcLin(i);\\n\\t\\t\\t\\t} else {\\n\\t\\t\\t\\t\\tz = funcExp(i);\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tdata.push({\\n\\t\\t\\t\\t\\tx: i,\\n\\t\\t\\t\\t\\ty: z\\n\\t\\t\\t\\t})\\n\\t\\t}\\n\\t\\t//Force trigger path update \\n\\t\\tpathLine = pathLine;\\n\\t\\tcalculatePoint();\\n\\t}\\n\\n\\tfunction handleMousemove(event) {\\n\\t\\tm.x = event.offsetX;\\n\\t\\tm.y = event.offsetY;\\n\\t\\t\\n\\t\\tcalculatePoint();\\n\\t}\\n\\n\\tfunction setStore() {\\n\\t\\t$factorExp = factorExpLocal;\\n\\t\\t$factorLin = factorLinLocal;\\n\\t}\\n\\t\\n\\t//Count for not updating before width is set\\n\\tlet count = 0;\\n\\t$: {\\n\\t\\t//Redraw pathLine and tooltip when width updates\\n\\t\\tpathLine = pathLine;\\n\\t\\tif (count > 0) {\\n\\t\\t\\tx = xScale(point.x);\\n\\t\\t\\ty = yScale(point.y);\\n\\t\\t}\\n\\t\\tcount++;\\n\\t}\\n\\t\\n\\tonMount(async () => {\\n\\t\\tfactorExpLocal = $factorExp;\\n\\t\\tfactorLinLocal = $factorLin;\\n\\t\\tconst sleep = ms => new Promise(f => setTimeout(f, ms));\\n\\t\\tawait sleep(10);\\n\\t\\tresample();\\n\\t\\tpathLine = pathLine;\\n\\n\\t});\\n\\t\\n\\tconst onInputTotalSupply = (e) => {\\n\\t\\t$totalSupply = e.target.value;\\n\\t\\tfactorExpLocal = ($range - $offset) / Math.pow($totalSupply, 2);\\n\\t\\tfactorLinLocal = ($range - $offset) / $totalSupply;\\n\\t\\tstep = $totalSupply / width;\\n\\t\\tresample();\\n\\t}\\n<\/script>\\n<p></p>\\n<div class='navigation'>\\n\\t<p>\\n\\t\\t<label for=\\"mode\\">Mode</label>\\n\\t\\t<select bind:value={$mode} on:change={resample}>\\n\\t\\t\\t<option value=\\"lin\\">Linear</option>\\n\\t\\t\\t<option value=\\"exp\\">Exponential</option>\\n\\t\\t</select>\\n\\t</p>\\n\\t<p>\\n\\t\\t<label for=\\"tokens-loaded\\">Total tokens for sale</label>\\n\\t\\t<input type=\\"number\\" on:input={onInputTotalSupply} bind:value={$totalSupply} >\\n\\n\\t</p>\\n\\t\\n\\t<p>\\n\\t\\t<label for=\\"$range\\">Range</label>\\n\\t\\t<input type =\\"range\\" min=1 max=33 bind:value={$range} on:input={resample}>\\n\\t</p>\\n\\n\\t<p>\\n\\t<label for=\\"multiplier\\">Factor</label>\\n\\t\\t{#if $mode == 'lin'}\\n\\t\\t\\t<input type=range step={minStep} max={limit} bind:value={factorLinLocal} on:input={resample} on:change={setStore}>\\n\\t\\t{/if}\\n\\t\\t{#if $mode == 'exp'}\\n\\t\\t\\t<input type=\\"range\\" step={minStepExp} max={limitExp} bind:value={factorExpLocal} on:input={resample} on:change={setStore}>\\n\\t\\t{/if}\\n\\t</p>\\n\\t<p>\\n\\t\\t<label for=\\"offset\\" >offset</label>\\n\\t\\t<input type=\\"number\\" step=0.1 bind:value={$offset} on:change={resample}>\\n\\t</p>\\n</div>\\n\\n<div class='limited-curve' bind:clientWidth={width} >\\n\\t{#if width}\\n\\t\\t<svg width={width} height={height} on:mousemove={handleMousemove}>\\n\\t\\t\\t<Axis {width} {height} {margin} scale={xScale} position='bottom' />\\n\\t\\t\\t<Axis {width} {height} {margin} scale={yScale} position='left' />\\n\\t\\t\\t<path d={pathLine(data)}/>\\n\\t\\t\\t<circle class=\\"point\\" cx={x} cy={y} r=\\"4\\" />\\n\\t\\t</svg>\\n\\t{/if}\\n</div>\\n<div class=\\"output-point\\">\\n\\tToken price: {price} XRD\\n\\tTotal earnings: {profitTilPointDisplay} XRD\\n</div>\\n\\n<style>\\n\\tpath {\\n\\t\\tstroke: pink;\\n\\t\\tstroke-width: 2;\\n\\t\\tfill: none;\\n\\t\\tstroke-linecap: round;\\n\\t}\\n\\t.point {\\n\\t\\tfill: #000;\\n\\t}\\n</style>\\n"],"names":[],"mappings":"AAsMC,IAAI,eAAC,CAAC,AACL,MAAM,CAAE,IAAI,CACZ,YAAY,CAAE,CAAC,CACf,IAAI,CAAE,IAAI,CACV,cAAc,CAAE,KAAK,AACtB,CAAC,AACD,MAAM,eAAC,CAAC,AACP,IAAI,CAAE,IAAI,AACX,CAAC"}`
 };
 var height = 400;
 var margin = 40;
@@ -4127,18 +5083,18 @@ var Limited_curve_creator = create_ssr_component(($$result, $$props, $$bindings,
   let factorLinLocal;
   let minStep;
   let limit;
-  let $$unsubscribe_factorLin;
-  let $$unsubscribe_factorExp;
-  let $mode, $$unsubscribe_mode;
   let $totalSupply, $$unsubscribe_totalSupply;
   let $offset, $$unsubscribe_offset;
   let $range, $$unsubscribe_range;
-  $$unsubscribe_factorLin = subscribe(factorLin, (value) => value);
-  $$unsubscribe_factorExp = subscribe(factorExp, (value) => value);
-  $$unsubscribe_mode = subscribe(mode, (value) => $mode = value);
+  let $$unsubscribe_factorLin;
+  let $$unsubscribe_factorExp;
+  let $mode, $$unsubscribe_mode;
   $$unsubscribe_totalSupply = subscribe(totalSupply, (value) => $totalSupply = value);
   $$unsubscribe_offset = subscribe(offset, (value) => $offset = value);
   $$unsubscribe_range = subscribe(range, (value) => $range = value);
+  $$unsubscribe_factorLin = subscribe(factorLin, (value) => value);
+  $$unsubscribe_factorExp = subscribe(factorExp, (value) => value);
+  $$unsubscribe_mode = subscribe(mode, (value) => $mode = value);
   let width;
   let data = [{ x: 0, y: 0 }];
   let point2 = data[0];
@@ -4165,12 +5121,12 @@ var Limited_curve_creator = create_ssr_component(($$result, $$props, $$bindings,
       count++;
     }
   }
-  $$unsubscribe_factorLin();
-  $$unsubscribe_factorExp();
-  $$unsubscribe_mode();
   $$unsubscribe_totalSupply();
   $$unsubscribe_offset();
   $$unsubscribe_range();
+  $$unsubscribe_factorLin();
+  $$unsubscribe_factorExp();
+  $$unsubscribe_mode();
   return `<p></p>
 <div class="${"navigation"}"><p><label for="${"mode"}">Mode</label>
 		<select><option value="${"lin"}">Linear</option><option value="${"exp"}">Exponential</option></select></p>
@@ -4193,9 +5149,15 @@ var Limited_curve_creator = create_ssr_component(($$result, $$props, $$bindings,
 });
 var css$3 = {
   code: ".logo.svelte-b16l4i{display:flex;height:200px;width:200px}",
-  map: `{"version":3,"file":"basics-form.svelte","sources":["basics-form.svelte"],"sourcesContent":["<script>\\n  import {\\n    organizationName,\\n    organizationType,\\n    shortDesc,\\n    tokenAddress,\\n    website,\\n    telegram,\\n    discord,\\n    twitter,\\n    deepdive,\\n    deepdiveTemplateDao,\\n    deepdiveTemplatePrivate,\\n    logo\\n  } from '../stores/apply-store.js';\\n\\n  //Mechanics for changing the template of the deepdive \\n  function handleOrgChange() {\\n    if ($organizationType == \\"DAO\\") {\\n      $deepdive = $deepdiveTemplateDao;\\n    }\\n    if ($organizationType == \\"Private Company\\"){\\n      $deepdive = $deepdiveTemplatePrivate;    \\n    }\\n  }\\n\\n  //Mechanics for displaying the logo\\n  let  fileinput;\\n\\t\\n\\tconst onFileSelected =(e)=>{\\n  let image = e.target.files[0];\\n            let reader = new FileReader();\\n            reader.readAsDataURL(image);\\n            reader.onload = e => {\\n                 $logo = e.target.result\\n            };\\n  }\\n<\/script>\\n\\n<div id=\\"input-container\\">\\n  <p></p>\\n  <p>\\n    <label for=\\"orgname\\">Organisation name</label>\\n    <input type=\\"text\\" bind:value={$organizationName}>\\n  </p>\\n\\n  <p>\\n    <label for=\\"organization\\">Organisation Type</label>\\n    <select id=\\"organization\\" bind:value={$organizationType} on:change={handleOrgChange}>\\n      <option value=\\"DAO\\">DAO</option>\\n      <option value=\\"Private Company\\">Private Company</option>\\n    </select>\\n  </p>\\n  \\n  <p>\\n    <label for=\\"shortdesc\\">Describe the project in one sentence</label>\\n    <input type=\\"text\\" bind:value={$shortDesc}>\\n  </p>\\n\\n  \\n  <p>\\n    <label for=\\"tokenaddress\\">Token Address</label>\\n    <input type=\\"url\\" bind:value={$tokenAddress}>\\n  </p>\\n\\n  <p>\\n    <label for=\\"website\\">Website</label>\\n    <input type=\\"url\\" bind:value={$website}>\\n  </p>\\n\\n  <p>\\n    <label for=\\"telegram\\">Telegram</label>\\n    <input type=\\"url\\" bind:value={$telegram}>\\n  </p>\\n  <p>\\n    <label for=\\"discord\\">Discord</label>\\n    <input type=\\"url\\" bind:value={$discord}>\\n  </p>\\n\\n  <p>\\n    <label for=\\"twitter\\">Twitter</label>\\n    <input type=\\"url\\" bind:value={$twitter}>\\n  </p>\\n  <p>\\n    {#if $logo}\\n      <img class=\\"logo\\" src=\\"{$logo}\\" alt=\\"d\\" />\\n    {:else}\\n      <img class=\\"logo\\" src=\\"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png\\" alt=\\"\\" /> \\n    {/if}\\n    <button class=\\"upload\\" on:click={()=>{fileinput.click();}}>Upload logo</button>\\n    <input style=\\"display:none\\" type=\\"file\\" accept=\\".png\\"\\n      on:change={(e)=>onFileSelected(e)} bind:this={fileinput}\\n    >\\n  </p>\\n</div>\\n<style>\\n  .logo{\\n\\t\\tdisplay:flex;\\n\\t\\theight:200px;\\n\\t\\twidth:200px;\\n\\t}\\n</style>\\n"],"names":[],"mappings":"AAgGE,mBAAK,CAAC,AACN,QAAQ,IAAI,CACZ,OAAO,KAAK,CACZ,MAAM,KAAK,AACZ,CAAC"}`
+  map: `{"version":3,"file":"basics-form.svelte","sources":["basics-form.svelte"],"sourcesContent":["<script>\\n  import {\\n    organizationName,\\n    organizationType,\\n    shortDesc,\\n    tokenAddress,\\n    website,\\n    telegram,\\n    discord,\\n    twitter,\\n    deepdive,\\n    deepdiveTemplateDao,\\n    deepdiveTemplatePrivate,\\n    logo,\\n    tokenName,\\n    tokenTicker,\\n    tokenIcon,\\n    tokenTotalSupply,\\n    tokenFixedSupply,\\n    tokenTotalRaised,\\n    whitepaper,\\n    medium,\\n    cover\\n  } from '../stores/apply-store.js';\\n  import { Modal, Card } from 'svelte-chota';\\n\\n  //Mechanics for changing the template of the deepdive \\n  function handleOrgChange() {\\n    if ($organizationType == \\"DAO\\") {\\n      $deepdive = $deepdiveTemplateDao;\\n    }\\n    if ($organizationType == \\"Private Company\\"){\\n      $deepdive = $deepdiveTemplatePrivate;    \\n    }\\n  }\\n\\n  //Mechanics for displaying the logo\\n  let  fileinput, fileinputCover;\\n\\t\\n\\tconst onFileSelected =(e)=>{\\n  let image = e.target.files[0];\\n            let reader = new FileReader();\\n            reader.readAsDataURL(image);\\n            reader.onload = e => {\\n                 $logo = e.target.result\\n            };\\n  }\\n\\n \\tconst onCoverSelected =(e)=>{\\n  let image = e.target.files[0];\\n            let reader = new FileReader();\\n            reader.readAsDataURL(image);\\n            reader.onload = e => {\\n                 $cover = e.target.result\\n            };\\n  }\\n //Get token metadata\\n  let modalOpen = false;\\n  async function fetchTokenData() {\\n    const url = \\"https://mainnet.radixdlt.com/archive\\";\\n    let data = {\\n      jsonrpc: 2.0,\\n      method: \\"tokens.get_info\\",\\n      params: {\\n        rri: $tokenAddress\\n      },\\n      id: 1\\n    }\\n    const response = await fetch(url, {\\n      method: 'POST',\\n      mode: 'cors',\\n      cache: 'no-cache',\\n      credentials: 'same-origin',\\n      headers: {\\n        'Content-Type': 'application/json'\\n      },\\n      redirect: 'follow',\\n      referrerPolicy: 'no-referrer',\\n      body: JSON.stringify(data)\\n    });\\n\\n    let responseObj = await response.json();\\n\\n    if (responseObj['error']) {\\n      modalOpen = true;\\n      tokenOpen = false;\\n    } else {\\n      $tokenTotalSupply = Number(responseObj['result'].currentSupply / Math.pow(10, 18));\\n      $tokenTicker = responseObj['result'].symbol.toUpperCase();\\n      $tokenIcon = responseObj['result'].iconURL;\\n      $tokenName = responseObj['result'].name;\\n    }\\n  }\\n<\/script>\\n\\n<div id=\\"input-container\\">\\n  <p></p>\\n  <p>\\n    <label for=\\"orgname\\">Organisation name*</label>\\n    <input type=\\"text\\" bind:value={$organizationName}>\\n  </p>\\n\\n  <p>\\n    <label for=\\"organization\\">Organisation Type*</label>\\n    <select id=\\"organization\\" bind:value={$organizationType} on:change={handleOrgChange}>\\n      <option value=\\"DAO\\">DAO</option>\\n      <option value=\\"Private Company\\">Private Company</option>\\n    </select>\\n  </p>\\n  \\n  <p>\\n    <label for=\\"shortdesc\\">Describe the project in one sentence*</label>\\n    <input type=\\"text\\" bind:value={$shortDesc}>\\n  </p>\\n\\n  \\n  <p>\\n    <label for=\\"tokenaddress\\">Token Address*</label>\\n    <input type=\\"url\\" bind:value={$tokenAddress}>\\n    <button on:click={fetchTokenData}>Get Token Info</button>\\n    <Card>\\n      <h4 slot=\\"header\\">Token details</h4>\\n      {#if $tokenIcon}\\n        <img src={$tokenIcon} alt=\\"token_logo\\">\\n      {/if}\\n      <h5>Supply: {$tokenTotalSupply.toLocaleString()}</h5>\\n      <h5>Name: {$tokenName}</h5>\\n      <h5>Ticker: {$tokenTicker} </h5>\\n      <h5>Fixed supply: {$tokenFixedSupply} </h5>\\n    </Card>\\n  </p>\\n  <p>\\n    <label for=\\"total-raised\\">Previous rounds total raised*</label>\\n    <input type=\\"number\\" bind:value={$tokenTotalRaised}>\\n  </p>\\n  <p>\\n    <label for=\\"website\\">Website*</label>\\n    <input type=\\"url\\" bind:value={$website}>\\n  </p>\\n  \\n  <p>\\n    <label for=\\"telegram\\">Telegram</label>\\n    <input type=\\"url\\" bind:value={$telegram}>\\n  </p>\\n  <p>\\n    <label for=\\"discord\\">Discord</label>\\n    <input type=\\"url\\" bind:value={$discord}>\\n  </p>\\n\\n <p>\\n    <label for=\\"medium\\">Medium</label>\\n    <input type=\\"url\\" bind:value={$medium}>\\n  </p>\\n\\n\\n  <p>\\n    <label for=\\"twitter\\">Twitter</label>\\n    <input type=\\"url\\" bind:value={$twitter}>\\n  </p>\\n\\n  <p>\\n    <label for=\\"whitepaper\\">Whitepaper</label>\\n    <input type=\\"url\\" bind:value={$whitepaper}>\\n  </p>\\n\\n <Card class=\\"preview-card\\">\\n    {#if $cover}\\n      <img class=\\"cover\\" src={$cover} alt=\\"preview-cover\\"/>\\n    {/if}\\n    {#if $logo}\\n      <img class=\\"logo\\" src=\\"{$logo}\\" alt=\\"d\\" />\\n    {:else}\\n      <img class=\\"logo\\" src=\\"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png\\" alt=\\"\\" /> \\n    {/if}\\n\\n    <h3>{$organizationName}</h3>\\n    <h4>\${$tokenTicker}</h4>\\n  </Card>  \\n  <p>\\n   <button class=\\"upload\\" on:click={()=>{fileinput.click();}}>Upload logo</button>\\n    <input style=\\"display:none\\" type=\\"file\\" accept=\\".jpg\\"\\n      on:change={(e)=>onFileSelected(e)} bind:this={fileinput}\\n    >\\n\\n    <button class=\\"upload-cover\\" on:click={()=>{fileinputCover.click();}}>Upload Cover</button>\\n     <input style=\\"display:none\\" type=\\"file\\" accept=\\".jpg\\"\\n      on:change={(e)=>onCoverSelected(e)} bind:this={fileinputCover}\\n     >\\n  </p>\\n   <Modal bind:open={modalOpen}>\\n    <Card>\\n      Wrong token address (use rri)\\n    </Card>\\n  </Modal>\\n</div>\\n<style>\\n  .logo{\\n\\t\\tdisplay:flex;\\n\\t\\theight:200px;\\n\\t\\twidth:200px;\\n\\t}\\n</style>\\n"],"names":[],"mappings":"AAoME,mBAAK,CAAC,AACN,QAAQ,IAAI,CACZ,OAAO,KAAK,CACZ,MAAM,KAAK,AACZ,CAAC"}`
 };
 var Basics_form = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $tokenName, $$unsubscribe_tokenName;
+  let $tokenIcon, $$unsubscribe_tokenIcon;
+  let $tokenTicker, $$unsubscribe_tokenTicker;
+  let $tokenTotalSupply, $$unsubscribe_tokenTotalSupply;
+  let $tokenAddress, $$unsubscribe_tokenAddress;
+  let $cover, $$unsubscribe_cover;
   let $logo, $$unsubscribe_logo;
   let $$unsubscribe_deepdiveTemplatePrivate;
   let $$unsubscribe_deepdive;
@@ -4203,11 +5165,20 @@ var Basics_form = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   let $$unsubscribe_deepdiveTemplateDao;
   let $organizationName, $$unsubscribe_organizationName;
   let $shortDesc, $$unsubscribe_shortDesc;
-  let $tokenAddress, $$unsubscribe_tokenAddress;
+  let $tokenFixedSupply, $$unsubscribe_tokenFixedSupply;
+  let $tokenTotalRaised, $$unsubscribe_tokenTotalRaised;
   let $website, $$unsubscribe_website;
   let $telegram, $$unsubscribe_telegram;
   let $discord, $$unsubscribe_discord;
+  let $medium, $$unsubscribe_medium;
   let $twitter, $$unsubscribe_twitter;
+  let $whitepaper, $$unsubscribe_whitepaper;
+  $$unsubscribe_tokenName = subscribe(tokenName, (value) => $tokenName = value);
+  $$unsubscribe_tokenIcon = subscribe(tokenIcon, (value) => $tokenIcon = value);
+  $$unsubscribe_tokenTicker = subscribe(tokenTicker, (value) => $tokenTicker = value);
+  $$unsubscribe_tokenTotalSupply = subscribe(tokenTotalSupply, (value) => $tokenTotalSupply = value);
+  $$unsubscribe_tokenAddress = subscribe(tokenAddress, (value) => $tokenAddress = value);
+  $$unsubscribe_cover = subscribe(cover, (value) => $cover = value);
   $$unsubscribe_logo = subscribe(logo, (value) => $logo = value);
   $$unsubscribe_deepdiveTemplatePrivate = subscribe(deepdiveTemplatePrivate, (value) => value);
   $$unsubscribe_deepdive = subscribe(deepdive, (value) => value);
@@ -4215,12 +5186,93 @@ var Basics_form = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   $$unsubscribe_deepdiveTemplateDao = subscribe(deepdiveTemplateDao, (value) => value);
   $$unsubscribe_organizationName = subscribe(organizationName, (value) => $organizationName = value);
   $$unsubscribe_shortDesc = subscribe(shortDesc, (value) => $shortDesc = value);
-  $$unsubscribe_tokenAddress = subscribe(tokenAddress, (value) => $tokenAddress = value);
+  $$unsubscribe_tokenFixedSupply = subscribe(tokenFixedSupply, (value) => $tokenFixedSupply = value);
+  $$unsubscribe_tokenTotalRaised = subscribe(tokenTotalRaised, (value) => $tokenTotalRaised = value);
   $$unsubscribe_website = subscribe(website, (value) => $website = value);
   $$unsubscribe_telegram = subscribe(telegram, (value) => $telegram = value);
   $$unsubscribe_discord = subscribe(discord, (value) => $discord = value);
+  $$unsubscribe_medium = subscribe(medium, (value) => $medium = value);
   $$unsubscribe_twitter = subscribe(twitter, (value) => $twitter = value);
+  $$unsubscribe_whitepaper = subscribe(whitepaper, (value) => $whitepaper = value);
+  let modalOpen = false;
   $$result.css.add(css$3);
+  let $$settled;
+  let $$rendered;
+  do {
+    $$settled = true;
+    $$rendered = `<div id="${"input-container"}"><p></p>
+  <p><label for="${"orgname"}">Organisation name*</label>
+    <input type="${"text"}"${add_attribute("value", $organizationName, 0)}></p>
+
+  <p><label for="${"organization"}">Organisation Type*</label>
+    <select id="${"organization"}"><option value="${"DAO"}">DAO</option><option value="${"Private Company"}">Private Company</option></select></p>
+  
+  <p><label for="${"shortdesc"}">Describe the project in one sentence*</label>
+    <input type="${"text"}"${add_attribute("value", $shortDesc, 0)}></p>
+
+  
+  <p><label for="${"tokenaddress"}">Token Address*</label>
+    <input type="${"url"}"${add_attribute("value", $tokenAddress, 0)}>
+    <button>Get Token Info</button>
+    ${validate_component(Card, "Card").$$render($$result, {}, {}, {
+      header: () => `<h4 slot="${"header"}">Token details</h4>`,
+      default: () => `${$tokenIcon ? `<img${add_attribute("src", $tokenIcon, 0)} alt="${"token_logo"}">` : ``}
+      <h5>Supply: ${escape($tokenTotalSupply.toLocaleString())}</h5>
+      <h5>Name: ${escape($tokenName)}</h5>
+      <h5>Ticker: ${escape($tokenTicker)}</h5>
+      <h5>Fixed supply: ${escape($tokenFixedSupply)}</h5>`
+    })}</p>
+  <p><label for="${"total-raised"}">Previous rounds total raised*</label>
+    <input type="${"number"}"${add_attribute("value", $tokenTotalRaised, 0)}></p>
+  <p><label for="${"website"}">Website*</label>
+    <input type="${"url"}"${add_attribute("value", $website, 0)}></p>
+  
+  <p><label for="${"telegram"}">Telegram</label>
+    <input type="${"url"}"${add_attribute("value", $telegram, 0)}></p>
+  <p><label for="${"discord"}">Discord</label>
+    <input type="${"url"}"${add_attribute("value", $discord, 0)}></p>
+
+ <p><label for="${"medium"}">Medium</label>
+    <input type="${"url"}"${add_attribute("value", $medium, 0)}></p>
+
+
+  <p><label for="${"twitter"}">Twitter</label>
+    <input type="${"url"}"${add_attribute("value", $twitter, 0)}></p>
+
+  <p><label for="${"whitepaper"}">Whitepaper</label>
+    <input type="${"url"}"${add_attribute("value", $whitepaper, 0)}></p>
+
+ ${validate_component(Card, "Card").$$render($$result, { class: "preview-card" }, {}, {
+      default: () => `${$cover ? `<img class="${"cover"}"${add_attribute("src", $cover, 0)} alt="${"preview-cover"}">` : ``}
+    ${$logo ? `<img class="${"logo svelte-b16l4i"}"${add_attribute("src", $logo, 0)} alt="${"d"}">` : `<img class="${"logo svelte-b16l4i"}" src="${"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"}" alt="${""}">`}
+
+    <h3>${escape($organizationName)}</h3>
+    <h4>$${escape($tokenTicker)}</h4>`
+    })}  
+  <p><button class="${"upload"}">Upload logo</button>
+    <input style="${"display:none"}" type="${"file"}" accept="${".jpg"}">
+
+    <button class="${"upload-cover"}">Upload Cover</button>
+     <input style="${"display:none"}" type="${"file"}" accept="${".jpg"}"></p>
+   ${validate_component(Modal, "Modal").$$render($$result, { open: modalOpen }, {
+      open: ($$value) => {
+        modalOpen = $$value;
+        $$settled = false;
+      }
+    }, {
+      default: () => `${validate_component(Card, "Card").$$render($$result, {}, {}, {
+        default: () => `Wrong token address (use rri)
+    `
+      })}`
+    })}
+</div>`;
+  } while (!$$settled);
+  $$unsubscribe_tokenName();
+  $$unsubscribe_tokenIcon();
+  $$unsubscribe_tokenTicker();
+  $$unsubscribe_tokenTotalSupply();
+  $$unsubscribe_tokenAddress();
+  $$unsubscribe_cover();
   $$unsubscribe_logo();
   $$unsubscribe_deepdiveTemplatePrivate();
   $$unsubscribe_deepdive();
@@ -4228,43 +5280,19 @@ var Basics_form = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   $$unsubscribe_deepdiveTemplateDao();
   $$unsubscribe_organizationName();
   $$unsubscribe_shortDesc();
-  $$unsubscribe_tokenAddress();
+  $$unsubscribe_tokenFixedSupply();
+  $$unsubscribe_tokenTotalRaised();
   $$unsubscribe_website();
   $$unsubscribe_telegram();
   $$unsubscribe_discord();
+  $$unsubscribe_medium();
   $$unsubscribe_twitter();
-  return `<div id="${"input-container"}"><p></p>
-  <p><label for="${"orgname"}">Organisation name</label>
-    <input type="${"text"}"${add_attribute("value", $organizationName, 0)}></p>
-
-  <p><label for="${"organization"}">Organisation Type</label>
-    <select id="${"organization"}"><option value="${"DAO"}">DAO</option><option value="${"Private Company"}">Private Company</option></select></p>
-  
-  <p><label for="${"shortdesc"}">Describe the project in one sentence</label>
-    <input type="${"text"}"${add_attribute("value", $shortDesc, 0)}></p>
-
-  
-  <p><label for="${"tokenaddress"}">Token Address</label>
-    <input type="${"url"}"${add_attribute("value", $tokenAddress, 0)}></p>
-
-  <p><label for="${"website"}">Website</label>
-    <input type="${"url"}"${add_attribute("value", $website, 0)}></p>
-
-  <p><label for="${"telegram"}">Telegram</label>
-    <input type="${"url"}"${add_attribute("value", $telegram, 0)}></p>
-  <p><label for="${"discord"}">Discord</label>
-    <input type="${"url"}"${add_attribute("value", $discord, 0)}></p>
-
-  <p><label for="${"twitter"}">Twitter</label>
-    <input type="${"url"}"${add_attribute("value", $twitter, 0)}></p>
-  <p>${$logo ? `<img class="${"logo svelte-b16l4i"}"${add_attribute("src", $logo, 0)} alt="${"d"}">` : `<img class="${"logo svelte-b16l4i"}" src="${"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"}" alt="${""}">`}
-    <button class="${"upload"}">Upload logo</button>
-    <input style="${"display:none"}" type="${"file"}" accept="${".png"}"></p>
-</div>`;
+  $$unsubscribe_whitepaper();
+  return $$rendered;
 });
 var css$2 = {
   code: ".logo.svelte-15lvnr2{display:flex;height:200px;width:200px}",
-  map: '{"version":3,"file":"intro.svelte","sources":["intro.svelte"],"sourcesContent":["<script>\\n\\texport let organizationName;\\n\\texport let organizationType;\\n\\texport let shortDesc;\\n\\texport let tokenAddress;\\n\\texport let website;\\n\\texport let telegram;\\n\\texport let discord;\\n\\texport let twitter;\\n\\texport let logo;\\n<\/script>\\n<div class=\\"intro\\">\\n\\t<h1>\\t{organizationName} </h1>\\n\\t{#if logo}\\n    <img class=\\"logo\\" src=\\"{logo}\\" alt=\\"d\\" />\\n  {:else}\\n    <img class=\\"logo\\" src=\\"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png\\" alt=\\"\\" /> \\n\\t{/if}\\n\\t{shortDesc}\\n\\t{tokenAddress}\\n\\n</div>\\n\\n<style>\\n  .logo{\\n\\t\\tdisplay: flex;\\n\\t\\theight:200px;\\n\\t\\twidth:200px;\\n\\t}\\n</style>\\n"],"names":[],"mappings":"AAwBE,oBAAK,CAAC,AACN,OAAO,CAAE,IAAI,CACb,OAAO,KAAK,CACZ,MAAM,KAAK,AACZ,CAAC"}'
+  map: '{"version":3,"file":"intro.svelte","sources":["intro.svelte"],"sourcesContent":["<script>\\n\\timport { Icon } from \'svelte-chota\';\\n\\n\\texport let organizationName;\\n\\texport let organizationType;\\n\\texport let shortDesc;\\n\\texport let tokenAddress;\\n\\texport let website;\\n\\texport let telegram;\\n\\texport let discord;\\n\\texport let medium;\\n\\texport let twitter;\\n\\texport let whitepaper;\\n\\texport let logo;\\n\\texport let cover;\\n\\tconst discIcon =`M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z`;\\n\\tconst telegramIcon = `M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z`;\\n\\tconst twitterIcon = `M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z`;\\n  const mediumIcon =`M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z`;\\n<\/script>\\n<div class=\\"intro\\">\\n\\t{#if logo}\\n    <img class=\\"logo\\" src=\\"{logo}\\" alt=\\"organizationName-logo\\" />\\n  {:else}\\n\\t<h1>\\t{organizationName} </h1>\\n\\t{#if cover}\\n\\t\\t<img class=\\"cover\\" src=\\"{cover}\\" alt=\\"{organizationName}-cover\\">\\n\\t{/if}\\n\\t    <img class=\\"logo\\" src=\\"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png\\" alt=\\"\\" /> \\n\\t{/if}\\n\\t<div class=\\"short-desc\\">\\n\\t\\t<p>\\t{shortDesc} </p>\\n\\t\\t<p> Type: \\n\\t\\t\\t{#if organizationType == \'DAO\'}\\n\\t\\t\\t\\tDAO\\n\\t\\t\\t{:else}\\n\\t\\t\\t\\tPrivate Company\\n\\t\\t\\t{/if}\\n\\t\\t</p>\\n\\t\\t\\n\\t</div>\\n\\t<div class=\\"Links\\">\\n\\t\\t{#if website}\\n\\t\\t\\t<p>Website:</p>\\n\\t\\t\\t<p><a href=\\"{website}\\">\\t{website}</a></p>\\n\\t\\t{/if}\\n\\t\\t{#if whitepaper}\\n\\t\\t\\t<p>Documents:</p>\\n\\t\\t\\t<p><a href=\\"{whitepaper}\\">Whitepaper</a></p>\\n\\t\\t{/if}\\n\\t\\t<div class=\\"socials\\">\\n\\t\\t\\t{#if discord}\\n\\t\\t\\t\\t<a href=\\"{discord}\\"><Icon src={discIcon}  size=\\"2\\" /></a>\\n\\t\\t\\t{/if}\\n\\t\\t\\t{#if telegram}\\n\\t\\t\\t\\t<a href=\\"{telegram}\\"><Icon src={telegramIcon}  size=\\"2\\" /></a>\\n\\t\\t\\t{/if}\\n\\t\\t\\t{#if medium}\\n\\t\\t\\t\\t<a href=\\"{medium}\\"><Icon src={mediumIcon}  size=\\"2\\" /></a>\\n\\t\\t\\t{/if}\\n\\t\\t\\t{#if twitter}\\n\\t\\t\\t\\t<a href=\\"{twitter}\\"><Icon src={twitterIcon}  size=\\"2\\" /></a>\\n\\t\\t\\t{/if}\\n\\t</div>\\n\\t</div>\\n</div>\\n\\n<style>\\n  .logo{\\n\\t\\tdisplay: flex;\\n\\t\\theight:200px;\\n\\t\\twidth:200px;\\n\\t}\\n</style>\\n"],"names":[],"mappings":"AAoEE,oBAAK,CAAC,AACN,OAAO,CAAE,IAAI,CACb,OAAO,KAAK,CACZ,MAAM,KAAK,AACZ,CAAC"}'
 };
 var Intro = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { organizationName: organizationName2 } = $$props;
@@ -4274,8 +5302,15 @@ var Intro = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { website: website2 } = $$props;
   let { telegram: telegram2 } = $$props;
   let { discord: discord2 } = $$props;
+  let { medium: medium2 } = $$props;
   let { twitter: twitter2 } = $$props;
+  let { whitepaper: whitepaper2 } = $$props;
   let { logo: logo2 } = $$props;
+  let { cover: cover2 } = $$props;
+  const discIcon = `M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z`;
+  const telegramIcon = `M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z`;
+  const twitterIcon = `M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z`;
+  const mediumIcon = `M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z`;
   if ($$props.organizationName === void 0 && $$bindings.organizationName && organizationName2 !== void 0)
     $$bindings.organizationName(organizationName2);
   if ($$props.organizationType === void 0 && $$bindings.organizationType && organizationType2 !== void 0)
@@ -4290,17 +5325,40 @@ var Intro = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     $$bindings.telegram(telegram2);
   if ($$props.discord === void 0 && $$bindings.discord && discord2 !== void 0)
     $$bindings.discord(discord2);
+  if ($$props.medium === void 0 && $$bindings.medium && medium2 !== void 0)
+    $$bindings.medium(medium2);
   if ($$props.twitter === void 0 && $$bindings.twitter && twitter2 !== void 0)
     $$bindings.twitter(twitter2);
+  if ($$props.whitepaper === void 0 && $$bindings.whitepaper && whitepaper2 !== void 0)
+    $$bindings.whitepaper(whitepaper2);
   if ($$props.logo === void 0 && $$bindings.logo && logo2 !== void 0)
     $$bindings.logo(logo2);
+  if ($$props.cover === void 0 && $$bindings.cover && cover2 !== void 0)
+    $$bindings.cover(cover2);
   $$result.css.add(css$2);
-  return `<div class="${"intro"}"><h1>${escape(organizationName2)}</h1>
-	${logo2 ? `<img class="${"logo svelte-15lvnr2"}"${add_attribute("src", logo2, 0)} alt="${"d"}">` : `<img class="${"logo svelte-15lvnr2"}" src="${"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"}" alt="${""}">`}
-	${escape(shortDesc2)}
-	${escape(tokenAddress2)}
-
+  return `<div class="${"intro"}">${logo2 ? `<img class="${"logo svelte-15lvnr2"}"${add_attribute("src", logo2, 0)} alt="${"organizationName-logo"}">` : `<h1>${escape(organizationName2)}</h1>
+	${cover2 ? `<img class="${"cover"}"${add_attribute("src", cover2, 0)} alt="${escape(organizationName2) + "-cover"}">` : ``}
+	    <img class="${"logo svelte-15lvnr2"}" src="${"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"}" alt="${""}">`}
+	<div class="${"short-desc"}"><p>${escape(shortDesc2)}</p>
+		<p>Type: 
+			${organizationType2 == "DAO" ? `DAO` : `Private Company`}</p></div>
+	<div class="${"Links"}">${website2 ? `<p>Website:</p>
+			<p><a${add_attribute("href", website2, 0)}>${escape(website2)}</a></p>` : ``}
+		${whitepaper2 ? `<p>Documents:</p>
+			<p><a${add_attribute("href", whitepaper2, 0)}>Whitepaper</a></p>` : ``}
+		<div class="${"socials"}">${discord2 ? `<a${add_attribute("href", discord2, 0)}>${validate_component(Icon, "Icon").$$render($$result, { src: discIcon, size: "2" }, {}, {})}</a>` : ``}
+			${telegram2 ? `<a${add_attribute("href", telegram2, 0)}>${validate_component(Icon, "Icon").$$render($$result, { src: telegramIcon, size: "2" }, {}, {})}</a>` : ``}
+			${medium2 ? `<a${add_attribute("href", medium2, 0)}>${validate_component(Icon, "Icon").$$render($$result, { src: mediumIcon, size: "2" }, {}, {})}</a>` : ``}
+			${twitter2 ? `<a${add_attribute("href", twitter2, 0)}>${validate_component(Icon, "Icon").$$render($$result, { src: twitterIcon, size: "2" }, {}, {})}</a>` : ``}</div></div>
 </div>`;
+});
+var Html_viewer = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let clean;
+  let { dirtyHTML } = $$props;
+  if ($$props.dirtyHTML === void 0 && $$bindings.dirtyHTML && dirtyHTML !== void 0)
+    $$bindings.dirtyHTML(dirtyHTML);
+  clean = import_dompurify.default.sanitize(dirtyHTML);
+  return `<!-- HTML_TAG_START -->${clean}<!-- HTML_TAG_END -->`;
 });
 var Preview = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $organizationName, $$unsubscribe_organizationName;
@@ -4311,7 +5369,11 @@ var Preview = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $telegram, $$unsubscribe_telegram;
   let $discord, $$unsubscribe_discord;
   let $twitter, $$unsubscribe_twitter;
+  let $medium, $$unsubscribe_medium;
+  let $whitepaper, $$unsubscribe_whitepaper;
+  let $cover, $$unsubscribe_cover;
   let $logo, $$unsubscribe_logo;
+  let $outputHTML, $$unsubscribe_outputHTML;
   $$unsubscribe_organizationName = subscribe(organizationName, (value) => $organizationName = value);
   $$unsubscribe_organizationType = subscribe(organizationType, (value) => $organizationType = value);
   $$unsubscribe_shortDesc = subscribe(shortDesc, (value) => $shortDesc = value);
@@ -4320,7 +5382,11 @@ var Preview = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_telegram = subscribe(telegram, (value) => $telegram = value);
   $$unsubscribe_discord = subscribe(discord, (value) => $discord = value);
   $$unsubscribe_twitter = subscribe(twitter, (value) => $twitter = value);
+  $$unsubscribe_medium = subscribe(medium, (value) => $medium = value);
+  $$unsubscribe_whitepaper = subscribe(whitepaper, (value) => $whitepaper = value);
+  $$unsubscribe_cover = subscribe(cover, (value) => $cover = value);
   $$unsubscribe_logo = subscribe(logo, (value) => $logo = value);
+  $$unsubscribe_outputHTML = subscribe(outputHTML, (value) => $outputHTML = value);
   let $$settled;
   let $$rendered;
   do {
@@ -4334,6 +5400,9 @@ var Preview = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       telegram: $telegram,
       discord: $discord,
       twitter: $twitter,
+      medium: $medium,
+      whitepaper: $whitepaper,
+      cover: $cover,
       logo: $logo
     }, {
       organizationName: ($$value) => {
@@ -4368,8 +5437,27 @@ var Preview = create_ssr_component(($$result, $$props, $$bindings, slots) => {
         $twitter = $$value;
         $$settled = false;
       },
+      medium: ($$value) => {
+        $medium = $$value;
+        $$settled = false;
+      },
+      whitepaper: ($$value) => {
+        $whitepaper = $$value;
+        $$settled = false;
+      },
+      cover: ($$value) => {
+        $cover = $$value;
+        $$settled = false;
+      },
       logo: ($$value) => {
         $logo = $$value;
+        $$settled = false;
+      }
+    }, {})}
+
+${validate_component(Html_viewer, "HTMLViewer").$$render($$result, { dirtyHTML: $outputHTML }, {
+      dirtyHTML: ($$value) => {
+        $outputHTML = $$value;
         $$settled = false;
       }
     }, {})}`;
@@ -4382,7 +5470,11 @@ var Preview = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_telegram();
   $$unsubscribe_discord();
   $$unsubscribe_twitter();
+  $$unsubscribe_medium();
+  $$unsubscribe_whitepaper();
+  $$unsubscribe_cover();
   $$unsubscribe_logo();
+  $$unsubscribe_outputHTML();
   return $$rendered;
 });
 var css$1 = {
@@ -4393,7 +5485,7 @@ var Quill_editor = create_ssr_component(($$result, $$props, $$bindings, slots) =
   const prerender = true;
   let { setDelta = "" } = $$props;
   let { placeholder = "" } = $$props;
-  let { outputHTML = "" } = $$props;
+  let { outputHTML: outputHTML2 = "" } = $$props;
   let editor;
   let { toolbarOptions = [
     [{ header: 2 }, "blockquote", "link", "image", "video"],
@@ -4408,8 +5500,8 @@ var Quill_editor = create_ssr_component(($$result, $$props, $$bindings, slots) =
     $$bindings.setDelta(setDelta);
   if ($$props.placeholder === void 0 && $$bindings.placeholder && placeholder !== void 0)
     $$bindings.placeholder(placeholder);
-  if ($$props.outputHTML === void 0 && $$bindings.outputHTML && outputHTML !== void 0)
-    $$bindings.outputHTML(outputHTML);
+  if ($$props.outputHTML === void 0 && $$bindings.outputHTML && outputHTML2 !== void 0)
+    $$bindings.outputHTML(outputHTML2);
   if ($$props.toolbarOptions === void 0 && $$bindings.toolbarOptions && toolbarOptions !== void 0)
     $$bindings.toolbarOptions(toolbarOptions);
   $$result.css.add(css$1);
@@ -4418,19 +5510,22 @@ var Quill_editor = create_ssr_component(($$result, $$props, $$bindings, slots) =
 });
 var css = {
   code: ".btn-left.svelte-qspcvp{display:flex;justify-content:center;align-items:center}",
-  map: `{"version":3,"file":"apply.svelte","sources":["apply.svelte"],"sourcesContent":["<script>\\n  import { Tabs, Tab, Container } from 'svelte-chota';\\n  import LimitedCurveCreator from '../components/limited-curve-creator.svelte'\\n  import BasicsForm from '../components/basics-form.svelte';\\n  import Preview from '../components/preview.svelte';\\n  import QuillEditor from '../components/quill-editor.svelte';\\n  import { deepdive } from '../stores/apply-store.js';\\n  let tab = 0;\\n  let text = \\"\\"\\n  let outputHTML = \\"\\";\\n  function handleNext() {\\n    if(tab < 3) {\\n      tab++;\\n    } else {\\n      tab = 0;\\n    }\\n  }\\n  function handleSubmit() {\\n  }\\n<\/script>\\n\\n<Container>\\n  <h1> Create a proposal to submit your project </h1>\\n  <Tabs full bind:active={tab} >\\n    <Tab>Basic information</Tab>\\n    <Tab>Deep Dive</Tab>\\n    <Tab>Set Price</Tab>\\n    <Tab>Preview</Tab>\\n  </Tabs>\\n  {#if tab == 0}\\n    <BasicsForm />\\n  {/if}\\n\\n  {#if tab == 1}\\n    <QuillEditor \\n      bind:setDelta = {$deepdive}\\n      placeholder={\\"Write an in depth review of the project\\"}\\n      bind:outputHTML\\n    />\\n  {/if}\\n  \\n  {#if tab == 2}\\n    <LimitedCurveCreator />\\n  {/if}\\n\\n  <div class=\\"btn-left\\">\\n  {#if tab == 3}\\n    <Preview />\\n    <button class=\\"btn-left\\" on:click={handleSubmit}>Submit</button>\\n  {:else}\\n    <button class=\\"btn-left\\" on:click={handleNext}>Next</button>\\n  {/if}\\n  </div>\\n  \\n</Container>\\n<style>\\n  .btn-left {\\n    display: flex;\\n    justify-content: center;\\n    align-items: center;\\n  }\\n</style>\\n"],"names":[],"mappings":"AAwDE,SAAS,cAAC,CAAC,AACT,OAAO,CAAE,IAAI,CACb,eAAe,CAAE,MAAM,CACvB,WAAW,CAAE,MAAM,AACrB,CAAC"}`
+  map: `{"version":3,"file":"apply.svelte","sources":["apply.svelte"],"sourcesContent":["<script>\\n  import { Tabs, Tab, Container } from 'svelte-chota';\\n  import LimitedCurveCreator from '../components/limited-curve-creator.svelte'\\n  import BasicsForm from '../components/basics-form.svelte';\\n  import Preview from '../components/preview.svelte';\\n  import QuillEditor from '../components/quill-editor.svelte';\\n  import { deepdive, outputHTML } from '../stores/apply-store.js';\\n  let tab = 0;\\n  let text = \\"\\"\\n  function handleNext() {\\n    if(tab < 3) {\\n      tab++;\\n    } else {\\n      tab = 0;\\n    }\\n  }\\n  function handleSubmit() {\\n  }\\n<\/script>\\n\\n<svelte:head>\\n  <title>Radstarter - Create application proposal</title>\\n</svelte:head>\\n\\n<Container>\\n  <h1> Create a proposal to submit your project </h1>\\n  <Tabs full bind:active={tab} >\\n    <Tab>Basic information</Tab>\\n    <Tab>Deep Dive</Tab>\\n    <Tab>Set Price</Tab>\\n    <Tab>Preview</Tab>\\n  </Tabs>\\n  {#if tab == 0}\\n    <BasicsForm />\\n  {/if}\\n\\n  {#if tab == 1}\\n    <QuillEditor \\n      bind:setDelta = {$deepdive}\\n      placeholder={\\"Write an in depth review of the project\\"}\\n      bind:outputHTML={$outputHTML}\\n    />\\n  {/if}\\n  \\n  {#if tab == 2}\\n    <LimitedCurveCreator />\\n  {/if}\\n\\n  <div class=\\"btn-left\\">\\n  {#if tab == 3}\\n    <Preview />\\n    <button class=\\"btn-left\\" on:click={handleSubmit}>Submit</button>\\n  {:else}\\n    <button class=\\"btn-left\\" on:click={handleNext}>Next</button>\\n  {/if}\\n  </div>\\n  \\n</Container>\\n<style>\\n  .btn-left {\\n    display: flex;\\n    justify-content: center;\\n    align-items: center;\\n  }\\n</style>\\n"],"names":[],"mappings":"AA2DE,SAAS,cAAC,CAAC,AACT,OAAO,CAAE,IAAI,CACb,eAAe,CAAE,MAAM,CACvB,WAAW,CAAE,MAAM,AACrB,CAAC"}`
 };
 var Apply = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $deepdive, $$unsubscribe_deepdive;
+  let $outputHTML, $$unsubscribe_outputHTML;
   $$unsubscribe_deepdive = subscribe(deepdive, (value) => $deepdive = value);
+  $$unsubscribe_outputHTML = subscribe(outputHTML, (value) => $outputHTML = value);
   let tab = 0;
-  let outputHTML = "";
   $$result.css.add(css);
   let $$settled;
   let $$rendered;
   do {
     $$settled = true;
-    $$rendered = `${validate_component(Container, "Container").$$render($$result, {}, {}, {
+    $$rendered = `${$$result.head += `${$$result.title = `<title>Radstarter - Create application proposal</title>`, ""}`, ""}
+
+${validate_component(Container, "Container").$$render($$result, {}, {}, {
       default: () => `<h1>Create a proposal to submit your project </h1>
   ${validate_component(Tabs, "Tabs").$$render($$result, { full: true, active: tab }, {
         active: ($$value) => {
@@ -4448,14 +5543,14 @@ var Apply = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   ${tab == 1 ? `${validate_component(Quill_editor, "QuillEditor").$$render($$result, {
         placeholder: "Write an in depth review of the project",
         setDelta: $deepdive,
-        outputHTML
+        outputHTML: $outputHTML
       }, {
         setDelta: ($$value) => {
           $deepdive = $$value;
           $$settled = false;
         },
         outputHTML: ($$value) => {
-          outputHTML = $$value;
+          $outputHTML = $$value;
           $$settled = false;
         }
       }, {})}` : ``}
@@ -4467,6 +5562,7 @@ var Apply = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     })}`;
   } while (!$$settled);
   $$unsubscribe_deepdive();
+  $$unsubscribe_outputHTML();
   return $$rendered;
 });
 var apply = /* @__PURE__ */ Object.freeze({
@@ -4475,9 +5571,11 @@ var apply = /* @__PURE__ */ Object.freeze({
   "default": Apply
 });
 var Learn = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Container, "Container").$$render($$result, {}, {}, {
+  return `${$$result.head += `${$$result.title = `<title>Radstarter - Learn</title>`, ""}`, ""}
+
+${validate_component(Container, "Container").$$render($$result, {}, {}, {
     default: () => `<h1>Investment funding on Radix</h1>
-<p>RadPad is a community curated launchpad for startups, daos and platforms
+<p>Radstarter is a community curated launchpad for startups, daos and platforms
   built on radix. It&#39;s a platform where projects can raise money, launch
   their tokens and build a community. It&#39;s a place for investors to find 
   new Radix projects to join. 
@@ -4485,7 +5583,7 @@ var Learn = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 <h2>FAQ</h2>
 <h3>How does it work?</h3>
 <p>The platform is governed by a dao (Decentralised Autonomous Organisation)
-  this means that every project that raises with us is approved by community
+  this means that every project that raises with us is approved through community
   voting. Stakeholders get to decide where capital flows, which projects to 
   invest in and the percentage we take. If a project wants to raise with us,
   they have to create a public proposal with all the details and submit it
@@ -4581,3 +5679,4 @@ function splitHeaders(headers) {
 0 && (module.exports = {
   handler
 });
+/*! @license DOMPurify 2.3.3 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.3.3/LICENSE */

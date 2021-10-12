@@ -1,5 +1,6 @@
 <script>
 	import Intro from './intro.svelte'; 
+	import HTMLViewer from './html-viewer.svelte';
 	import {
 		organizationName,
 		organizationType,
@@ -13,6 +14,7 @@
 		whitepaper,
 		logo,
 		cover,
+		outputHTML,
 		deepdive,
 		mode,
 		totalSupply,
@@ -36,4 +38,8 @@
 	bind:whitepaper={$whitepaper}
 	bind:cover={$cover}
 	bind:logo={$logo}
+/>
+
+<HTMLViewer
+	bind:dirtyHTML={$outputHTML}
 />
