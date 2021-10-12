@@ -136,7 +136,14 @@
 		pathLine = pathLine;
 
 	});
-
+	
+	const onInputTotalSupply = (e) => {
+		$totalSupply = e.target.value;
+		factorExpLocal = ($range - $offset) / Math.pow($totalSupply, 2);
+		factorLinLocal = ($range - $offset) / $totalSupply;
+		step = $totalSupply / width;
+		resample();
+	}
 </script>
 <p></p>
 <div class='navigation'>
@@ -149,7 +156,8 @@
 	</p>
 	<p>
 		<label for="tokens-loaded">Total tokens for sale</label>
-		<input type="number" bind:value={$totalSupply} on:input={resample}>
+		<input type="number" on:input={onInputTotalSupply} bind:value={$totalSupply} >
+
 	</p>
 	
 	<p>
