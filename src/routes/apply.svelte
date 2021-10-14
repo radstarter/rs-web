@@ -4,7 +4,13 @@
   import BasicsForm from '../components/basics-form.svelte';
   import Preview from '../components/preview.svelte';
   import QuillEditor from '../components/quill-editor.svelte';
-  import { deepdive, outputHTML } from '../stores/apply-store.js';
+  import { 
+    deepdive, 
+    outputHTML,
+    logo,
+    cover
+  } from '../stores/apply-store.js';
+
   let tab = 0;
   let text = ""
   function handleNext() {
@@ -14,7 +20,16 @@
       tab = 0;
     }
   }
-  function handleSubmit() {
+  async function handleSubmit() {
+    const response = await fetch(
+      `${window.location.origin}/.netlify/functions/upload-image`,
+      {
+        method: 'POST',
+        body: $logo,
+      }
+    );
+    const data = await response.json();
+    console.log(data);
   }
 </script>
 

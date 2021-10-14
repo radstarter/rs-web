@@ -1,6 +1,14 @@
-type Proposal {
+type RaiseProsalPreview {
   organizationName: String!
   organizationType: String!
+  cover: String!
+  logo: String!
+  tokenTicker: String!
+  details: RaiseProposalDetails!
+  display: Boolean!
+}
+
+type RaiseProposalDetails {
   shortDesc: String!
   website: String!
   telegram: String!
@@ -8,19 +16,15 @@ type Proposal {
   twitter: String!
   medium: String!
   whitepaper: String!
-  cover: String!
-  logo: String!
   deepdive: String!
 
   tokenAddress: String!
   tokenName: String!
   tokenTotalSupply: Float!
   tokenIcon: String!
-  tokenTicker: String!
   tokenFixedSuplly: Boolean!
   tokenTotalRaised: Int!
 
-  display: Boolean!
   totalRaised: Int!
   
   mode: String!
@@ -28,4 +32,12 @@ type Proposal {
   range: Int!
   offset: Float!
   factor: Float!
+
+  raisingComponentAddress: String!
+  votingComponentAddress: String!
+}
+
+type Query {
+  allRaiseProposalPreviews: [RaiseProsalPreview!]
+  previewsByDisplayFlag(display: Boolean!): [RaiseProsalPreview!]
 }

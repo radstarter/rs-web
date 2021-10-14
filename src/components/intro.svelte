@@ -22,13 +22,13 @@
 	{#if logo}
     <img class="logo" src="{logo}" alt="organizationName-logo" />
   {:else}
+    <img class="logo" src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" /> 
+	{/if}
 	<h1>	{organizationName} </h1>
 	{#if cover}
 		<img class="cover" src="{cover}" alt="{organizationName}-cover">
 	{/if}
-	    <img class="logo" src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" /> 
-	{/if}
-	<div class="short-desc">
+		<div class="short-desc">
 		<p>	{shortDesc} </p>
 		<p> Type: 
 			{#if organizationType == 'DAO'}

@@ -9,6 +9,7 @@
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
   },
   "dependencies": {
+    "cloudinary": "^1.27.1",
     "d3": "7.0.1",
     "d3-array": "3.0.4",
     "d3-shape": "3.0.1",
