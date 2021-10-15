@@ -31,7 +31,14 @@
         imageUploader: {
           upload: (file) => {
             return new Promise((resolve, reject) => {
-              let transferImage = { code: code, image: file};
+              let img;
+              let reader = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onload = e => {
+                 img = e.target.result
+              };
+
+              let transferImage = { code: code, image: img};
 
               fetch(
                 `${window.location.origin}/.netlify/functions/upload-image`,
