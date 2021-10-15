@@ -63,6 +63,7 @@
       bind:setDelta = {$deepdive}
       placeholder={"Write an in depth review of the project"}
       bind:outputHTML={$outputHTML}
+      bind:code={$code}
     />
   {/if}
   

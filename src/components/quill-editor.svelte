@@ -2,13 +2,15 @@
 
 	export const prerender = true;
 	import { onMount } from 'svelte';
-
+  import { Card, Modal } from 'svelte-chota';
   export let setDelta = "";
   export let placeholder = "";
   export let outputHTML = "";
+  export let code = "";
 
 	let editor;
-
+  let modalOpen;
+  let modalMessage;
 	export let toolbarOptions = [
 		[{ header: 2 },  "blockquote", "link", "image", "video"],
 		["bold", "italic", "underline", "strike"],
@@ -20,18 +22,40 @@
   onMount(async () => {
     try {
     const { default: Quill } = await import('quill');
-    const { default: ImageCompress }  = await  import('quill-image-compress');
+    const { default: ImageCompress }  = await  import('quill-image-uploader');
 
-    Quill.register('modules/imageCompress', ImageCompress);
+    Quill.register('modules/imageUploader', ImageUploader);
     let quill = new Quill(editor, {
       modules: {
         toolbar: toolbarOptions,
-        imageCompress: {
-          quality: 0.9,
-          maxWidth: 1024,
-          maxHeight: 768,
-          debug: false,
-          imageType: 'image/jpeg'
+        imageUploader: {
+          upload: (file) => {
+            return new Promise((resolve, reject) => {
+              let transferImage = { code: code, image: file};
+
+              fetch(
+                `${window.location.origin}/.netlify/functions/upload-image`,
+                {
+                  method: 'POST',
+                  body: JSON.stringify(transferImage),
+                })
+                .then(response => response.json())
+                .then(result => {
+                  resolve(result.secure_url)
+                })
+                .catch(error => {
+                  reject("Upload failed");
+                  console.error(error);
+                  modalOpen = true;
+                  if (!code) {
+                   modalMessage = "Set the Upload Key in Basic Information to upload images";
+                  } else {
+                    modalMessage = "Error while uploading the picture, try again later";
+                  }
+                });
+
+            });
+          }
         }
       },
       theme: "snow",
@@ -63,3 +87,9 @@
 <div class="editor-wrapper">
   <div bind:this={editor} />
 </div>
+<Modal bind:open={modalOpen}>
+    <Card>
+      {modalMessage}
+    </Card>
+  </Modal>
+
