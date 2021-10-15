@@ -30,37 +30,36 @@
         toolbar: toolbarOptions,
         imageUploader: {
           upload: (file) => {
+            const fileReader = new FileReader();
             return new Promise((resolve, reject) => {
-              let img;
-              let reader = new FileReader();
-              reader.readAsDataURL(file);
-              reader.onload = e => {
-                 img = e.target.result
-              };
+              fileReader.addEventListener(
+                "load",
+                () => {
+                  let base64ImageSrc = fileReader.result;
 
-              let transferImage = { code: code, image: img};
+                  let transferImage = { code: code, image: base64ImageSrc};
 
-              fetch(
-                `${window.location.origin}/.netlify/functions/upload-image`,
-                {
-                  method: 'POST',
-                  body: JSON.stringify(transferImage),
-                })
-                .then(response => response.json())
-                .then(result => {
-                  resolve(result.secure_url)
-                })
-                .catch(error => {
-                  reject("Upload failed");
-                  console.error(error);
-                  modalOpen = true;
-                  if (!code) {
-                   modalMessage = "Set the Upload Key in Basic Information to upload images";
-                  } else {
-                    modalMessage = "Error while uploading the picture, try again later";
-                  }
+                  fetch(
+                    `${window.location.origin}/.netlify/functions/upload-image`,
+                    {
+                      method: 'POST',
+                      body: JSON.stringify(transferImage),
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                      resolve(result.secure_url)
+                    })
+                    .catch(error => {
+                      reject("Upload failed");
+                      console.error(error);
+                      modalOpen = true;
+                      if (!code) {
+                        modalMessage = "Set the Upload Key in Basic Information to upload images";
+                      } else {
+                        modalMessage = "Error while uploading the picture, try again later";
+                      }
+                  });
                 });
-
             });
           }
         }
