@@ -20,7 +20,8 @@
     tokenTotalRaised,
     whitepaper,
     medium,
-    cover
+    cover,
+    code
   } from '../stores/apply-store.js';
   import { Modal, Card } from 'svelte-chota';
 
@@ -95,7 +96,7 @@
 
 <div id="input-container">
   <p></p>
-  <p>
+    <p>
     <label for="orgname">Organisation name*</label>
     <input type="text" bind:value={$organizationName}>
   </p>
@@ -187,6 +188,15 @@
       on:change={(e)=>onCoverSelected(e)} bind:this={fileinputCover}
      >
   </p>
+ <div class="help-tip">
+     <p> To prevent spam, and abuse of our fileserver you have to enter the upload code here, you can
+       request one on the discord for free.</p>
+  </div>  
+  <p>
+    <label for="upload-code">Upload Code*</label>
+    <input type="text" bind:value={$code}>
+  </p>
+
    <Modal bind:open={modalOpen}>
     <Card>
       Wrong token address (use rri)
@@ -198,5 +208,88 @@
 		display:flex;
 		height:200px;
 		width:200px;
-	}
+  }
+  .help-tip{
+    position: relative;
+    top: 23px;
+    right: -100px;
+    text-align: center;
+    background-color: #BCDBEA;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 26px;
+    cursor: default;
+}
+
+.help-tip:before{
+    content:'?';
+    font-weight: bold;
+    color:#fff;
+}
+
+.help-tip:hover p{
+    display:block;
+    transform-origin: 100% 0%;
+
+    -webkit-animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.3s ease-in-out;
+
+}
+
+.help-tip p{    /* The tooltip */
+    display: none;
+    text-align: left;
+    background-color: #1E2021;
+    padding: 20px;
+    width: 300px;
+    left: -100%;
+    position: absolute;
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    right: -4px;
+    color: #FFF;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.help-tip p:before{ /* The pointer of the tooltip */
+    position: absolute;
+    content: '';
+    width:0;
+    height: 0;
+    border:6px solid transparent;
+    border-bottom-color:#1E2021;
+    right:260px;
+    top:-12px;
+}
+
+.help-tip p:after{ /* Prevents the tooltip from being hidden */
+    width:100%;
+    height:40px;
+    content:'';
+    position: absolute;
+    top:-40px;
+    left:0;
+}
+
+/* CSS animation */
+
+@-webkit-keyframes fadeIn {
+    0% { 
+        opacity:0; 
+        transform: scale(0.6);
+    }
+
+    100% {
+        opacity:100%;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    0% { opacity:0; }
+    100% { opacity:100%; }
+}
 </style>

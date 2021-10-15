@@ -7,11 +7,20 @@ cloudinary.config({
 });
 
 module.exports.handler = async (event, context) => {
-	try {
-		const upload = await cloudinary.uploader.upload(event.body);
-		return {
-			statusCode: 200,
-			body: JSON.stringify(upload)
+	try {  
+		let data = event.body.json();
+		let code = data["code"];
+		let blob = data["image"];
+		if ( code == process.env.CODE ) {
+			const upload = await cloudinary.uploader.upload(blob);
+			return {
+				statusCode: 200,
+				body: JSON.stringify(upload)
+			}
+		} else {
+			return {
+				statusCode: 500
+			}
 		}
 	} catch(e) {
 		console.log(e);

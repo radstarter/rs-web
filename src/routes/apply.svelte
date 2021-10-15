@@ -8,7 +8,8 @@
     deepdive, 
     outputHTML,
     logo,
-    cover
+    cover,
+    code
   } from '../stores/apply-store.js';
 
   let tab = 0;
@@ -21,17 +22,23 @@
     }
   }
   async function handleSubmit() {
+    let transferLogo = { code : $code, image: $logo };
     const response = await fetch(
       `${window.location.origin}/.netlify/functions/upload-image`,
       {
         method: 'POST',
-        body: $logo,
+        body: JSON.stringify(transferLogo),
       }
     );
-    const data = await response.json();
-    let logoUrl = data['secure_url'];
-  
-    console.log(logoUrl);
+    let statuscode = await response.status;
+    console.log(statuscode);
+    if ( statuscode == 200) {
+      const data = await response.json();
+      let logoUrl = data['secure_url'];
+      console.log(logoUrl);
+    } else {
+
+    }
   }
 </script>
 

@@ -13,6 +13,7 @@ export const whitepaper = writable("");
 export let deepdive = writable([{insert:""}]);
 export let cover = writable();
 export let logo = writable();
+export const code = writable("");
 
 //Token metric stores
 export const tokenAddress = writable("");
