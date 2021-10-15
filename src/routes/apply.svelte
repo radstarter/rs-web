@@ -29,7 +29,9 @@
       }
     );
     const data = await response.json();
-    console.log(data);
+    let logoUrl = data['secure_url'];
+  
+    console.log(logoUrl);
   }
 </script>
 
