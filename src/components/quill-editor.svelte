@@ -47,7 +47,7 @@
                     })
                     .then(response => response.json())
                     .then(result => {
-                      resolve(result.secure_url)
+                      resolve(result['secure_url'])
                     })
                     .catch(error => {
                       reject("Upload failed");
