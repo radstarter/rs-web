@@ -38,7 +38,7 @@
                   let base64ImageSrc = fileReader.result;
 
                   let transferImage = { code: code, image: base64ImageSrc};
-
+                  
                   fetch(
                     `https://radstarter.io/.netlify/functions/upload-image`,
                     {
@@ -60,6 +60,11 @@
                       }
                   });
                 });
+              if (file) {
+                fileReader.readAsDataURL(file);
+              } else {
+                reject("No file selected");
+              }
             });
           }
         }
