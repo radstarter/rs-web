@@ -18,7 +18,8 @@
     "quill-better-table": "^1.2.10",
     "quill-image-compress": "^1.2.15",
     "quill-image-uploader": "^1.2.2",
-    "sanitize-html": "^2.5.0"
+    "sanitize-html": "^2.5.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@sveltejs/adapter-netlify": "^1.0.0-next.32",

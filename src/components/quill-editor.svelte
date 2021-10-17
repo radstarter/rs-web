@@ -25,6 +25,7 @@
     const { default: ImageUploader}  = await  import('quill-image-uploader');
 
     Quill.register('modules/imageUploader', ImageUploader);
+      
     let quill = new Quill(editor, {
       modules: {
         toolbar: toolbarOptions,
@@ -58,13 +59,13 @@
                       } else {
                         modalMessage = "Error while uploading the picture, try again later";
                       }
+                    });
                   });
-                });
-              if (file) {
-                fileReader.readAsDataURL(file);
-              } else {
-                reject("No file selected");
-              }
+                if (file) {
+                  fileReader.readAsDataURL(file);
+                } else {
+                  reject("No file selected");
+                }
             });
           }
         }
@@ -80,7 +81,8 @@
     quill.on("text-change", function(delta, oldDelta, source) {
       outputHTML = container.innerHTML;
       setDelta = quill.getContents();
-    }); } catch (e) {
+    }); 
+    } catch (e) {
       console.log(e);
     }
   });
