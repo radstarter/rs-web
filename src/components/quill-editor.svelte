@@ -22,7 +22,7 @@
   onMount(async () => {
     try {
     const { default: Quill } = await import('quill');
-    const { default: ImageCompress }  = await  import('quill-image-uploader');
+    const { default: ImageUploader}  = await  import('quill-image-uploader');
 
     Quill.register('modules/imageUploader', ImageUploader);
     let quill = new Quill(editor, {
@@ -40,7 +40,7 @@
                   let transferImage = { code: code, image: base64ImageSrc};
                   
                   fetch(
-                    `https://radstarter.io/.netlify/functions/upload-image`,
+                    `${window.location.origin}/.netlify/functions/upload-image`,
                     {
                       method: 'POST',
                       body: JSON.stringify(transferImage),
