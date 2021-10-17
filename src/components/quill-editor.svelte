@@ -40,7 +40,7 @@
                   let transferImage = { code: code, image: base64ImageSrc};
 
                   fetch(
-                    `${window.location.origin}/.netlify/functions/upload-image`,
+                    `https://radstarter.io/.netlify/functions/upload-image`,
                     {
                       method: 'POST',
                       body: JSON.stringify(transferImage),
