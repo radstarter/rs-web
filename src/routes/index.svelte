@@ -68,6 +68,7 @@
       modalOpen = false;
     } else {
       console.log(response.status);
+      console.log(response);
       btnSubmitLoading = false;
       btnSubmitDisabled = false;
       showErrorSubmit = true;

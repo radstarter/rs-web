@@ -3,7 +3,10 @@ const q = faunadb.query;
 
 exports.handler = async (event, context) => {
 	const client = new faunadb.Client({
-		secret: process.env.FAUNADBMAIL
+		secret: process.env.FAUNADBMAIL,
+		domain: 'db.eu.fauna.com',
+		port: 443,
+		scheme: 'https',
 	});
 
 	const data = JSON.parse(event.body);
@@ -21,5 +24,4 @@ exports.handler = async (event, context) => {
 				body: JSON.stringify(error)
 			}
 		})
-
 }
