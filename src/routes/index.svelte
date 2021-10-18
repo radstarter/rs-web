@@ -29,6 +29,8 @@
     errorEmail = false;
     modalOpen = true;
     showErrorSubmit = false;
+    btnSubmitLoading = false;
+    btnSubmitDisabled = false;
   }
 
   let schema = yup.object().shape({

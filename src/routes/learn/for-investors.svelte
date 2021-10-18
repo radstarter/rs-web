@@ -1,5 +1,28 @@
 <script>
-import { Container } from 'svelte-chota'
+  import { Container, Row, Col } from 'svelte-chota';
+  import VizSupply from '../../components/viz-supply.svelte';
+  const data = [
+  {
+    "size": 1000000,
+    "label": "Seed Sale",
+    "color": "rgb(100,180,200)"
+  },
+  {
+    "size": 3500000,
+    "label": "DAO Vault",
+    "color": "rgb(150,200,250)"
+  },
+  {
+    "size": 3000000,
+    "label": "Public Sale",
+    "color": "rgb(80,100,150)"
+  },
+  {
+    "size": 1500000,
+    "label": "Founder retention",
+    "color": "rgb(72,61,139)"
+  }
+];
 </script>
 <svelte:head>
   <title>Radstarter - Learn</title>
@@ -8,34 +31,55 @@ import { Container } from 'svelte-chota'
 <Container>
 <h1>Investment funding on Radix</h1>
 <p>
-  Radstarter is a community curated launchpad for startups, daos and platforms
+  Radstarter is a community curated launchpad for startups and DAOs
   built on radix. It's a platform where projects can raise money, launch
-  their tokens and build a community. It's a place for investors to find 
-  new Radix projects to join. 
+  their tokens and build a community.
 </p>
-<h2>FAQ</h2>
-<h3>How does it work?</h3>
 <p>
   The platform is governed by a dao (Decentralised Autonomous Organisation)
-  this means that every project that raises with us is approved through community
-  voting. Stakeholders get to decide where capital flows, which projects to 
-  invest in and the percentage we take. If a project wants to raise with us,
-  they have to create a public proposal with all the details and submit it
-  to the voting platform. Then the collective can vote for or against.
+  this means that everybody has equal access to information. 
+  If a project wants to raise with us they have to create a public 
+  proposal with all the details. Then the collective can vote for or against. 
 </p>
 <p>
   All profit from raises is divided between stakeholders in the dao. The dao has the option to
-  buy tokens from projects we launch with capital from the vault. So we are 
-  not only a launchpad but also an incubator for innovative platforms on radix.
+  invest in projects we launch with capital from the vault. So we are 
+  not only a launchpad but also an incubator for innovative ventures on radix.
 </p>
 
-<h3>How do I become a stakeholder?</h3>
-<p>
-  All you need to do is buy tokens, and you can participate in voting and earn 
-  dividends. Tokens can be bought on the open market, or on the limited
-  curve.
-</p>
 
+<h2>Token</h2>
+  <Row>
+    <Col>
+      <h3>Information</h3>
+      <tr>
+        <td>Name</td><td>Radstarter Token</td>
+      </tr>
+      <tr>
+        <td>Ticker</td><td>RST</td>
+      </tr>
+      <tr>
+        <td>Type:</td><td>Profit Share / Governance</td>
+      </tr>
+      <tr>
+        <td>Supply:</td><td>9.000.000 (Fixed)</td>
+      </tr>
+      <tr>
+        <td>Seed Raise:</td><td>TBA</td>
+      </tr>
+      <tr>
+        <td>Seed price:</td><td>0.5 XRD</td>
+      </tr>
+    </Col>
+    <Col>
+      <div class="viz">
+        <h3> Distribution </h3>
+        <VizSupply segments={data}/>
+      </div>
+    </Col>
+</Row>
+<h2>FAQ</h2>
+<h3>How does it work?</h3>
 <h3>What is a limited curve?</h3>
 <p>
   It is a curve that decides the price of the current token. You can see it as
@@ -47,7 +91,7 @@ import { Container } from 'svelte-chota'
 </p>
 <h3>When will governance be completely implemented?</h3>
 <p>
-  We are currently working together with the radix programmer guild to build 
+  We are currently working together with the radix guild to build 
   the backbone of our governance platform. We will roll it out piece by piece
   and slowly take off the training wheels. First we will roll out voting for
   the curation of projects, after that voting to control the vault. We will
@@ -56,15 +100,20 @@ import { Container } from 'svelte-chota'
 </p>
 <h3>How do dividends work?</h3>
 <p>
-  Dividends will be payed out automatically to all token holders twice a year.
-  Dividends will be payed out in XRD, until there is a stablecoin on radix.
-  The gas cost will be substracted from your earnings (~ 5 cents).
-</p>
-<p>
-  There are two vaults one that holds the funds of the dao, the dao-vault. 
-  One that holds the earnings, the dividend-vault. The profits from raises
+  There are two vaults one that holds the funds of the dao, the dao-vault. And 
+  one that holds the earnings, the dividend-vault. The profits from raises
   automatically go to the dividend-vault. And it gets triggered twice a year
   to pay out the profits. The dao-vault generates it's profits from holding 
-  NAME tokens. There will be token buybacks.
+  $RST tokens.
 </p>
 </Container>
+<style>
+  .viz {
+    width:100%;
+    height:100%;
+    text-align:center;
+  }
+  .viz h3 {
+    position:absolute;
+  }
+</style>

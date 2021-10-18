@@ -30,7 +30,7 @@
         body: JSON.stringify(transferLogo),
       }
     );
-    let statuscode = await response.status;
+    let statuscode = response.status;
     console.log(statuscode);
     if ( statuscode == 200) {
       const data = await response.json();
