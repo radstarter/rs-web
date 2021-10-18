@@ -3,10 +3,13 @@
   import * as yup from 'yup';
 
   let modalOpen;
+  let modalSuccesOpen;
   let modalText;
 
   let name, email, valid, errorName, errorEmail, refferer;
-
+  let btnSubmitLoading = false;
+  let btnSubmitDisabled = false;
+  let showErrorSubmit = false;
   function setModalOpenSeed() {
     modalText = "Get notified about <a href=\"/learn/token\"> $RST </a>";
     refferer = "seed"
@@ -25,8 +28,8 @@
     errorName = false;
     errorEmail = false;
     modalOpen = true;
+    showErrorSubmit = false;
   }
-
 
   let schema = yup.object().shape({
     name: yup.string().required(),
@@ -37,13 +40,38 @@
     schema.isValid({
       name: name,
       email: email
-    }).then(function (v) {
-      valid = v;
+    }).then(function (valid) {
       if(!valid) {
         isNameValid();
         isEmailValid();
+      } else {
+        handleSubmit();
       }
     });
+  }
+
+  async function handleSubmit() {
+    btnSubmitLoading = true;
+    btnSubmitDisabled = true;
+    showErrorSubmit = false;
+
+    let data = { data: { name: name, email: email, ref: refferer } };     
+    const response = await fetch(
+      `${window.location.origin}/.netlify/functions/create-email-sub`,
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }
+    );
+    if (response.status == 200) {
+      modalSuccesOpen = true;
+      modalOpen = false;
+    } else {
+      console.log(response.status);
+      btnSubmitLoading = false;
+      btnSubmitDisabled = false;
+      showErrorSubmit = true;
+    }
   }
 
   function isNameValid() {
@@ -52,7 +80,6 @@
       errorName = false;
       } catch(e) {
       errorName = true;
-      console.log(e);
     }
   }
 
@@ -62,7 +89,6 @@
       errorEmail = false;
     } catch(e) {
       errorEmail = true;
-      console.log(e);
     }
   }
 
@@ -78,8 +104,8 @@
       you the best investment opportunities on Radix.
     </h3>
     <h4>Access rounds for high quality projects selected by the DAO</h4>
-    <Button on:click={setModalOpenSeed}>Join seed sale</Button>
-    <Button on:click={setModalOpenProject}>Subscribe to new Projects</Button>
+    <Button outline on:click={setModalOpenSeed}>Join seed sale</Button>
+    <Button outline on:click={setModalOpenProject}>Subscribe to new Projects</Button>
   </div>
   <div class="featured-projects">
     <h3>Featured Projects</h3>
@@ -89,9 +115,38 @@
   <Modal bind:open={modalOpen}>
     <Card>
       <h3>{@html modalText}</h3>
-      <p><Input bind:error={errorName}  type="text" bind:value={name} on:input={isNameValid} placeholder="Name" /></p>
-      <p><Input bind:error={errorEmail} type="text" bind:value={email} on:input={isEmailValid} placeholder="email" /></p>
-      <Button on:click={validateForm}>Submit</Button>
+      <p><Input bind:error={errorName}  type="text" bind:value={name}   on:keyup={isNameValid} placeholder="Name" /></p>
+      <p><Input bind:error={errorEmail} type="text" bind:value={email} on:keyup={isEmailValid} placeholder="email" /></p>
+      <Button loading={btnSubmitLoading} disabled={btnSubmitDisabled} on:click={validateForm}>Submit</Button>
+      {#if showErrorSubmit}
+        <div class="error-msg">
+          Something went wrong,<br/> please try again later. 
+          <img src="error.svg" height="33" width="33" alt="Error">
+        </div>
+      {/if}
     </Card>
   </Modal>
+  <Modal  bind:open={modalSuccesOpen}>
+    <div class="success">
+      <img src="success.svg" height="120px" width="120px" alt="Succes" />
+      <p>Succesfully joined the mailinglist.</p> 
+    </div>
+  </Modal>
 </Container>
+
+<style>
+  .error-msg {
+    position:absolute;
+    left:18rem;
+    bottom:0.7rem;
+  }
+  .error-msg img {
+    position: absolute;
+    left:-4rem;
+    bottom:0.4rem;
+  }
+  .success {
+    padding-top:1.2rem;
+    text-align: center;
+  }
+</style>

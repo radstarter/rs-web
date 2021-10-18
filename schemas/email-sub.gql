@@ -1,0 +1,9 @@
+type Subscribtion {
+  name: String!
+  email: String! 
+  ref: String!
+}
+type Query {
+  allSubscribers: [Subscribtion!]
+  subscribersByRef (ref: String!):[Subscribtion!] 
+}
