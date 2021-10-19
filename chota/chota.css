@@ -703,7 +703,8 @@ button:disabled:hover {
     }
 }
 .nav a,
-.nav .brand {
+.nav .brand,
+.nav div {
     text-decoration: none;
     display: -webkit-box;
     display: -ms-flexbox;

@@ -1,5 +1,4 @@
 <script>
-  import { Nav, Container, Button } from 'svelte-chota';
   let open = false;
   let learn = false;
   let governance = false;
@@ -22,19 +21,37 @@
   }
 
 </script>
-<Container>
-  <div class="navbar-desktop">
-    <Nav> 
-    <a slot="left" href="/">LOGO</a>
-    <svelte:fragment slot= "right">
-      <a href="/learn/for-investors">Learn</a>
-      <a href="/governance">Governance</a>
-      <a href="/apply">Apply</a>
-      <a href="/community">Community</a>
-    </svelte:fragment>
-  </Nav>
+<div class="navbar-desktop">
+  <div class="logo"><a href="/">LOGO</a></div>
+  <div class="menu-desktop-container">
+    <ul class="ul-container">
+      <li>
+        Learn
+        <ul class="dropdown">
+          <li><a href="learn/for-investors">For Investors</a></li>
+          <li><a href="learn/for-ventures">For Ventures</a></li>
+          <li><a href="learn/token">Token</a></li>
+        </ul>
+      </li>
+      <li>
+        Governance
+        <ul class="dropdown">
+          <li><a href="/governance/vote">Vote</a></li>
+          <li><a href="/governance/apply">Apply</a></li>
+        </ul>
+      </li>
+      <li>
+        Community
+        <ul class="dropdown">
+          <li><a href="#todo">Discord</a></li>
+          <li><a href="#todo">Forum</a></li>
+        </ul>
+      </li>
+      <li><a href="/stake">Stake</a></li>
+      <li><a href="/contribute">Contribute</a></li>
+    </ul>
   </div>
-</Container>
+</div>
 
 <div class="navbar-mobile">
   <div class="logo"><a href="/" on:click={closeMenu}>LOGO</a></div>
@@ -200,12 +217,65 @@
   } 
 
 @media only screen and (min-width: 599px) {
-      .navbar-mobile{
+      .navbar-mobile {
         display: none;
       }
       .menu-mobile-content {
         display:none;
-        }
+      }
+      .navbar-desktop {
+        font-size:14pt;
+        display:flex;
+        justify-content:space-between;
+        max-width:var(--grid-maxWidth);
+        height:55px;
+        margin: auto;
+      }
+      .navbar-desktop a {
+        color:var(--color-darkGrey);
+      }
+      .navbar-desktop ul {
+        list-style:none;
+        margin:0;
+        padding-left: 0;
+      }
+
+      .navbar-desktop li {
+        list-style-type:none;
+        display:block;
+        float:left;
+        padding:1rem;
+        position:relative;
+      }
+      
+      .navbar-desktop li:hover {
+        cursor:pointer;
+        color:var(--color-grey);
+      }
+
+      .navbar-desktop ul li ul {
+        visibility:hidden;
+        min-width:8rem;
+        position:absolute;
+        margin-top:0.5rem;
+        left:0;
+        display:none;
+      }
+
+      .navbar-desktop ul li:hover > ul,
+      ul li ul:hover {
+        visibility:visible;
+        display:block;
+        background-color:white;
+        border:3px;
+        border-radius:5px;
+        border-color:black;
+      }
+      
+      .navbar-desktop ul li ul li {
+        clear:both;
+        width:100%;
+      }
   } 
 
 </style>
