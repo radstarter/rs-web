@@ -27,8 +27,8 @@
 <svelte:head>
   <title>Radstarter - Learn</title>
 </svelte:head>
-
-<Container>
+  <div id="toppie">
+    <Container>
 <h1>Investment funding on Radix</h1>
 <p>
   Radstarter is a community curated launchpad for startups and DAOs
@@ -42,15 +42,15 @@
   proposal with all the details. Then the collective can vote for or against. 
 </p>
 <p>
-  All profit from raises is divided between stakeholders in the dao. The dao has the option to
-  invest in projects we launch with capital from the vault. So we are 
-  not only a launchpad but also an incubator for innovative ventures on radix.
+  All profit from raises are divided between stakeholders in the dao. Through
+  consensus we can incubate or invest in projects that raise on our platform
+  with capital from the vault. When we make smart decisions we all gain.
 </p>
 
 
 <h2>Token</h2>
   <Row>
-    <Col>
+    <Col size={6}>
       <h3>Information</h3>
       <tr>
         <td>Name</td><td>Radstarter Token</td>
@@ -71,24 +71,31 @@
         <td>Seed price:</td><td>0.5 XRD</td>
       </tr>
     </Col>
-    <Col>
+    <Col size={6}>
       <div class="viz">
-        <h3> Distribution </h3>
         <VizSupply segments={data}/>
       </div>
     </Col>
 </Row>
 <h2>FAQ</h2>
-<h3>How does it work?</h3>
+<h3>How does the platform work?</h3>
+<h3>How does the profit share model work?</h3>
+<p>
+  There are two vaults one that holds the funds of the dao, the dao-vault. And 
+  one that holds the earnings, the dividend-vault. The profits from raises
+  automatically go to the dividend-vault. You can then claim your share from
+  the dividend-vault. The dao-vault generates it's profits by holding $RST tokens.
+</p>
+
 <h3>What is a limited curve?</h3>
 <p>
-  It is a curve that decides the price of the current token. You can see it as
-  a gumball machine that sells tokens, but every token that is bought increases
-  the price of the next token. This is to reward early investors and believers
-  in the project. When more people believe in the project, it becomes more
-  expensive. Bonding curves are usually unlimited, but our limited 
-  curves have a fixed supply of tokens.
+  It is a curve that sets the price of the token by the amount of tokens sold,
+  like a bonding curve. But unlike bonding curves limited curves only have a 
+  buying curve and no selling curve. You can see it as a gumball machine that
+  sells tokens, but every token that is bought increases the price of the next one. 
+  This rewards early investors who take on more risk.
 </p>
+
 <h3>When will governance be completely implemented?</h3>
 <p>
   We are currently working together with the radix guild to build 
@@ -98,15 +105,9 @@
   start moving more and more funds into the dao controlled vault until security
   is optimal, then all the funds will be controlled by the dao.
 </p>
-<h3>How do dividends work?</h3>
-<p>
-  There are two vaults one that holds the funds of the dao, the dao-vault. And 
-  one that holds the earnings, the dividend-vault. The profits from raises
-  automatically go to the dividend-vault. And it gets triggered twice a year
-  to pay out the profits. The dao-vault generates it's profits from holding 
-  $RST tokens.
-</p>
-</Container>
+  </Container>
+</div>
+
 <style>
   .viz {
     width:100%;
@@ -114,6 +115,5 @@
     text-align:center;
   }
   .viz h3 {
-    position:absolute;
   }
 </style>

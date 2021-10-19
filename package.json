@@ -20,6 +20,7 @@
     "quill-image-compress": "^1.2.15",
     "quill-image-uploader": "^1.2.2",
     "sanitize-html": "^2.5.0",
+    "svelte-inview": "^2.0.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {

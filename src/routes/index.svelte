@@ -101,7 +101,7 @@
   <title>Radstarter - The Radix Launchpad</title>
 </svelte:head>
 <Container>
-  <div class="intro-main">
+  <div class="intro-main" id="toppie">
     <h3>
       We leverage swarm knowledge to bring
       you the best investment opportunities on Radix.
