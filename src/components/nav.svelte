@@ -17,6 +17,9 @@
   function toggleCommunity() {
     community = !community;
   }
+  function closeMenu() {
+    open = false;
+  }
 
 </script>
 <Container>
@@ -34,7 +37,7 @@
 </Container>
 
 <div class="navbar-mobile">
-  <div class="logo"><a href="/">LOGO</a></div>
+  <div class="logo"><a href="/" on:click={closeMenu}>LOGO</a></div>
   <div class="menu-btn" on:click={toggleBurger} class:open={open}>
     <div class="menu-btn-burger"></div>
   </div>

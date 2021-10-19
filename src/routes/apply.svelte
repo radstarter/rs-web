@@ -45,13 +45,13 @@
 <svelte:head>
   <title>Radstarter - Create application proposal</title>
 </svelte:head>
-
+<div id="toppie">
 <Container>
   <h1> Create a proposal to submit your project </h1>
   <Tabs full bind:active={tab} >
-    <Tab>Basic information</Tab>
-    <Tab>Deep Dive</Tab>
-    <Tab>Set Price</Tab>
+    <Tab>Info</Tab>
+    <Tab>Dive</Tab>
+    <Tab>Price</Tab>
     <Tab>Preview</Tab>
   </Tabs>
   {#if tab == 0}
@@ -83,10 +83,14 @@
   {/if}
   
 </Container>
+</div>
 <style>
   .btn-center {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  :global(Tabs){
+    width:100%;
   }
 </style>

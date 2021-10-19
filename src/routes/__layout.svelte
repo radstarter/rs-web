@@ -1,5 +1,6 @@
 <script>
-  import 'chota/dist/chota.css'
+  //import 'chota/dist/chota.min.css'
+  import '../../chota/chota.css'
   import Nav from "../components/nav.svelte";
 </script>
 <Nav />
