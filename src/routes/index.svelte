@@ -108,7 +108,7 @@
     </h3>
     <h4>Access rounds for high quality projects selected by the DAO</h4>
     <Button outline on:click={setModalOpenSeed}>Join seed sale</Button>
-    <Button outline on:click={setModalOpenProject}>Subscribe to new Projects</Button>
+    <a href="/governance/apply"><Button outline>Submit Project</Button></a>
   </div>
   <div class="featured-projects">
     <h3>Featured Projects</h3>

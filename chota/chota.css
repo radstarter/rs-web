@@ -34,7 +34,6 @@ body {
   line-height: 1.6;
   font-size: var(--font-size);
   color: var(--font-color);
-  font-family: "Segoe UI", "Helvetica Neue", sans-serif; /*fallback*/
   font-family: var(--font-family-sans);
   margin: 0;
   padding: 0;

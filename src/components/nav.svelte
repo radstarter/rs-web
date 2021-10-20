@@ -28,9 +28,9 @@
       <li>
         Learn
         <ul class="dropdown">
-          <li><a href="learn/for-investors">For Investors</a></li>
-          <li><a href="learn/for-ventures">For Ventures</a></li>
-          <li><a href="learn/token">Token</a></li>
+          <li><a href="/learn/for-investors">For Investors</a></li>
+          <li><a href="/learn/for-ventures">For Ventures</a></li>
+          <li><a href="/learn/token">Token</a></li>
         </ul>
       </li>
       <li>
@@ -88,7 +88,7 @@
   </ul>
 </div>
 <style>
-  @media only screen and (max-width: 599px) {
+  @media only screen and (max-width: 830px) {
       .navbar-desktop {
         display: none;
       }
@@ -115,7 +115,9 @@
         cursor:pointer;
         transition: all .3s ease-in-out;
         margin-left:auto;
-        padding-right:2rem;
+        margin-top: 1.3rem;
+        margin-right:2.8rem;
+        padding-right:1rem;
         padding-top:0.8rem;
       }
       .menu-btn-burger {
@@ -216,7 +218,7 @@
 
   } 
 
-@media only screen and (min-width: 599px) {
+@media only screen and (min-width: 830px) {
       .navbar-mobile {
         display: none;
       }
@@ -231,47 +233,50 @@
         height:55px;
         margin: auto;
       }
+
+      .dropdown{
+        box-shadow: 1px 1px 1px 1px var(--color-lightGrey);
+      }
       .navbar-desktop a {
         color:var(--color-darkGrey);
       }
       .navbar-desktop ul {
         list-style:none;
         margin:0;
-        padding-left: 0;
+        padding-left: 0.2rem;
+        border-radius: 5px;
       }
-
+      .navbar-desktop .dropdown ul {
+        border:1px;
+        border-style:solid;
+        border-color:black;
+      }
       .navbar-desktop li {
         list-style-type:none;
         display:block;
         float:left;
         padding:1rem;
         position:relative;
+        margin-right:3rem;
       }
-      
       .navbar-desktop li:hover {
         cursor:pointer;
         color:var(--color-grey);
       }
-
       .navbar-desktop ul li ul {
         visibility:hidden;
-        min-width:8rem;
+        min-width:17rem;
         position:absolute;
         margin-top:0.5rem;
         left:0;
         display:none;
       }
-
       .navbar-desktop ul li:hover > ul,
       ul li ul:hover {
         visibility:visible;
         display:block;
         background-color:white;
-        border:3px;
-        border-radius:5px;
-        border-color:black;
-      }
-      
+        }
       .navbar-desktop ul li ul li {
         clear:both;
         width:100%;

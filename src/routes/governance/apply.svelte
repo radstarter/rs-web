@@ -1,16 +1,16 @@
 <script>
   import { Tabs, Tab, Container } from 'svelte-chota';
-  import LimitedCurveCreator from '../components/limited-curve-creator.svelte'
-  import BasicsForm from '../components/basics-form.svelte';
-  import Preview from '../components/preview.svelte';
-  import QuillEditor from '../components/quill-editor.svelte';
+  import LimitedCurveCreator from '../../components/limited-curve-creator.svelte'
+  import BasicsForm from '../../components/basics-form.svelte';
+  import Preview from '../../components/preview.svelte';
+  import QuillEditor from '../../components/quill-editor.svelte';
   import { 
     deepdive, 
     outputHTML,
     logo,
     cover,
     code
-  } from '../stores/apply-store.js';
+  } from '../../stores/apply-store.js';
 
   let tab = 0;
   let text = ""
