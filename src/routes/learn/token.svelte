@@ -48,7 +48,7 @@
   proposal with all the details. Then the collective can vote for or against. 
 </p>
 <p>
-  All profit from raises are divided between stakeholders in the dao. Through
+  All profit from raises are divided between members of the dao. Through
   consensus we can incubate or invest in projects that raise on our platform
   with capital from the vault. When we make smart decisions we all gain.
 </p>
@@ -89,7 +89,7 @@
 </Row>
 <h3>The profit share model</h3>
 <p>
-  There are two vaults one that holds the funds of the dao, the dao-vault. And 
+  There will be two vaults one that holds the funds of the dao, the dao-vault. And 
   one that holds the earnings, the dividend-vault. The profits from raises
   automatically go to the dividend-vault. You can then claim your share from
   the dividend-vault. The dao-vault generates it's profits by holding $RST tokens.
@@ -114,10 +114,31 @@
 <div id="roadmap">
 <h3>Roadmap</h3>
   <h4>Phase 1 - Creating the blueprints</h4>
-
+  <p>
+  This phase will coincide with Alexandria, here we build out the smart-contracts,
+  we create the trustless <a href="/learn/for-investors#limited-curve">limited curve</a> 
+  sale blueprint, the staking component and the voting component.
+  </p>
   <h4>Phase 2 - Launch Platform</h4>
+  <p>
+    This phase is right after the launch of babylon. In this phase we will focus on marketing,
+    and networking with as many projects
+    as possible, to launch them on our platform.
+  </p>
   <h4>Phase 3 - Launch DAO</h4>
-  <h4>Phase 4 - Expand to non crypto Companies</h4>
+  <p>
+    This is where the vault becomes part of the DAO, and the DAO can start to become
+    an incubator. By now our voting contracts will be thoroughly tested.
+  </p>
+  <h4>Phase 4 - Iterate</h4>
+  <p>
+    Optimize marketing and tech, automate as much as possible, and make all
+    processes trustless.
+  </p>
+  <h4>Phase 5 - Expand</h4>
+  <p>
+    Create the legal structure to create a launchpad for non crypto companies
+  </p>
 </div>
 </Container>
 </div>
@@ -136,7 +157,11 @@
     left:0;
     right:0;
   }
-  #roadmap h4 {
+  #roadmap h4{
+    font-weight:300;
+    text-align:center;
+  }
+  #roadmap p {
     text-align:center;
   }
 </style>

@@ -1,5 +1,5 @@
 <script>
-  import { Tabs, Tab, Container } from 'svelte-chota';
+  import { Tabs, Tab, Container, Button } from 'svelte-chota';
   import LimitedCurveCreator from '../../components/limited-curve-creator.svelte'
   import BasicsForm from '../../components/basics-form.svelte';
   import Preview from '../../components/preview.svelte';
@@ -48,6 +48,7 @@
 <div id="toppie">
 <Container>
   <h1> Create a proposal to submit your project </h1>
+  <a href="#todo"> <Button outline primary>Request upload code </Button></a>
   <Tabs full bind:active={tab} >
     <Tab>Info</Tab>
     <Tab>Dive</Tab>
