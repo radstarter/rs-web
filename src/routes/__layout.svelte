@@ -12,7 +12,7 @@
   }
   @media only screen and (max-width: 830px) {
     :global(#toppie) {
-      padding-top:55px;
+      padding-top:65px;
     }
   }
 </style>

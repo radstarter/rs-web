@@ -130,6 +130,7 @@
 	onMount(async () => {
 		factorExpLocal = $factorExp;
 		factorLinLocal = $factorLin;
+		factorExpLocal = ($range - $offset) / Math.pow($totalSupply, 2);
 		const sleep = ms => new Promise(f => setTimeout(f, ms));
 		await sleep(10);
 		resample();

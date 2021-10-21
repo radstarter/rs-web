@@ -59,7 +59,9 @@
     <p>
       No we don't do Initial Dex Offerings, we have specialized blueprints to sell tokens
       to investors. We either sell tokens at a fixed price set by you or on a 
-      <a href="/learn/for-investors#limited-curve">limited curve</a>. 
+      <a href="/learn/for-investors#limited-curve">limited curve</a>. You can play around
+      with the <a href="/governance/apply#creator">limited curve creator</a> to see
+      your projected income.
       
     </p>
     <h4>Do you offer compliance as a service?</h4>

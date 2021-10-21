@@ -22,7 +22,7 @@
 
 </script>
 <div class="navbar-desktop">
-  <div class="logo"><a href="/">LOGO</a></div>
+  <div class="logo"><a href="/"><img src="../../static/logo-cropped.svg" height="45"  alt="logo"></a></div>
   <div class="menu-desktop-container">
     <ul class="ul-container">
       <li>
@@ -54,7 +54,7 @@
 </div>
 
 <div class="navbar-mobile">
-  <div class="logo"><a href="/" on:click={closeMenu}>LOGO</a></div>
+  <div class="logo"><a href="/" on:click={closeMenu}><img src="../../static/logo-cropped.svg" alt="logo" height="45"></a></div>
   <div class="menu-btn" on:click={toggleBurger} class:open={open}>
     <div class="menu-btn-burger"></div>
   </div>
@@ -97,12 +97,12 @@
         position:fixed;
         z-index:2;
         width:100%;
-        height: 55px;
+        height: 60px;
         background-color:#fff;
         top:0;
       }
       .logo {
-        padding-top:2rem;
+        padding-top:1rem;
         padding-left:2rem;
       }
       .menu-btn {
@@ -115,10 +115,8 @@
         cursor:pointer;
         transition: all .3s ease-in-out;
         margin-left:auto;
-        margin-top: 1.3rem;
-        margin-right:2.8rem;
-        padding-right:1rem;
-        padding-top:0.8rem;
+        margin-top: 1.8rem;
+        margin-right:3.5rem;
       }
       .menu-btn-burger {
         width: 35px;
@@ -167,8 +165,10 @@
       .menu-mobile-content.open {
         display:flex;
         height:100vh;
+        margin-top:60px;
         position:fixed;
         width:100%;
+        z-index:99;
       }
       .menu-mobile-content li {
         list-style-type:none;
@@ -213,7 +213,7 @@
         transform:rotate(180deg);
       }
       .ul-container {
-        padding-top:33px;
+        margin-top:3px;
       }
 
   } 
@@ -230,8 +230,12 @@
         display:flex;
         justify-content:space-between;
         max-width:var(--grid-maxWidth);
-        height:55px;
+        height:60px;
         margin: auto;
+      }
+      .logo {
+        padding-top:1rem;
+        padding-left:2rem;
       }
 
       .dropdown{
@@ -258,6 +262,7 @@
         padding:1rem;
         position:relative;
         margin-right:3rem;
+        padding-top:2.5rem;
       }
       .navbar-desktop li:hover {
         cursor:pointer;
