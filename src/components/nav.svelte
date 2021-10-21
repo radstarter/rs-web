@@ -22,7 +22,7 @@
 
 </script>
 <div class="navbar-desktop">
-  <div class="logo"><a href="/"><img src="../../static/logo-cropped.svg" height="45"  alt="logo"></a></div>
+  <div class="logo"><a href="/"><img src="logo-cropped.svg" height="45"  alt="logo"></a></div>
   <div class="menu-desktop-container">
     <ul class="ul-container">
       <li>
@@ -54,7 +54,7 @@
 </div>
 
 <div class="navbar-mobile">
-  <div class="logo"><a href="/" on:click={closeMenu}><img src="../../static/logo-cropped.svg" alt="logo" height="45"></a></div>
+  <div class="logo"><a href="/" on:click={closeMenu}><img src="logo-cropped.svg" alt="logo" height="45"></a></div>
   <div class="menu-btn" on:click={toggleBurger} class:open={open}>
     <div class="menu-btn-burger"></div>
   </div>
