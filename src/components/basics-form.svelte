@@ -23,8 +23,8 @@
     cover,
     code
   } from '../stores/apply-store.js';
-  import { Modal, Card } from 'svelte-chota';
-
+  import { Modal, Card, Row, Col } from 'svelte-chota';
+  import  PreviewFrontpage  from './preview-frontpage.svelte';
   //Mechanics for changing the template of the deepdive 
   function handleOrgChange() {
     if ($organizationType == "DAO") {
@@ -163,40 +163,39 @@
     <label for="whitepaper">Whitepaper</label>
     <input type="url" bind:value={$whitepaper}>
   </p>
-
- <Card class="preview-card">
-    {#if $cover}
-      <img class="cover" src={$cover} alt="preview-cover"/>
-    {/if}
-    {#if $logo}
-      <img class="logo" src="{$logo}" alt="d" />
+  <h3>Preview mini:</h3>
+  <Row>
+    {#if $logo && $cover}
+      <Col  size="6" sizeMD="4" sizeLG="4" ><PreviewFrontpage name={$organizationName} ticker={$tokenTicker} type={organizationType} description={$shortDesc} cover={$cover} logo={$logo} /></Col>
+    {:else if $logo}
+      <Col  size="6" sizeMD="4" sizeLG="4" ><PreviewFrontpage name={$organizationName} ticker={$tokenTicker} type={organizationType} description={$shortDesc} cover="https://res.cloudinary.com/dhxjflczp/image/upload/v1634945758/cover_d56wyh.jpg" logo={$logo} /></Col>
+    {:else if $cover}
+      <Col  size="6" sizeMD="4" sizeLG="4" ><PreviewFrontpage name={$organizationName} ticker={$tokenTicker} type={organizationType} description={$shortDesc} cover={$cover} logo="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" /></Col>
     {:else}
-      <img class="logo" src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" /> 
+      <Col  size="6" sizeMD="4" sizeLG="4" ><PreviewFrontpage name={$organizationName} ticker={$tokenTicker} type={organizationType} description={$shortDesc} cover="https://res.cloudinary.com/dhxjflczp/image/upload/v1634945758/cover_d56wyh.jpg" logo="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" /></Col>
     {/if}
-
-    <h3>{$organizationName}</h3>
-    <h4>${$tokenTicker}</h4>
-  </Card>  
-  <p>
-   <button class="upload" on:click={()=>{fileinput.click();}}>Upload logo</button>
-    <input style="display:none" type="file" accept=".jpg"
+  </Row>
+   <p>
+   <button class="upload" on:click={()=>{fileinput.click();}}>Upload logo*</button>
+    <input style="display:none" type="file" accept=".jpg, .png"
       on:change={(e)=>onFileSelected(e)} bind:this={fileinput}
     >
 
-    <button class="upload-cover" on:click={()=>{fileinputCover.click();}}>Upload Cover</button>
+    <button class="upload-cover" on:click={()=>{fileinputCover.click();}}>Upload Cover*</button>
      <input style="display:none" type="file" accept=".jpg"
       on:change={(e)=>onCoverSelected(e)} bind:this={fileinputCover}
      >
   </p>
- <div class="help-tip">
-     <p> To prevent spam, and abuse of our fileserver you have to enter the upload code here, you can
-       request one on the discord for free.</p>
-  </div>  
-  <p>
-    <label for="upload-code">Upload Code*</label>
+ <p>
+    <label for="upload-code">Upload Code**</label>
     <input type="text" bind:value={$code}>
-  </p>
-
+ </p>
+   <div id="info-sm">
+     <p>
+     ** To prevent spam on our fileservers we require you to request an upload
+     code on the discord.
+   </p>
+   </div>
    <Modal bind:open={modalOpen}>
     <Card>
       Wrong token address (use rri)
@@ -206,90 +205,11 @@
 <style>
   .logo{
 		display:flex;
-		height:200px;
-		width:200px;
+		height:80px;
+		width:80px;
+    border-radius:10px;
   }
-  .help-tip{
-    position: relative;
-    top: 23px;
-    right: -100px;
-    text-align: center;
-    background-color: #BCDBEA;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 14px;
-    line-height: 26px;
-    cursor: default;
-}
-
-.help-tip:before{
-    content:'?';
-    font-weight: bold;
-    color:#fff;
-}
-
-.help-tip:hover p{
-    display:block;
-    transform-origin: 100% 0%;
-
-    -webkit-animation: fadeIn 0.3s ease-in-out;
-    animation: fadeIn 0.3s ease-in-out;
-
-}
-
-.help-tip p{    /* The tooltip */
-    display: none;
-    text-align: left;
-    background-color: #1E2021;
-    padding: 20px;
-    width: 300px;
-    left: -100%;
-    position: absolute;
-    border-radius: 3px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-    right: -4px;
-    color: #FFF;
-    font-size: 13px;
-    line-height: 1.4;
-}
-
-.help-tip p:before{ /* The pointer of the tooltip */
-    position: absolute;
-    content: '';
-    width:0;
-    height: 0;
-    border:6px solid transparent;
-    border-bottom-color:#1E2021;
-    right:260px;
-    top:-12px;
-}
-
-.help-tip p:after{ /* Prevents the tooltip from being hidden */
-    width:100%;
-    height:40px;
-    content:'';
-    position: absolute;
-    top:-40px;
-    left:0;
-}
-
-/* CSS animation */
-
-@-webkit-keyframes fadeIn {
-    0% { 
-        opacity:0; 
-        transform: scale(0.6);
-    }
-
-    100% {
-        opacity:100%;
-        transform: scale(1);
-    }
-}
-
-@keyframes fadeIn {
-    0% { opacity:0; }
-    100% { opacity:100%; }
-}
-</style>
+  #info-sm {
+    font-size:9pt;
+  }
+ </style>

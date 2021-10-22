@@ -1,6 +1,7 @@
 <script>
-  import { Container, Button, Modal, Card, Input } from 'svelte-chota';
+  import { Container, Button, Modal, Card, Input, Row, Col } from 'svelte-chota';
   import * as yup from 'yup';
+  import  PreviewFrontpage  from '../components/preview-frontpage.svelte'; 
 
   let modalOpen;
   let modalSuccesOpen;
@@ -10,16 +11,11 @@
   let btnSubmitLoading = false;
   let btnSubmitDisabled = false;
   let showErrorSubmit = false;
+
   function setModalOpenSeed() {
     modalText = "Get notified about <a href=\"/learn/token\"> $RST </a>";
     refferer = "seed"
     setModal();
-  }
-
-  function setModalOpenProject() {
-    modalText = "Subscribe to new projects";
-    refferer = "project"
-    setModal()
   }
 
   function setModal() {
@@ -114,7 +110,12 @@
     <h3>Featured Projects</h3>
     <hr/>
     COMING SOON
+    <Row>
+    </Row>
   </div>
+  
+
+  <!-- Modals -->
   <Modal bind:open={modalOpen}>
     <Card>
       <h3>{@html modalText}</h3>

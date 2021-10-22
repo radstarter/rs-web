@@ -1,4 +1,5 @@
 <script>
+  import { Container } from 'svelte-chota';
   let open = false;
   let learn = false;
   let governance = false;
@@ -21,6 +22,7 @@
   }
 
 </script>
+<Container>
 <div class="navbar-desktop">
   <div class="logo"><a href="/"><img src="logo-cropped.svg" height="45"  alt="logo"></a></div>
   <div class="menu-desktop-container">
@@ -52,7 +54,8 @@
     </ul>
   </div>
 </div>
-
+</Container>
+<Container>
 <div class="navbar-mobile">
   <div class="logo"><a href="/" on:click={closeMenu}><img src="logo-cropped.svg" alt="logo" height="45"></a></div>
   <div class="menu-btn" on:click={toggleBurger} class:open={open}>
@@ -87,6 +90,7 @@
     <li><a href="/contribute"  on:click={toggleBurger}>Contribute</a></li>
   </ul>
 </div>
+</Container>
 <style>
   @media only screen and (max-width: 830px) {
       .navbar-desktop {
@@ -103,7 +107,6 @@
       }
       .logo {
         padding-top:1rem;
-        padding-left:2rem;
       }
       .menu-btn {
         position:relative;
@@ -116,7 +119,7 @@
         transition: all .3s ease-in-out;
         margin-left:auto;
         margin-top: 1.8rem;
-        margin-right:3.5rem;
+        margin-right:3.1rem;
       }
       .menu-btn-burger {
         width: 35px;
@@ -235,7 +238,7 @@
       }
       .logo {
         padding-top:1rem;
-        padding-left:2rem;
+        padding-left:0rem;
       }
 
       .dropdown{
