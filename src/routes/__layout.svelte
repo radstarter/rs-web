@@ -10,6 +10,10 @@
     --font-family-sans: FT Base,-apple-system,system-ui,BlinkMacSystemFont,SF Pro Text,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     --font-family-mono: FT Base,-apple-system,system-ui,BlinkMacSystemFont,SF Pro Text,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
   }
+  :global(h4) {
+    font-weight:400;
+  }
+
   @media only screen and (max-width: 830px) {
     :global(#toppie) {
       padding-top:65px;

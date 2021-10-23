@@ -24,7 +24,7 @@
 </script>
 <Container>
 <div class="navbar-desktop">
-  <div class="logo"><a href="/"><img src="logo-cropped.svg" height="45"  alt="logo"></a></div>
+  <div class="logo"><a href="/"><img src="/logo-cropped.svg" height="45"  width="78.64" alt="logo"></a></div>
   <div class="menu-desktop-container">
     <ul class="ul-container">
       <li>
@@ -45,7 +45,7 @@
       <li>
         Community
         <ul class="dropdown">
-          <li><a href="#todo">Discord</a></li>
+          <li><a href="https://discord.gg/QjUmEh257P">Discord</a></li>
           <li><a href="#todo">Forum</a></li>
         </ul>
       </li>
@@ -57,7 +57,7 @@
 </Container>
 <Container>
 <div class="navbar-mobile">
-  <div class="logo"><a href="/" on:click={closeMenu}><img src="logo-cropped.svg" alt="logo" height="45"></a></div>
+  <div class="logo"><a href="/" on:click={closeMenu}><img src="/logo-cropped.svg" alt="logo" height="45" width="78.64" ></a></div>
   <div class="menu-btn" on:click={toggleBurger} class:open={open}>
     <div class="menu-btn-burger"></div>
   </div>
@@ -82,7 +82,7 @@
     <li>
       <div class="dropdown-top" on:click={toggleCommunity} class:open={community}>Community</div>
       <ul class="dropdown" class:open={community}>
-        <li><a href="#todo" on:click={toggleBurger}>Discord</a></li>
+        <li><a href="https://discord.gg/QjUmEh257P" on:click={toggleBurger}>Discord</a></li>
         <li><a href="#todo" on:click={toggleBurger}>Forum</a></li>
       </ul>
     </li>
@@ -275,7 +275,6 @@
         visibility:hidden;
         min-width:17rem;
         position:absolute;
-        margin-top:0.5rem;
         left:0;
         display:none;
       }
@@ -288,6 +287,10 @@
       .navbar-desktop ul li ul li {
         clear:both;
         width:100%;
+        margin-top:0px;
+        margin-bottom:0px;
+        padding-top:7px;
+        padding-bottom:3px;
       }
   } 
 

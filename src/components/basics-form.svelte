@@ -168,11 +168,11 @@
     {#if $logo && $cover}
       <Col  size="6" sizeMD="4" sizeLG="4" ><PreviewFrontpage name={$organizationName} ticker={$tokenTicker} type={organizationType} description={$shortDesc} cover={$cover} logo={$logo} /></Col>
     {:else if $logo}
-      <Col  size="6" sizeMD="4" sizeLG="4" ><PreviewFrontpage name={$organizationName} ticker={$tokenTicker} type={organizationType} description={$shortDesc} cover="https://res.cloudinary.com/dhxjflczp/image/upload/v1634945758/cover_d56wyh.jpg" logo={$logo} /></Col>
+      <Col  size="6" sizeMD="4" sizeLG="4" ><PreviewFrontpage name={$organizationName} ticker={$tokenTicker} type={organizationType} description={$shortDesc} cover="https://res.cloudinary.com/dhxjflczp/image/upload/v1635003589/1920_hhdrhb.jpg" logo={$logo} /></Col>
     {:else if $cover}
       <Col  size="6" sizeMD="4" sizeLG="4" ><PreviewFrontpage name={$organizationName} ticker={$tokenTicker} type={organizationType} description={$shortDesc} cover={$cover} logo="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" /></Col>
     {:else}
-      <Col  size="6" sizeMD="4" sizeLG="4" ><PreviewFrontpage name={$organizationName} ticker={$tokenTicker} type={organizationType} description={$shortDesc} cover="https://res.cloudinary.com/dhxjflczp/image/upload/v1634945758/cover_d56wyh.jpg" logo="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" /></Col>
+      <Col  size="6" sizeMD="4" sizeLG="4" ><PreviewFrontpage name={$organizationName} ticker={$tokenTicker} type={organizationType} description={$shortDesc} cover="https://res.cloudinary.com/dhxjflczp/image/upload/v1635003589/1920_hhdrhb.jpg" logo="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" /></Col>
     {/if}
   </Row>
    <p>
@@ -193,7 +193,7 @@
    <div id="info-sm">
      <p>
      ** To prevent spam on our fileservers we require you to request an upload
-     code on the discord.
+     code on the discord. You do not need the upload code to preview
    </p>
    </div>
    <Modal bind:open={modalOpen}>
