@@ -103,8 +103,8 @@
       you the best investment opportunities on Radix.
     </h3>
     <h4>Access rounds for high quality projects selected by the DAO</h4>
-    <Button outline on:click={setModalOpenSeed}>Join seed sale</Button>
-    <a href="/learn/for-ventures"><Button outline>Submit Project</Button></a>
+    <Button outline primary on:click={setModalOpenSeed}>Join seed sale</Button>
+    <a href="/learn/for-ventures"><Button outline primary>Submit Project</Button></a>
   </div>
   <div class="featured-projects">
     <h3>Featured Projects</h3>

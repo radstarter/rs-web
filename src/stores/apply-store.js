@@ -14,6 +14,8 @@ export let deepdive = writable([{insert:""}]);
 export let cover = writable();
 export let logo = writable();
 export const code = writable("");
+export const discordHandler = writable("");
+export const email = writable("");
 
 //Token metric stores
 export const tokenAddress = writable("");

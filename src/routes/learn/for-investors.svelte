@@ -8,10 +8,10 @@
     Radstarter is a digital marketplace built on Radix dlt,
     that gives you exposure to the best projects on ledger.
   </h4>
-  <h3>How do I sign up?</h3>
-  <p> Work in progress ;)</p>
+  <h4>How do I sign up?</h4>
+  <p> The  platform isn't live yet but you can join the seed sale.<p>
   <div id="limited-curve">
-    <h3>What is a Limited Curve</h3>
+    <h4>What is a Limited Curve</h4>
     <p> A limited curve is a bonding curve withouth a sell curve. It is a curve
       that dictates the price of the token, by the amount of tokens sold. Simply
       put, the more tokens sold, the higher the price. And there are only a 

@@ -1,4 +1,7 @@
 <script>
+  import  PreviewFrontpage  from './preview-frontpage.svelte';
+  import { Modal, Card, Row, Col } from 'svelte-chota';
+  import * as yup from 'yup';
   import {
     organizationName,
     organizationType,
@@ -21,10 +24,13 @@
     whitepaper,
     medium,
     cover,
-    code
+    code,
+    discordHandler,
+    email
   } from '../stores/apply-store.js';
-  import { Modal, Card, Row, Col } from 'svelte-chota';
-  import  PreviewFrontpage  from './preview-frontpage.svelte';
+
+  export let formValid = false;
+
   //Mechanics for changing the template of the deepdive 
   function handleOrgChange() {
     if ($organizationType == "DAO") {
@@ -92,6 +98,54 @@
       $tokenName = responseObj['result'].name;
     }
   }
+  //Validation of form
+  let schema = yup.object().shape({
+    organizationName: yup.string().required(),
+    organizationType: yup.string().required(),
+    shortDesc: yup.string().required(),
+    tokenAddress: yup.string().required(),
+    supply: yup.number().required(),
+    ticker: yup.string().required(),
+    fixed: yup.boolean().required(),
+    prevRaise: yup.number().required(),
+    website: yup.string().url().required(),
+    telegram: yup.string().url(),
+    discord: yup.string().url(),
+    medium: yup.string().url(),
+    twitter: yup.string().url(),
+    whitepaper: yup.string().url(),
+    discordHandler: yup.string().required(),
+    email: yup.string().email().required(),
+    logoSet: yup.boolean().required().oneOf([true]),
+    coverSet: yup.boolean().required().oneOf([true]),
+    uploadCode: yup.string().required()
+  });
+
+  function validateForm() {
+    schema.isValid({
+      organizationName: $organizationName,
+      organizationType: $organizationType,
+      shortDesc: $shortDesc,
+      tokenAddress: $tokenAddress,
+      supply: $tokenTotalSupply,
+      ticker: $tokenTicker,
+      fixed: $tokenFixedSupply,
+      prevRaise: $tokenTotalRaised,
+      website: $website,
+      telegram: $telegram,
+      discord: $discord,
+      medium: $medium,
+      twitter: $twitter,
+      whitepaper: $whitepaper,
+      discordHandler: $discordHandler,
+      email: $email,
+      logoSet: logoSet,
+      coverSet, coverSet,
+      uploadCode: $code
+    }).then(function (valid) {
+      formValid = true;
+    });
+  }
 </script>
 
 <div id="input-container">
@@ -136,32 +190,40 @@
   </p>
   <p>
     <label for="website">Website*</label>
-    <input type="url" bind:value={$website}>
+    <input type="url" placeholder="https://" bind:value={$website}>
   </p>
   
   <p>
     <label for="telegram">Telegram</label>
-    <input type="url" bind:value={$telegram}>
+    <input type="url" placeholder="https://" bind:value={$telegram}>
   </p>
   <p>
     <label for="discord">Discord</label>
-    <input type="url" bind:value={$discord}>
+    <input type="url" placeholder="https://" bind:value={$discord}>
   </p>
 
  <p>
     <label for="medium">Medium</label>
-    <input type="url" bind:value={$medium}>
+    <input type="url" placeholder="https://" bind:value={$medium}>
   </p>
 
 
   <p>
     <label for="twitter">Twitter</label>
-    <input type="url" bind:value={$twitter}>
+    <input type="url" placeholder="https://" bind:value={$twitter}>
   </p>
 
   <p>
     <label for="whitepaper">Whitepaper</label>
-    <input type="url" bind:value={$whitepaper}>
+    <input type="url" placeholder="https://" bind:value={$whitepaper}>
+  </p>
+  <p>
+    <label for="discord-handle">Your discord handle*</label>
+    <input type="text" bind:value={$discordHandler}>
+  </p>
+  <p>
+    <label for="email">Your email*</label>
+    <input type="email" bind:value={$email}>
   </p>
   <h3>Preview mini:</h3>
   <Row>
