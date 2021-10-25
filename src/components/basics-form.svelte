@@ -39,7 +39,7 @@
     if ($organizationType == "DAO") {
       $deepdive = $deepdiveTemplateDao;
     }
-    if ($organizationType == "Venture"){
+    if ($organizationType == "Company"){
       $deepdive = $deepdiveTemplatePrivate;    
     }
   }
@@ -236,16 +236,18 @@
 
 <div id="input-container">
   <p></p>
-    <p>
-    <label for="orgname">Organisation name *</label>
-    <Input type="text" bind:error={errorName} bind:value={$organizationName} on:focus={isNameValid} on:keyup={isNameValid} />
-  </p>
+    
+      <p>
+        <label for="orgname">Organisation name *</label>
+        <Input type="text" bind:error={errorName} bind:value={$organizationName} on:focus={isNameValid} on:keyup={isNameValid} />
+      </p>
+
 
   <p>
     <label for="organization">Organisation Type *</label>
     <select id="organization" bind:value={$organizationType} on:change={handleOrgChange}>
       <option value="DAO">DAO</option>
-      <option value="Private Company">Private Company</option>
+      <option value="Company">Private Company</option>
     </select>
   </p>
   

@@ -46,7 +46,7 @@
         Community
         <ul class="dropdown">
           <li><a href="https://discord.gg/QjUmEh257P">Discord</a></li>
-          <li><a href="#todo">Forum</a></li>
+          <li><a href="/forum">Forum</a></li>
         </ul>
       </li>
       <li><a href="/stake">Stake</a></li>
@@ -83,7 +83,7 @@
       <div class="dropdown-top" on:click={toggleCommunity} class:open={community}>Community</div>
       <ul class="dropdown" class:open={community}>
         <li><a href="https://discord.gg/QjUmEh257P" on:click={toggleBurger}>Discord</a></li>
-        <li><a href="#todo" on:click={toggleBurger}>Forum</a></li>
+        <li><a href="/forum" on:click={toggleBurger}>Forum</a></li>
       </ul>
     </li>
     <li><a href="/stake" on:click={toggleBurger}>Stake</a></li>

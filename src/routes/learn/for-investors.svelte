@@ -4,10 +4,10 @@
 <div id="toppie">
 <Container>
   <h1>Invest in  the decentralised revolution</h1>
-  <h4>
-    Radstarter is a digital marketplace built on Radix dlt,
-    that gives you exposure to the best projects on ledger.
-  </h4>
+  <h3>
+    Radstarter is a digital marketplace built on Radix
+    giving you exposure to the best projects on ledger.
+  </h3>
   <h4>How do I sign up?</h4>
   <p> The  platform isn't live yet but you can join the seed sale.<p>
   <h4>Are there any costs involved?</h4>
