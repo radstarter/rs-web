@@ -1,6 +1,6 @@
 <script>
   import  PreviewFrontpage  from './preview-frontpage.svelte';
-  import { Modal, Card, Row, Col } from 'svelte-chota';
+  import { Modal, Card, Row, Col, Input, Button } from 'svelte-chota';
   import * as yup from 'yup';
   import {
     organizationName,
@@ -14,7 +14,6 @@
     deepdive,
     deepdiveTemplateDao,
     deepdiveTemplatePrivate,
-    logo,
     tokenName,
     tokenTicker,
     tokenIcon,
@@ -23,20 +22,24 @@
     tokenTotalRaised,
     whitepaper,
     medium,
+    logo,
     cover,
     code,
     discordHandler,
-    email
+    email,
   } from '../stores/apply-store.js';
 
-  export let formValid = false;
-
+  $: {
+    if ($tokenTotalRaised < 0) {
+      $tokenTotalRaised = 0;
+    }
+  }
   //Mechanics for changing the template of the deepdive 
   function handleOrgChange() {
     if ($organizationType == "DAO") {
       $deepdive = $deepdiveTemplateDao;
     }
-    if ($organizationType == "Private Company"){
+    if ($organizationType == "Venture"){
       $deepdive = $deepdiveTemplatePrivate;    
     }
   }
@@ -65,41 +68,44 @@
   let modalOpen = false;
   async function fetchTokenData() {
     const url = "https://mainnet.radixdlt.com/archive";
-    let data = {
-      jsonrpc: 2.0,
-      method: "tokens.get_info",
-      params: {
-        rri: $tokenAddress
-      },
-      id: 1
-    }
-    const response = await fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(data)
-    });
+    if ($tokenAddress) {
+      let data = {
+        jsonrpc: 2.0,
+        method: "tokens.get_info",
+        params: {
+          rri: $tokenAddress
+        },
+        id: 1
+      }
+      const response = await fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data)
+      });
 
-    let responseObj = await response.json();
+      let responseObj = await response.json();
 
-    if (responseObj['error']) {
-      modalOpen = true;
-      tokenOpen = false;
-    } else {
-      $tokenTotalSupply = Number(responseObj['result'].currentSupply / Math.pow(10, 18));
-      $tokenTicker = responseObj['result'].symbol.toUpperCase();
-      $tokenIcon = responseObj['result'].iconURL;
-      $tokenName = responseObj['result'].name;
+      if (responseObj['error']) {
+        modalOpen = true;
+        tokenOpen = false;
+      } else {
+        $tokenTotalSupply = Number(responseObj['result'].currentSupply / Math.pow(10, 18));
+        $tokenTicker = responseObj['result'].symbol.toUpperCase();
+        $tokenIcon = responseObj['result'].iconURL;
+        $tokenName = responseObj['result'].name;
+      }
+      isTickerValid();
     }
   }
-  //Validation of form
-  let schema = yup.object().shape({
+  //Validation 
+  let schemaBasics = yup.object().shape({
     organizationName: yup.string().required(),
     organizationType: yup.string().required(),
     shortDesc: yup.string().required(),
@@ -116,47 +122,127 @@
     whitepaper: yup.string().url(),
     discordHandler: yup.string().required(),
     email: yup.string().email().required(),
-    logoSet: yup.boolean().required().oneOf([true]),
-    coverSet: yup.boolean().required().oneOf([true]),
     uploadCode: yup.string().required()
   });
 
-  function validateForm() {
-    schema.isValid({
-      organizationName: $organizationName,
-      organizationType: $organizationType,
-      shortDesc: $shortDesc,
-      tokenAddress: $tokenAddress,
-      supply: $tokenTotalSupply,
-      ticker: $tokenTicker,
-      fixed: $tokenFixedSupply,
-      prevRaise: $tokenTotalRaised,
-      website: $website,
-      telegram: $telegram,
-      discord: $discord,
-      medium: $medium,
-      twitter: $twitter,
-      whitepaper: $whitepaper,
-      discordHandler: $discordHandler,
-      email: $email,
-      logoSet: logoSet,
-      coverSet, coverSet,
-      uploadCode: $code
-    }).then(function (valid) {
-      formValid = true;
-    });
+  let errorName, errorDesc, errorAddress, errorTicker, errorWebsite, errorTelegram, errorDiscord, errorMedium, errorTwitter, errorWhitepaper, errorHandle, errorEmail, errorUpload;
+  function isNameValid() {
+    try {
+      schemaBasics.validateSyncAt("organizationName", {organizationName: $organizationName});
+      errorName = false;
+      } catch(e) {
+      errorName = true;
+    }
   }
+  function isDescValid() {
+    try {
+      schemaBasics.validateSyncAt("shortDesc", {shortDesc: $shortDesc});
+      errorDesc = false;
+      } catch(e) {
+      errorDesc = true;
+    }
+  }
+  function isAddressValid() {
+    try {
+      schemaBasics.validateSyncAt("tokenAddress", {tokenAddress: $tokenAddress});
+      errorAddress = false;
+      } catch(e) {
+      errorAddress = true;
+    }
+  }
+  function isTickerValid() {
+    try {
+      schemaBasics.validateSyncAt("ticker", {ticker : $tokenTicker});
+      errorTicker = false;
+      } catch(e) {
+      errorTicker = true;
+    }
+  }
+  function isWebsiteValid() {
+    try {
+      schemaBasics.validateSyncAt("website", {website: $website});
+      errorWebsite = false;
+      } catch(e) {
+      errorWebsite = true;
+    }
+  }
+  function isTelegramValid() {
+    try {
+      schemaBasics.validateSyncAt("telegram", {telegram: $telegram});
+      errorTelegram = false;
+      } catch(e) {
+      errorTelegram = true;
+    }
+  }
+  function isDiscordValid() {
+    try {
+      schemaBasics.validateSyncAt("discord", {discord: $discord});
+      errorDiscord = false;
+      } catch(e) {
+      errorDiscord = true;
+    }
+  }
+  function isMediumValid() {
+    try {
+      schemaBasics.validateSyncAt("medium", {medium: $medium});
+      errorMedium = false;
+      } catch(e) {
+      errorMedium = true;
+    }
+  }
+  function isTwitterValid() {
+    try {
+      schemaBasics.validateSyncAt("twitter", {twitter: $twitter});
+      errorTwitter = false;
+      } catch(e) {
+      errorTwitter = true;
+    }
+  }
+  function isWhitepaperValid() {
+    try {
+      schemaBasics.validateSyncAt("whitepaper", {whitepaper: $whitepaper});
+      errorWhitepaper= false;
+      } catch(e) {
+      errorWhitepaper= true;
+    }
+  }
+  function isHandleValid() {
+    try {
+      schemaBasics.validateSyncAt("discordHandler", {discordHandler: $discordHandler});
+      errorHandle = false;
+      } catch(e) {
+      errorHandle = true;
+    }
+  }
+  function isEmailValid() {
+    try {
+      schemaBasics.validateSyncAt("email", {email: $email});
+      errorEmail = false;
+      } catch(e) {
+      errorEmail = true;
+    }
+  }
+  function isUploadValid() {
+    try {
+      schemaBasics.validateSyncAt("uploadCode", {uploadCode: $code});
+      errorUpload = false;
+      } catch(e) {
+      errorUpload = true;
+    }
+  }
+
 </script>
+
 
 <div id="input-container">
   <p></p>
     <p>
-    <label for="orgname">Organisation name*</label>
-    <input type="text" bind:value={$organizationName}>
+    <label for="orgname">Organisation name *</label>
+    <Input type="text" bind:error={errorName} bind:value={$organizationName} on:focus={isNameValid} on:keyup={isNameValid} />
   </p>
 
   <p>
-    <label for="organization">Organisation Type*</label>
+    <label for="organization">Organisation Type *</label>
     <select id="organization" bind:value={$organizationType} on:change={handleOrgChange}>
       <option value="DAO">DAO</option>
       <option value="Private Company">Private Company</option>
@@ -164,17 +250,18 @@
   </p>
   
   <p>
-    <label for="shortdesc">Describe the project in one sentence*</label>
-    <input type="text" bind:value={$shortDesc}>
+    <label for="shortdesc">Describe the project in one sentence *</label>
+    <Input type="text" bind:value={$shortDesc} bind:error={errorDesc} on:keyup={isDescValid} on:focus={isDescValid} />
   </p>
 
   
   <p>
-    <label for="tokenaddress">Token Address*</label>
-    <input type="url" bind:value={$tokenAddress}>
-    <button on:click={fetchTokenData}>Get Token Info</button>
-    <Card>
-      <h4 slot="header">Token details</h4>
+    <label for="tokenaddress">Token Address *</label>
+    <Input type="text" bind:value={$tokenAddress} bind:error={errorAddress} on:keyup={isAddressValid} on:focus={isAddressValid} on:blur={isTickerValid} />
+    <Button outline primary on:click={fetchTokenData}>Get Token Info</Button>
+  </p>
+    <div id="token-details" class:error={errorTicker}>
+      <h4>Token details</h4>
       {#if $tokenIcon}
         <img src={$tokenIcon} alt="token_logo">
       {/if}
@@ -182,48 +269,48 @@
       <h5>Name: {$tokenName}</h5>
       <h5>Ticker: {$tokenTicker} </h5>
       <h5>Fixed supply: {$tokenFixedSupply} </h5>
-    </Card>
-  </p>
+    </div>
+
   <p>
-    <label for="total-raised">Previous rounds total raised*</label>
+    <label for="total-raised">Previous rounds total raised *</label>
     <input type="number" bind:value={$tokenTotalRaised}>
   </p>
   <p>
-    <label for="website">Website*</label>
-    <input type="url" placeholder="https://" bind:value={$website}>
+    <label for="website">Website *</label>
+    <Input type="url" placeholder="https://" bind:value={$website} bind:error={errorWebsite} on:keyup={isWebsiteValid} on:focus={isWebsiteValid} />
   </p>
   
   <p>
     <label for="telegram">Telegram</label>
-    <input type="url" placeholder="https://" bind:value={$telegram}>
+    <Input type="url" placeholder="https://" bind:value={$telegram} bind:error={errorTelegram} on:keyup={isTelegramValid} />
   </p>
   <p>
     <label for="discord">Discord</label>
-    <input type="url" placeholder="https://" bind:value={$discord}>
+    <Input type="url" placeholder="https://" bind:value={$discord} bind:error={errorDiscord} on:keyup={isDiscordValid} />
   </p>
 
  <p>
     <label for="medium">Medium</label>
-    <input type="url" placeholder="https://" bind:value={$medium}>
+    <Input type="url" placeholder="https://" bind:value={$medium} bind:error={errorMedium} on:keyup={isMediumValid} />
   </p>
 
 
   <p>
     <label for="twitter">Twitter</label>
-    <input type="url" placeholder="https://" bind:value={$twitter}>
+    <Input type="url" placeholder="https://" bind:value={$twitter} bind:error={errorTwitter} on:keyup={isTwitterValid} />
   </p>
 
   <p>
     <label for="whitepaper">Whitepaper</label>
-    <input type="url" placeholder="https://" bind:value={$whitepaper}>
+    <Input type="url" placeholder="https://" bind:value={$whitepaper} bind:error={errorWhitepaper} on:keyup={isWhitepaperValid} />
   </p>
   <p>
-    <label for="discord-handle">Your discord handle*</label>
-    <input type="text" bind:value={$discordHandler}>
+    <label for="discord-handle">Your discord handle *</label>
+    <Input type="text" bind:value={$discordHandler} bind:error={errorHandle} on:keyup={isHandleValid} on:focus={isHandleValid} />
   </p>
   <p>
-    <label for="email">Your email*</label>
-    <input type="email" bind:value={$email}>
+    <label for="email">Your email *</label>
+    <Input type="email" bind:value={$email} bind:error={errorEmail} on:keyup={isEmailValid} on:focus={isEmailValid} />
   </p>
   <h3>Preview mini:</h3>
   <Row>
@@ -249,8 +336,8 @@
      >
   </p>
  <p>
-    <label for="upload-code">Upload Code**</label>
-    <input type="text" bind:value={$code}>
+    <label for="upload-code">Upload Code **</label>
+    <Input type="text" bind:value={$code} bind:error={errorUpload} on:keyup={isUploadValid} on:focus={isUploadValid} />
  </p>
    <div id="info-sm">
      <p>
@@ -265,13 +352,19 @@
   </Modal>
 </div>
 <style>
-  .logo{
-		display:flex;
-		height:80px;
-		width:80px;
-    border-radius:10px;
-  }
   #info-sm {
     font-size:9pt;
+  }
+  #token-details {
+    border:1px;
+    border-style: solid;
+    border-radius: 5px;
+    border-color:var(--color-lightGrey);
+    padding:10px;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.4s ease;
+  }
+  #token-details.error {
+    border-color:var(--color-error);
   }
  </style>
