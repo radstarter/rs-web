@@ -7,9 +7,7 @@
   <h3>Become part of the initial contributors and earn 10.000 <a href="/token">$RST</a> per month.</h3>
   <p>
     Want to become a member of the DAO without investing money? We are currently
-    recruiting 10 genesis members who want to use their unique skills to grow Radstarter.
-    You need to allocate 10 hours per week to working and about 1 hour
-    extra for the community calls.
+    recruiting genesis members who want to use their unique skills to grow Radstarter.
   </p>
   <h4>We are currently looking for</h4>
   <div id="looking-for">
