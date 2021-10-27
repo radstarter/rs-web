@@ -19,7 +19,7 @@
   </div>
   <p>
     To apply go to <a href="https://discord.com/invite/QjUmEh257P"> the discord</a>, showcase your work, if we like it you are 
-    part of the genesis crew. No need for formalities.
+    part of the genesis crew. 
   </p>
 </Container>
 

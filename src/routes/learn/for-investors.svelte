@@ -44,10 +44,10 @@
   </p>
   <div id="limited-curve">
     <h4>What is a Limited Curve?</h4>
-    <p> A limited curve is a bonding curve withouth a sell curve. It is a curve
-      that dictates the price of the token, by the amount of tokens sold. Simply
-      put, the more tokens sold, the higher the price. There are only a 
-      limited amount of tokens in the contract.
+    <p> A limited curve is a bonding curve in a smart contract that sells tokens
+      but has no option to rebuy them. The curve dictates the price of the token.
+      It  goes up as more tokens are sold. There is a specified limit on the amount
+      of tokens that can be sold by a limited curve contract.
     </p>
   </div>
   <h4>Do I need to stake $RST to get acces to the offerings?</h4>
