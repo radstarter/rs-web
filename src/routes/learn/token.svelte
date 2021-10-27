@@ -41,7 +41,7 @@
   their tokens and build a community.
 </p>
 <p>
-  The platform is governed by a dao (Decentralised Autonomous Organisation)
+  The platform is governed by a dao (Decentralized Autonomous Organization)
   this means that everybody has equal access to information. There's no 
   hierarchies and it's open for everyone.
   If a project wants to raise with us they have to create a public 
@@ -98,7 +98,7 @@
 <h3>The Governance Model</h3>
 <p>
   We will use token based Holographic Consensus to govern the vault, it ensures 
-  scaleability, while retaining resiliency. Holographic Consensus means a proposal
+  scalability, while retaining resiliency. Holographic Consensus means a proposal
   has to reach absolute majority to pass. Unless it's boosted, when it's boosted
   it only has to reach relative majority. If you want to know more check out 
   <a href="/governance/holographic-consensus">our page on holographic consensus</a>.

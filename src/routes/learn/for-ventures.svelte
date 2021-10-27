@@ -4,9 +4,9 @@
 <div id="toppie">
   <Container>
     <h1>Investment funding on Radix</h1>
-    <h3>Get acces to capital for your Radix projects</h3>
+    <h3>Get access to capital for your Radix projects</h3>
     <p>
-    Showcase your venture and get exposure to a collective of savy Radix 
+    Showcase your venture and get exposure to a collective of savvy Radix 
     investors. Connect with them on our platform and grow your community around
     it.
    </p>
@@ -40,7 +40,7 @@
       <a href="/learn/for-investors#limited-curve">limited curve</a> or fixed
       price component will then be listed on our frontpage and investors can 
       start to buy tokens from the component. The room in our discord stays open
-      throughouth the whole raise and there you can build community with the people
+      throughout the whole raise and there you can build community with the people
       who believe in your project.
     </p>
     <h4>What is the price for listing on Radstarter?</h4>

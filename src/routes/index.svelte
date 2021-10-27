@@ -133,7 +133,7 @@
   <Modal  bind:open={modalSuccesOpen}>
     <div class="success">
       <img src="success.svg" height="120px" width="120px" alt="Succes" />
-      <p>Succesfully joined the mailinglist.</p> 
+      <p>Successfully joined the mailing-list.</p> 
     </div>
   </Modal>
 </Container>

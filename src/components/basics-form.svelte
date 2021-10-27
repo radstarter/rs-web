@@ -238,13 +238,13 @@
   <p></p>
     
       <p>
-        <label for="orgname">Organisation name *</label>
+        <label for="orgname">Organization name *</label>
         <Input type="text" bind:error={errorName} bind:value={$organizationName} on:focus={isNameValid} on:keyup={isNameValid} />
       </p>
 
 
   <p>
-    <label for="organization">Organisation Type *</label>
+    <label for="organization">Organization Type *</label>
     <select id="organization" bind:value={$organizationType} on:change={handleOrgChange}>
       <option value="DAO">DAO</option>
       <option value="Company">Private Company</option>
@@ -343,7 +343,7 @@
  </p>
    <div id="info-sm">
      <p>
-     ** To prevent spam on our fileservers we require you to request an upload
+     ** To prevent spam on our file-servers we require you to request an upload
      code on the discord. You do not need the upload code to preview
    </p>
    </div>

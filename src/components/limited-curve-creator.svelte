@@ -176,7 +176,7 @@
 		{/if}
 	</p>
 	<p>
-		<label for="offset" >offset</label>
+		<label for="offset" >Offset</label>
 		<input type="number" step=0.1 bind:value={$offset} on:change={resample}>
 	</p>
 </div>

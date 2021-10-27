@@ -12,7 +12,7 @@
   <p> The  platform isn't live yet but you can join the seed sale.<p>
   <h4>Are there any costs involved?</h4>
   <p>
-    Investing on Radstarter is completly free for investors. We will never
+    Investing on Radstarter is completely free for investors. We will never
     charge you any fees. But since the raises happen on ledger you will have to
     pay the gas. This is a very small fee on the Radix ledger.
   </p>
@@ -26,7 +26,7 @@
 
   <h4>What kind of ventures can I find on Radstarter?</h4>
   <p>
-    You can find crypto companies and DAO's that operate on the Radix 
+    You can find crypto companies and DAOs that operate on the Radix 
     ledger. In the future we want to create the legal framework to launch
     regular non-crypto companies on the radix ledger.
   </p>
@@ -45,12 +45,12 @@
   <div id="limited-curve">
     <h4>What is a Limited Curve?</h4>
     <p> A limited curve is a bonding curve in a smart contract that sells tokens
-      but has no option to rebuy them. The curve dictates the price of the token.
+      but has no option to re-buy them. The curve dictates the price of the token.
       It  goes up as more tokens are sold. There is a specified limit on the amount
       of tokens that can be sold by a limited curve contract.
     </p>
   </div>
-  <h4>Do I need to stake $RST to get acces to the offerings?</h4>
+  <h4>Do I need to stake $RST to get access to the offerings?</h4>
   <p>
     No you don't need to stake anything, everybody has open access to the raises.
     Our token is a governance/profit-share token. Staking is there to claim your
