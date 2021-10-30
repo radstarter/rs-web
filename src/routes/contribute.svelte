@@ -4,28 +4,41 @@
 
 <Container>
   <h1>Contribute to Radstarter</h1>
-  <h3>Become part of the initial contributors and earn 10.000 <a href="/token">$RST</a> per month.</h3>
+  <h3>Become part of the crew and earn your share of 2.5M <a href="/token">$RST</a> </h3>
   <p>
     Want to become a member of the DAO without investing money? We are currently
-    recruiting genesis members who want to use their unique skills to grow Radstarter.
+    recruiting crew members who want to use their unique skills to grow Radstarter.
   </p>
   <h4>We are currently looking for</h4>
   <div id="looking-for">
-    <h4>Designers</h4>
-    <h4>Web3 Developers</h4>
+    <h4>Developers</h4>
+    <h4>Creators</h4>
     <h4>Marketers</h4>
-    <h4>Content Creators</h4>
     <h4>QA Engineers</h4>
+    <h4>Stewards</h4>
+    <h4>&Hackers</h4>
   </div>
+  <h3>How to earn?</h3>
   <p>
-    To apply go to <a href="https://discord.com/invite/QjUmEh257P"> the discord</a>, showcase your work, if we like it you are 
-    part of the genesis crew. 
+    We are <i>currently</i> using SourceCred to track contributions, it allows you to 
+    earn cred and $RST by contributing value to our github, forum or discord. 
+    It is recommended to read 
+    <a href="https://sourcecred.io/docs/" target="_blank">the docs</a>. SourceCred
+    is your foot in the door of the collective. It allows you to earn a modest 
+    amount of tokens and cred. To complement SourceCred, there are the bounties.
+    These are certain tasks that have a high priority in the DAO, doing these will
+    allow you to earn a decent amount of tokens no extra cred is minted for completing
+    bounties.
+    Once the DAO goes live all your earned Cred will be minted as reputation on the
+    governance platform.
   </p>
 </Container>
 
 <style>
   #looking-for h4 {
     font-weight:330;
+    margin-top:0px;
+    margin-bottom:5px;
   }
   #looking-for {
     padding-left:1rem;

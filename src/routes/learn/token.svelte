@@ -18,13 +18,8 @@
     "color": "rgb(80,100,150)"
   },
   {
-    "size": 1250000,
-    "label": "Founders ",
-    "color": "rgb(72,61,139)"
-  },
-  {
-    "size": 1250000,
-    "label": "Initial contributors",
+    "size": 2500000,
+    "label": "Initial Contributors",
     "color": "rgb(95,158,160)",
   },
 ];
@@ -87,6 +82,15 @@
       </div>
     </Col>
 </Row>
+<h3>Initial Contributors</h3>
+<p>
+  We will have a period where tokens are payed out to the initial contributors. 
+  Contributions will be tracked trough <a href="https://sourcecred.io/">SourceCred</a>.
+  There is no founder retention, everybody will have equal opportunity to earn tokens.
+  Not only coders will be rewarded, everybody in the collective will have a chance
+  to earn tokens. From the apes to the creators. For more info check  
+  <a href="/contribute">the contribute page</a>.
+</p>
 <h3>The profit share model</h3>
 <p>
   There will be two vaults one that holds the funds of the dao, the dao-vault. And 
@@ -97,11 +101,12 @@
 
 <h3>The Governance Model</h3>
 <p>
-  We will use token based Holographic Consensus to govern the vault, it ensures 
-  scalability, while retaining resiliency. Holographic Consensus means a proposal
-  has to reach absolute majority to pass. Unless it's boosted, when it's boosted
+  We will use a hybrid of token and reputation based Holographic Consensus to 
+  govern the vault. Holographic Consensus ensures scalability, while retaining 
+  resiliency. In short it means a proposal has to reach absolute majority to pass. 
+  Unless it's boosted, when it's boosted
   it only has to reach relative majority. If you want to know more check out 
-  <a href="/governance/holographic-consensus">our page on holographic consensus</a>.
+  <a href="/governance/governance-model">our page on our governance model</a>.
 </p>
 <p>
   We are currently working together with the radix guild and adeptDAO to build 
@@ -117,13 +122,13 @@
   <p>
   This phase will coincide with Alexandria, here we build out the smart-contracts,
   we create the trustless <a href="/learn/for-investors#limited-curve">limited curve</a> 
-  sale blueprint, the staking component and the voting component.
+  sale blueprint, the staking component and the voting blueprints.
   </p>
   <h4>Phase 2 - Launch Platform</h4>
   <p>
-    This phase is right after the launch of babylon. In this phase we will focus on marketing,
-    and networking with as many projects
-    as possible, to launch them on our platform.
+    This phase is right after the launch of babylon. In this phase we will launch the smart
+    contracts and focus on marketing, and networking with as many projects
+    as possible.
   </p>
   <h4>Phase 3 - Launch DAO</h4>
   <p>
@@ -137,7 +142,7 @@
   </p>
   <h4>Phase 5 - Expand</h4>
   <p>
-    Create the legal structure to create a launchpad for non crypto companies
+    Create the legal structure to create a launchpad for non crypto companies.
   </p>
 </div>
 </Container>
@@ -149,13 +154,6 @@
     height:100%;
     text-align:center;
     position:grid;
-  }
-  .viz h3 {
-    position:absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
   }
   #roadmap h4{
     font-weight:300;

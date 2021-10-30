@@ -21,9 +21,9 @@
       in the basic information, writing the deep dive, creating
       the graphs, setting the cover image and reviewing. The finished proposal
       preview will look the same as the offering. Take a look to see what the 
-      process is like. Note, to submit the proposal you need the upload code,
-      you can request it on our discord. This is to prevent abuse on our image
-      servers.
+      process is like. Note,  It is recommended to make a post on the Ventures/DAOs
+      page of our forum and see if we are a match first. A basic template will
+      be provided where you can fill in some general information.
     <p>
     <p>
       We can guide you through the whole process, 
@@ -33,15 +33,16 @@
     </p>
     <h4>What happens after I've submitted the proposal?</h4>
     <p>
-      You get a room in our discord, where you can communicate directly with the
+      You get a brand category on our forum, where you can communicate directly with the
       collective. Meanwhile your proposal gets voted on for one week,
       if the vote passes we instantiate a component on ledger where you have to
       send the amount of tokens to that you want to sell. The trustless
       <a href="/learn/for-investors#limited-curve">limited curve</a> or fixed
       price component will then be listed on our frontpage and investors can 
-      start to buy tokens from the component. The room in our discord stays open
-      throughout the whole raise and there you can build community with the people
-      who believe in your project.
+      start to buy tokens from the component. The brand category on our forum stays open
+      throughout the whole raise, there you can build community with the people
+      who believe in your project. If you want we can keep it open afterwards
+      for direct communication with the people who believe in your project.
     </p>
     <h4>What is the price for listing on Radstarter?</h4>
     <p>
@@ -51,25 +52,21 @@
     </p>
     <h4>When can we start listing our tokens?</h4>
     <p>
-      You can already apply and get listed, but the sales only open during the Babylon
-      release. We will do voting through the discord so you can be listed on the homepage
-      before the Babylon release and get extra exposure.
+      You can already apply and get listed, we will create a way to raise funds
+      before the babylon release, when the new API update gets released.
     </p>
     <h4>Are you an IDO platform?</h4>
     <p>
       No we don't do Initial Dex Offerings, we have specialized blueprints to sell tokens
       to investors. We either sell tokens at a fixed price set by you or on a 
       <a href="/learn/for-investors#limited-curve">limited curve</a>. You can play around
-      with the <a href="/governance/apply#creator">limited curve creator</a> to see
-      your projected income.
-      
+      with the limited curve creator on the apply page to see your projected income. 
     </p>
     <h4>Do you offer compliance as a service?</h4>
     <p>
       No we don't you are completely responsible for the legality of your token.
     </p>
     
-
   <div id="btn-container">
       <a href="/governance/apply"> <Button outline primary>Apply </Button></a>
 
@@ -81,7 +78,5 @@
     margin-top:3rem;
     margin-bottom:3rem;
     text-align:center;
-  }
-  p {
   }
 </style>

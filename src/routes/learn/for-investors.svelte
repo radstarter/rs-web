@@ -3,13 +3,20 @@
 </script>
 <div id="toppie">
 <Container>
-  <h1>Invest in  the decentralised revolution</h1>
+  <h1>Invest in  the decentralized revolution</h1>
   <h3>
-    Radstarter is a digital marketplace built on Radix
+    Radstarter is a marketplace built on Radix
     giving you exposure to the best projects on ledger.
   </h3>
   <h4>How do I sign up?</h4>
-  <p> The  platform isn't live yet but you can join the seed sale.<p>
+  <p> 
+    The  platform isn't live yet but you can already join 
+    <a href="https://forum.radstarter.io" target="_blank">the forum</a> and become 
+    a contributor. All contributions will be rewarded with $RST tokens accordingly.
+    Not a coder? Not a problem! We are looking for all kinds of people. Check out
+    <a href="/contribute">the contribute page </a> to see how it all works. If you  
+    aren't ready to contribute you can also join the seed sale.
+  <p>
   <h4>Are there any costs involved?</h4>
   <p>
     Investing on Radstarter is completely free for investors. We will never
@@ -20,7 +27,7 @@
   <p>
     If you live in America you have to be an accredited investor. If you aren't
     you have to check if you aren't on <a href="/tos#banned-countries">the list of 
-      banned countries</a>. If your country isn't listed you are free to invest as
+    banned countries</a>. If your country isn't listed you are free to invest as
     you please.
   </p>
 
@@ -32,9 +39,10 @@
   </p>
   <h4>How are projects chosen to be featured on Radstarter?</h4>
   <p>
-    They have to apply on the application page then the DAO screens them.
-    You can follow the screening of new projects on our discord and ask 
-    the project's representative questions. Everything happens in the open.
+    They have to apply on the forum, when the projects fit the community they
+    can submit a proposal via the application page then the DAO screens them.
+    You can follow the screening of new projects on our forum and ask 
+    the project's representative questions. Everything happens in the open. 
   </p>
 
   <h4>Are you an IDO platform?</h4>
