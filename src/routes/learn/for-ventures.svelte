@@ -21,11 +21,12 @@
       in the basic information, writing the deep dive, creating
       the graphs, setting the cover image and reviewing. The finished proposal
       preview will look the same as the offering. Take a look to see what the 
-      process is like. Note,  It is recommended to make a post on the Ventures/DAOs
+      process is like.
+    </p>
+     <p>
+      Note,  It is recommended to make a post on the Ventures/DAOs
       page of our forum and see if we are a match first. A basic template will
       be provided where you can fill in some general information.
-    <p>
-    <p>
       We can guide you through the whole process, 
       and help you with writing your deep dive. A basic template is provided,
       it's best to adhere to this template to get the highest chance in passing the 

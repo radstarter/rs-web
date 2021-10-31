@@ -25,12 +25,19 @@
     It is recommended to read 
     <a href="https://sourcecred.io/docs/" target="_blank">the docs</a>. SourceCred
     is your foot in the door of the collective. It allows you to earn a modest 
-    amount of tokens and cred. To complement SourceCred, there are the bounties.
+    amount of tokens and cred. To complement SourceCred, there are bounties.
     These are certain tasks that have a high priority in the DAO, doing these will
     allow you to earn a decent amount of tokens no extra cred is minted for completing
     bounties.
     Once the DAO goes live all your earned Cred will be minted as reputation on the
     governance platform.
+  </p>
+  <h3>What bounties are there?</h3>
+  <p>
+    Take a look at the bounties over at
+    <a href="https://forum.radstarter.io/c/teams/7" target="_blank">the teams section
+      of the forum</a>. That's the place where all bounties will be listed. And if you
+    think of jobs that need work you can suggest them there.
   </p>
 </Container>
 
