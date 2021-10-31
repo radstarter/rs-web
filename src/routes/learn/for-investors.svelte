@@ -12,7 +12,7 @@
   <p> 
     The  platform isn't live yet but you can already join 
     <a href="https://forum.radstarter.io" target="_blank">the forum</a> and become 
-    a contributor. All contributions will be rewarded with $RST tokens accordingly.
+    a contributor. All contributions will be rewarded with RST tokens accordingly.
     Not a coder? Not a problem! We are looking for all kinds of people. Check out
     <a href="/contribute">the contribute page </a> to see how it all works. If you  
     aren't ready to contribute you can also join the seed sale.
@@ -58,7 +58,7 @@
       of tokens that can be sold by a limited curve contract.
     </p>
   </div>
-  <h4>Do I need to stake $RST to get access to the offerings?</h4>
+  <h4>Do I need to stake RST to get access to the offerings?</h4>
   <p>
     No you don't need to stake anything, everybody has open access to the raises.
     Our token is a governance/profit-share token. Staking is there to claim your

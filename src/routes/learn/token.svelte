@@ -29,7 +29,7 @@
 </svelte:head>
   <div id="toppie">
     <Container>
-<h1>$RST Economy</h1>
+<h1>RST Economy</h1>
 <p>
   Radstarter is a community curated launchpad for startups and DAOs
   built on radix. It's a platform where projects can raise money, launch
@@ -96,7 +96,7 @@
   There will be two vaults one that holds the funds of the dao, the dao-vault. And 
   one that holds the earnings, the dividend-vault. The profits from raises
   automatically go to the dividend-vault. You can then claim your share from
-  the dividend-vault. The dao-vault generates it's profits by holding $RST tokens.
+  the dividend-vault. The dao-vault generates it's profits by holding RST tokens.
 </p>
 
 <h3>The Governance Model</h3>

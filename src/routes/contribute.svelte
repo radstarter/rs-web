@@ -4,7 +4,7 @@
 
 <Container>
   <h1>Contribute to Radstarter</h1>
-  <h3>Become part of the crew and earn your share of 2.5M <a href="/token">$RST</a> </h3>
+  <h3>Become part of the crew and earn your share of 2.5M <a href="/token">RST</a> </h3>
   <p>
     Want to become a member of the DAO without investing money? We are currently
     recruiting crew members who want to use their unique skills to grow Radstarter.
@@ -21,7 +21,7 @@
   <h3>How to earn?</h3>
   <p>
     We are <i>currently</i> using SourceCred to track contributions, it allows you to 
-    earn cred and $RST by contributing value to our github, forum or discord. 
+    earn cred and RST by contributing value to our github, forum or discord. 
     It is recommended to read 
     <a href="https://sourcecred.io/docs/" target="_blank">the docs</a>. SourceCred
     is your foot in the door of the collective. It allows you to earn a modest 
