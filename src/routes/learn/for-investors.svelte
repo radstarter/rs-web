@@ -45,19 +45,16 @@
     the project's representative questions. Everything happens in the open. 
   </p>
 
-  <h4>Are you an IDO platform?</h4>
-  <p>
-    No we don't do Initial Dex Offerings, we have specialized blueprints/smart-contracts
-    to sell tokens to investors. Either at a fixed price or on a limited curve.
-  </p>
-  <div id="limited-curve">
-    <h4>What is a Limited Curve?</h4>
-    <p> A limited curve is a bonding curve in a smart contract that sells tokens
-      but has no option to re-buy them. The curve dictates the price of the token.
-      It  goes up as more tokens are sold. There is a specified limit on the amount
-      of tokens that can be sold by a limited curve contract.
+ <h4>What methods do you use to raise money?</h4>
+    <p>
+      We have several methods of raising:
     </p>
-  </div>
+      <ul>
+        <li>Dutch auction - Price starts high and declines according to a decay rate</li>
+        <li>Crowd sale - ICO contract at a fixed price</li>
+        <li>Batch auction - Trading happens in batches to prevent MEV</li> 
+        <li>Limited curve - Curve that sets price by amount of tokens sold, each token sold pushes price upwards </li>
+      </ul>
   <h4>Do I need to stake RST to get access to the offerings?</h4>
   <p>
     No you don't need to stake anything, everybody has open access to the raises.

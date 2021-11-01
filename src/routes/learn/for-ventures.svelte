@@ -56,13 +56,16 @@
       You can already apply and get listed, we will create a way to raise funds
       before the babylon release, when the new API update gets released.
     </p>
-    <h4>Are you an IDO platform?</h4>
+    <h4>What methods do you have to raise money?</h4>
     <p>
-      No we don't do Initial Dex Offerings, we have specialized blueprints to sell tokens
-      to investors. We either sell tokens at a fixed price set by you or on a 
-      <a href="/learn/for-investors#limited-curve">limited curve</a>. You can play around
-      with the limited curve creator on the apply page to see your projected income. 
+      We have several methods of raising:
     </p>
+      <ul>
+        <li>Dutch auction - Price starts high and declines according to a decay rate</li>
+        <li>Crowd sale - ICO contract at a fixed price</li>
+        <li>Batch auction - Trading happens in batches to prevent MEV</li> 
+        <li>Limited curve - Curve that sets price by amount of tokens sold, each token sold pushes price upwards </li>
+      </ul>
     <h4>Do you offer compliance as a service?</h4>
     <p>
       No we don't you are completely responsible for the legality of your token.

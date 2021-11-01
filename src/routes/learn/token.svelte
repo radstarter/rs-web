@@ -3,22 +3,27 @@
   import VizSupply from '../../components/viz-supply.svelte';
   const data = [
   {
-    "size": 1000000,
+    "size": 10000000,
     "label": "Seed Sale",
     "color": "rgb(100,180,200)"
   },
   {
-    "size": 3000000,
+    "size": 10000000,
+    "label": "Charity fund",
+    "color": "rgb(13,186,134)"
+  },
+  {
+    "size": 30000000,
     "label": "DAO Vault",
     "color": "rgb(150,200,250)"
   },
   {
-    "size": 2500000,
+    "size": 25000000,
     "label": "Public Sale",
     "color": "rgb(80,100,150)"
   },
   {
-    "size": 2500000,
+    "size": 25000000,
     "label": "Initial Contributors",
     "color": "rgb(95,158,160)",
   },
@@ -63,16 +68,16 @@
         <td>Type</td><td>Profit Share / Governance</td>
       </tr>
       <tr>
-        <td>Supply</td><td>9.000.000 (Fixed)</td>
+        <td>Supply</td><td>100.000.000 (Fixed)</td>
       </tr>
       <tr>
         <td>Seed Raise</td><td>TBA</td>
       </tr>
       <tr>
-        <td>Seed price</td><td>0.4 XRD</td>
+        <td>Seed price</td><td>0.04 XRD</td>
       </tr>
      <tr>
-       <td>Public price</td><td><a href="/learn/for-investors#limited-curve">Limited Curve</a> 0.5 -> 2.5 XRD</td>
+       <td>Public price</td><td>0.1 XRD</td>
       </tr>
     </Col>
     <Col size={6}>
@@ -88,9 +93,14 @@
   Contributions will be tracked trough <a href="https://sourcecred.io/">SourceCred</a>.
   There is no founder retention, everybody will have equal opportunity to earn tokens.
   Not only coders will be rewarded, everybody in the collective will have a chance
-  to earn tokens. From the apes to the creators. For more info check  
+  to earn tokens. For more info check  
   <a href="/contribute">the contribute page</a>.
 </p>
+<h3>Charity Fund</h3>
+  <p>
+    We will pick a charity through consensus to donate 10% of our tokens to,
+    These tokens will be kept in the vault until that time.
+  </p>
 <h3>The profit share model</h3>
 <p>
   There will be two vaults one that holds the funds of the dao, the dao-vault. And 
@@ -121,8 +131,8 @@
   <h4>Phase 1 - Creating the blueprints</h4>
   <p>
   This phase will coincide with Alexandria, here we build out the smart-contracts,
-  we create the trustless <a href="/learn/for-investors#limited-curve">limited curve</a> 
-  sale blueprint, the staking component and the voting blueprints.
+  we create the trustless sales blueprints, the staking component and the voting 
+  blueprints.
   </p>
   <h4>Phase 2 - Launch Platform</h4>
   <p>

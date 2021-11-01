@@ -13,7 +13,7 @@
   let showErrorSubmit = false;
 
   function setModalOpenSeed() {
-    modalText = "Get notified about <a href=\"/learn/token\"> $RST </a>";
+    modalText = "Get notified about <a href=\"/learn/token\"> RST </a>";
     refferer = "seed"
     setModal();
   }
