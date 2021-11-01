@@ -1,6 +1,10 @@
 <script>
   import { Container, Button } from 'svelte-chota'
 </script>
+<svelte:head>
+  <title>Radstarter - For Ventures</title>
+</svelte:head>
+
 <div id="toppie">
   <Container>
     <h1>Investment funding on Radix</h1>

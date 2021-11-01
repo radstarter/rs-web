@@ -112,8 +112,9 @@
 </script>
 
 <svelte:head>
-  <title>Radstarter - Create application proposal</title>
+  <title>Radstarter - Apply</title>
 </svelte:head>
+
 <div id="toppie">
 <Container>
   <h1> Create a proposal to submit your project </h1>

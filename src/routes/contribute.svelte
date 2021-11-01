@@ -2,6 +2,10 @@
   import { Container } from 'svelte-chota';
 </script>
 
+<svelte:head>
+  <title>Radstarter - Contribute</title>
+</svelte:head>
+
 <Container>
   <h1>Contribute to Radstarter</h1>
   <h3>Become part of the crew and earn your share of 2.5M <a href="/token">RST</a> </h3>

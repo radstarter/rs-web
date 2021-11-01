@@ -30,7 +30,7 @@
 ];
 </script>
 <svelte:head>
-  <title>Radstarter - Learn</title>
+  <title>Radstarter - Token</title>
 </svelte:head>
   <div id="toppie">
     <Container>
@@ -98,8 +98,8 @@
 </p>
 <h3>Charity Fund</h3>
   <p>
-    We will pick a charity through consensus to donate 10% of our tokens to,
-    These tokens will be kept in the vault until that time.
+    We will pick a charity through consensus to donate 10% of our tokens to.
+    These tokens will be kept in the vault until that time. 
   </p>
 <h3>The profit share model</h3>
 <p>

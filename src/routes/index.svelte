@@ -96,6 +96,7 @@
 <svelte:head>
   <title>Radstarter - The Radix Launchpad</title>
 </svelte:head>
+
 <Container>
   <div class="intro-main" id="toppie">
     <h3>

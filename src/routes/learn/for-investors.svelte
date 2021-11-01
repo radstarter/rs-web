@@ -1,6 +1,11 @@
 <script>
   import { Container } from 'svelte-chota';
 </script>
+<svelte:head>
+  <title>Radstarter - For Investors</title>
+</svelte:head>
+
+
 <div id="toppie">
 <Container>
   <h1>Invest in  the decentralized revolution</h1>

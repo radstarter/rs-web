@@ -1,6 +1,12 @@
 <script>
   import { Container } from 'svelte-chota';
 </script>
+
+<svelte:head>
+  <title>Radstarter - Stake</title>
+</svelte:head>
+
+
 <Container>
   <div id="toppie">
     <h1>Coming soon</h1>
