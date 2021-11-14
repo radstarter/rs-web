@@ -8,7 +8,7 @@
 
 <Container>
   <h1>Contribute to Radstarter</h1>
-  <h3>Become part of the crew and earn your share of 2.5M <a href="/token">RST</a> </h3>
+  <h3>Become part of the crew and earn your share of 25M <a href="/token">RST</a> </h3>
   <p>
     Want to become a member of the DAO without investing money? We are currently
     recruiting crew members who want to use their unique skills to grow Radstarter.
