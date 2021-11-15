@@ -119,7 +119,7 @@
   <a href="/governance/governance-model">our page on our governance model</a>.
 </p>
 <p>
-  We are currently working together with the radix guild and adeptDAO to build 
+  We are currently working together with the radix guild and <a href="https://adeptdao.org" target="_blank">adeptDAO</a> to build 
   the backbone of our governance platform. We will roll it out piece by piece
   and slowly take off the training wheels. First we will roll out voting for
   the curation of projects, after that voting to control the vault. We will
