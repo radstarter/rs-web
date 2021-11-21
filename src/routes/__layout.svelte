@@ -3,7 +3,7 @@
   import '../../chota/chota.css'
   import Nav from "../components/nav.svelte";
 </script>
-<Nav />
+<!-- <Nav /> -->
 <slot></slot>
 <style>
   :global(:root) {
